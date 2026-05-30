@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Admin User Management API Route
  * DELETE - Delete a user by ID

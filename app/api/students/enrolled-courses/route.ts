@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Student Enrolled Courses API Routes
  * GET - Get all courses a student is enrolled in

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Individual Enrollment API Routes
  * DELETE - Remove student from course (teacher only)

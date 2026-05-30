@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Lesson Resources API Routes
  * POST - Upload resource (PDF, DOC, etc.)

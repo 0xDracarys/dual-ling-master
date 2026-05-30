@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Admin Courses API Route
  * GET - Get all courses (admin view)

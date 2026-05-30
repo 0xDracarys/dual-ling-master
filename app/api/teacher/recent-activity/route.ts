@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Teacher Recent Activity API Route
  * GET - Get recent enrollments and activity for teacher's courses

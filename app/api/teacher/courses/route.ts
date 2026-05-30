@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Teacher Courses API Routes
  * POST - Create new course with lessons

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Teacher AI Chatbot API Route
  * POST /api/ai/teacher-bot - Main chatbot endpoint

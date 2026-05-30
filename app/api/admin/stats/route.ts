@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Admin Statistics API Route
  * GET - Get platform statistics (users, courses, enrollments)

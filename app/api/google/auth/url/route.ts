@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Google OAuth Authorization URL API Route
  * 

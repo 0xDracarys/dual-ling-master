@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Course Enrollment API Routes
  * POST - Enroll in a course

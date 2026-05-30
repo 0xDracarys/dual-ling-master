@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Course Progress API Routes
  * GET - Get user progress for courses/lessons

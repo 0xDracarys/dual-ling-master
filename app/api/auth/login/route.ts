@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { type NextRequest } from "next/server";
 import { AuthService } from "@/lib/services/auth/auth.service";
 import { traceLogger } from "@/lib/tracing/trace-logger";

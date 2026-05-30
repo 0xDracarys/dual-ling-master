@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Test Account Creation API Route
  * POST - Create test accounts for development

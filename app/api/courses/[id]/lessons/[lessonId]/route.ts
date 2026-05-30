@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Individual Lesson API Routes
  * GET - Get single lesson by ID

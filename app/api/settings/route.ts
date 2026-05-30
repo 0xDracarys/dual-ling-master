@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * User Settings API Routes
  * GET - Get user settings

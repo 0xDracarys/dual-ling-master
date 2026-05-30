@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Quiz Submission API Route
  * POST - Submit quiz answers and get results

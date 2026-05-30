@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Individual Course API Routes
  * GET - Get single course by ID

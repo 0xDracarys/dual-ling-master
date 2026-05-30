@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Course Publish/Unpublish API Route
  * POST - Toggle course published status

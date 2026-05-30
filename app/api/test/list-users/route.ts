@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Test Users List API Route
  * GET - List all users for testing

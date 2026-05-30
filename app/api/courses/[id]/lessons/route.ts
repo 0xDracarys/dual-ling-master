@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Course Lessons API Routes
  * GET - Get all lessons for a course

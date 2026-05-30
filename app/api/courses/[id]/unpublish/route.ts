@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Course Unpublish API Route
  * POST - Unpublish course (hide from students)

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Migration endpoint to fix user profiles
  * GET /api/admin/fix-profile?userId=<uid>

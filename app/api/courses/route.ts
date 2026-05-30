@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Courses API Routes
  * GET  /api/courses - Get all published courses

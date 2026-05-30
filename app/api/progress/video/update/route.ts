@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Video Progress Update API
  * POST /api/progress/video/update - Update video watch position

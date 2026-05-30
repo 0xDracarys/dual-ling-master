@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Admin Users API Route
  * GET - Get all users (admin view)

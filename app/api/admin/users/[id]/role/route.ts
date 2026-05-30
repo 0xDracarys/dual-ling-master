@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Admin User Role Management API Route
  * PUT - Update user role

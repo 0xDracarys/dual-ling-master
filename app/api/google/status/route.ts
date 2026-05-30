@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 /**
  * Google Connection Status API Route
  * 
