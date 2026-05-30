@@ -1,4 +1,4 @@
-"use client"
+export const dynamic = 'force-dynamic';
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -36,13 +36,11 @@ export default function NotFound() {
                 Go Home
               </Link>
             </Button>
-            <Button 
-              variant="outline" 
-              className="w-full sm:w-auto btn-outline-primary"
-              onClick={() => window.history.back()}
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Go Back
+            <Button asChild variant="outline" className="w-full sm:w-auto btn-outline-primary">
+              <Link href="/">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Go Back
+              </Link>
             </Button>
           </div>
           
