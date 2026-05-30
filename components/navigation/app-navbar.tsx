@@ -108,11 +108,12 @@ export function AppNavbar() {
       ];
     }
 
-    // Admin menu (if needed in the future)
+    // Admin menu
     if (user.role === "admin") {
       return [
         { title: "Home", url: "/" },
         { title: "Dashboard", url: dashboardUrl },
+        { title: "Analytics", url: "/admin/analytics" },
         { title: "Users", url: "/admin/users" },
         { title: "Courses", url: "/admin/courses" },
         { title: "Settings", url: "/admin/settings" },
