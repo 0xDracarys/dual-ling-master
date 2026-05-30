@@ -5,7 +5,6 @@ import { traceLogger } from "@/lib/tracing/trace-logger";
 import { z } from "zod";
 
 // Force dynamic rendering - prevents build-time prerendering with Firebase Admin
-export const dynamic = 'force-dynamic';
 
 // Validation schema
 const loginSchema = z.object({

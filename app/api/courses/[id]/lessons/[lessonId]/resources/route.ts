@@ -16,7 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 import type { LessonResource } from '@/lib/types/course.types';
 
 // Force dynamic rendering
-export const dynamic = 'force-dynamic';
 
 /**
  * POST /api/courses/[id]/lessons/[lessonId]/resources

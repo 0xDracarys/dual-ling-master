@@ -13,7 +13,6 @@ import { verifyIdToken } from '@/lib/firebase/admin';
 import { z } from 'zod';
 
 // Force dynamic rendering - prevents build-time prerendering with Firebase Admin
-export const dynamic = 'force-dynamic';
 
 const courseService = new CourseService();
 

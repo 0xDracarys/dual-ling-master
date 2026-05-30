@@ -9,7 +9,6 @@ import { EnrollmentService } from '@/lib/services/enrollment/enrollment.service'
 import { traceLogger } from '@/lib/tracing/trace-logger';
 import { verifyIdToken } from '@/lib/firebase/admin';
 
-export const dynamic = 'force-dynamic';
 
 const enrollmentService = new EnrollmentService();
 

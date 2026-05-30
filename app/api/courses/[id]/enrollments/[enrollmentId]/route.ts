@@ -10,7 +10,6 @@ import { CourseRepository } from '@/lib/services/course/course.repository';
 import { traceLogger } from '@/lib/tracing/trace-logger';
 import { verifyIdToken } from '@/lib/firebase/admin';
 
-export const dynamic = 'force-dynamic';
 
 const enrollmentRepo = new EnrollmentRepository();
 const courseRepo = new CourseRepository();

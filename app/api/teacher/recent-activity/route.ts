@@ -11,7 +11,6 @@ import { traceLogger } from '@/lib/tracing/trace-logger';
 import { verifyIdToken } from '@/lib/firebase/admin';
 
 // Force dynamic rendering - prevents build-time prerendering with Firebase Admin
-export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   const spanId = traceLogger.startSpan('API', 'GET /api/teacher/recent-activity');

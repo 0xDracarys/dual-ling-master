@@ -12,7 +12,6 @@ import { traceLogger } from '@/lib/tracing/trace-logger';
 import { verifyIdToken } from '@/lib/firebase/admin';
 
 // Force dynamic rendering
-export const dynamic = 'force-dynamic';
 
 const courseService = new CourseService();
 

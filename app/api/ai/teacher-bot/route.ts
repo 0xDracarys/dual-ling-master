@@ -22,7 +22,6 @@ import { withExponentialBackoff } from '@/lib/utils/retry';
 import { summarizeFunctionResults, type FunctionResultSummary } from '@/lib/utils/function-results';
 
 // Force dynamic rendering
-export const dynamic = 'force-dynamic';
 
 // Initialize Firebase AI with Google AI backend (GDPR-compliant, 80% cost reduction)
 // GoogleAIBackend uses the Firebase API key from firebaseConfig
