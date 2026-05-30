@@ -1,0 +1,546 @@
+
+Build details
+ Failed: ad6c73a6-4274-482b-b071-8dcea13a4015
+Started on Nov 9, 2025, 6:41:58 AM
+
+Steps
+Duration
+Build Summary
+4 Steps
+00:04:01
+0: ubuntu
+bash -c chmod -R ugo+rw /output_bundle /workspace /env /yaml /config
+00:00:02
+1: preparer
+/bin/preparer --project_id paji-duolingo --apphostingyaml_output_filepath /yaml/apphostingyaml_processed --dot_env_output_filepath /env/vars_with_secret_values --backend_root_directory --buildpack_config_output_filepath /config --firebase_config {"databaseURL":"","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"} --firebase_webapp_config {"apiKey":"AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY","appId":"1:189726325845:web:5c9a34a35e2467f9b068dc","authDomain":"paji-duolingo.firebaseapp.com","databaseURL":"","messagingSenderId":"189726325845","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"} --environment_name prod --region europe-west4
+00:00:07
+2: pack
+/bin/sh -c trap "[ -f /workspace/.google-builder-output/output ] && mv /workspace/.google-builder-output/output $BUILDER_OUTPUT" EXIT ; /usr/local/bin/pack build europe-west4-docker.pkg.dev/paji-duolingo/firebaseapphosting-images/ltus-prod:build-2025-11-09-005 --network cloudbuild --builder europe-west4-docker.pkg.dev/serverless-runtimes/google-22-full/builder/nodejs:nodejs_20251104_RC00 --run-image europe-west4-docker.pkg.dev/serverless-runtimes/google-22/run/base:public-image-next --path "$(cat /config/build-directory.txt)" --volume output_bundle:/output_bundle:rw --volume /workspace:/builder-output/:rw --trust-builder --env-file /env/vars_with_secret_values --env BUILDER_OUTPUT=/builder-output/.google-builder-output/ --env X_GOOGLE_TARGET_PLATFORM=fah --env APPHOSTINGYAML_FILEPATH=/yaml/apphostingyaml_processed --env FIREBASE_OUTPUT_BUNDLE_DIR=/output_bundle --env FIREBASE_APP_HOSTING=1 --env GOOGLE_BUILDABLE="$(cat /config/relative-project-directory.txt)" --env ENVIRONMENT_NAME=prod --env GOOGLE_NO_CACHE=1
+00:03:41
+3: publisher
+/bin/publisher --apphostingyaml_filepath /yaml/apphostingyaml_processed --output_bundle_dir /output_bundle
+—
+Build Summary
+Build log
+Execution details
+Build artifacts
+Log viewer toolbar
+starting build "ad6c73a6-4274-482b-b071-8dcea13a4015"
+FETCHSOURCE
+From https://github.com/mantassteckis/dual-ling
+ * branch            bf2c5448c4a96675f3e5062c26638ad0ffba2f5f -> FETCH_HEAD
+Updating files:  65% (5369/8165)Updating files:  66% (5389/8165)Updating files:  67% (5471/8165)Updating files:  68% (5553/8165)Updating files:  69% (5634/8165)Updating files:  70% (5716/8165)Updating files:  71% (5798/8165)Updating files:  72% (5879/8165)Updating files:  73% (5961/8165)Updating files:  74% (6043/8165)Updating files:  75% (6124/8165)Updating files:  76% (6206/8165)Updating files:  77% (6288/8165)Updating files:  78% (6369/8165)Updating files:  79% (6451/8165)Updating files:  80% (6532/8165)Updating files:  81% (6614/8165)Updating files:  82% (6696/8165)Updating files:  83% (6777/8165)Updating files:  84% (6859/8165)Updating files:  85% (6941/8165)Updating files:  86% (7022/8165)Updating files:  87% (7104/8165)Updating files:  88% (7186/8165)Updating files:  89% (7267/8165)Updating files:  90% (7349/8165)Updating files:  91% (7431/8165)Updating files:  92% (7512/8165)Updating files:  93% (7594/8165)Updating files:  94% (7676/8165)Updating files:  95% (7757/8165)Updating files:  96% (7839/8165)Updating files:  97% (7921/8165)Updating files:  98% (8002/8165)Updating files:  99% (8084/8165)Updating files: 100% (8165/8165)Updating files: 100% (8165/8165), done.
+HEAD is now at bf2c544 docs: Update deployment errors log with Build #4 failure analysis
+GitCommit:
+bf2c5448c4a96675f3e5062c26638ad0ffba2f5f
+BUILD
+Starting Step #0 - "ubuntu"
+Pulling image: ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+Digest: sha256:66460d557b25769b102175144d538d88219c077c678a49af4afca6fbfc1b5252
+Status: Downloaded newer image for ubuntu:latest
+docker.io/library/ubuntu:latest
+Finished Step #0 - "ubuntu"
+Starting Step #1 - "preparer"
+Pulling image: europe-west4-docker.pkg.dev/serverless-runtimes/utilities/preparer:base_20251013_18_04_RC00
+base_20251013_18_04_RC00: Pulling from serverless-runtimes/utilities/preparer
+11a863a28a7b: Pulling fs layer
+11a863a28a7b: Download complete
+11a863a28a7b: Pull complete
+Digest: sha256:1dbd0bb3cc198c3927fe1b6d613e832954309bbc24bf9615a823f74f5ad4ff88
+Status: Downloaded newer image for europe-west4-docker.pkg.dev/serverless-runtimes/utilities/preparer:base_20251013_18_04_RC00
+europe-west4-docker.pkg.dev/serverless-runtimes/utilities/preparer:base_20251013_18_04_RC00
+2025/11/09 04:42:17 FIREBASE_CONFIG has no availability specified, applying the default of 'BUILD' and 'RUNTIME'
+2025/11/09 04:42:17 Final app hosting schema:
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80
+  maxInstances: 10
+  minInstances: 0
+  vpcAccess: null
+  cpuAlwaysAllocated: null
+env:
+- variable: GOOGLE_CLOUD_PROJECT
+  value: paji-duolingo
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_API_KEY
+  value: AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+  value: paji-duolingo.firebaseapp.com
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  value: paji-duolingo
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  value: paji-duolingo.firebasestorage.app
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+  value: "189726325845"
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_APP_ID
+  value: 1:189726325845:web:b6d7ce6ab172c7a7b068dc
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+  value: G-ZSGE0HXSYV
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: FIREBASE_CONFIG
+  value: '{"databaseURL":"","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+  - RUNTIME
+  source: Firebase System
+- variable: FIREBASE_WEBAPP_CONFIG
+  value: '{"apiKey":"AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY","appId":"1:189726325845:web:5c9a34a35e2467f9b068dc","authDomain":"paji-duolingo.firebaseapp.com","databaseURL":"","messagingSenderId":"189726325845","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+  source: Firebase System
+2025/11/09 04:42:17 Final app hosting schema:
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80
+  maxInstances: 10
+  minInstances: 0
+  vpcAccess: null
+  cpuAlwaysAllocated: null
+env:
+- variable: GOOGLE_CLOUD_PROJECT
+  value: paji-duolingo
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_API_KEY
+  value: AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+  value: paji-duolingo.firebaseapp.com
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+  value: paji-duolingo
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  value: paji-duolingo.firebasestorage.app
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+  value: "189726325845"
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_APP_ID
+  value: 1:189726325845:web:b6d7ce6ab172c7a7b068dc
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+  value: G-ZSGE0HXSYV
+  availability:
+  - BUILD
+  - RUNTIME
+  source: apphosting.yaml
+- variable: FIREBASE_CONFIG
+  value: '{"databaseURL":"","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+  - RUNTIME
+  source: Firebase System
+- variable: FIREBASE_WEBAPP_CONFIG
+  value: '{"apiKey":"AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY","appId":"1:189726325845:web:5c9a34a35e2467f9b068dc","authDomain":"paji-duolingo.firebaseapp.com","databaseURL":"","messagingSenderId":"189726325845","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+  source: Firebase System
+Finished Step #1 - "preparer"
+Starting Step #2 - "pack"
+Pulling image: gcr.io/k8s-skaffold/pack
+Using default tag: latest
+latest: Pulling from k8s-skaffold/pack
+396c31837116: Pulling fs layer
+9776b10d5c8c: Pulling fs layer
+52cb9ac3197f: Pulling fs layer
+9776b10d5c8c: Verifying Checksum
+9776b10d5c8c: Download complete
+396c31837116: Verifying Checksum
+396c31837116: Download complete
+52cb9ac3197f: Verifying Checksum
+52cb9ac3197f: Download complete
+396c31837116: Pull complete
+9776b10d5c8c: Pull complete
+52cb9ac3197f: Pull complete
+Digest: sha256:221c0c0d9a90f46f108bb888a1da9e99c82ff631e8b1c63b0223ea951752bd53
+Status: Downloaded newer image for gcr.io/k8s-skaffold/pack:latest
+gcr.io/k8s-skaffold/pack:latest
+nodejs_20251104_RC00: Pulling from serverless-runtimes/google-22-full/builder/nodejs
+828c1365039a: Already exists
+1e791d71ac71: Already exists
+17cb3c20ed98: Already exists
+74ebbb2aa71f: Pulling fs layer
+e3737cf3439f: Pulling fs layer
+55cad0780b8e: Pulling fs layer
+c2999db210de: Pulling fs layer
+077138459736: Pulling fs layer
+abac7797e703: Pulling fs layer
+fe0a88c014e5: Pulling fs layer
+1a82443b3661: Pulling fs layer
+8d5311fdb4ef: Pulling fs layer
+09d88f4e3b55: Pulling fs layer
+a136af9f6976: Pulling fs layer
+17f148e8e19c: Pulling fs layer
+db60bd3c00fd: Pulling fs layer
+8696b0a9cc57: Pulling fs layer
+c160999a5684: Pulling fs layer
+37fe714395ca: Pulling fs layer
+ae95114355a1: Pulling fs layer
+8001c03493a8: Pulling fs layer
+1f02e356c100: Pulling fs layer
+4490c29092de: Pulling fs layer
+93e1801e0569: Pulling fs layer
+66b976a1689d: Pulling fs layer
+529809bd38af: Pulling fs layer
+f856b0583f28: Pulling fs layer
+26be9f471823: Pulling fs layer
+34ce8ba30961: Pulling fs layer
+e6178d2c0976: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+fe0a88c014e5: Waiting
+1a82443b3661: Waiting
+8d5311fdb4ef: Waiting
+09d88f4e3b55: Waiting
+a136af9f6976: Waiting
+17f148e8e19c: Waiting
+db60bd3c00fd: Waiting
+8696b0a9cc57: Waiting
+c160999a5684: Waiting
+37fe714395ca: Waiting
+ae95114355a1: Waiting
+8001c03493a8: Waiting
+1f02e356c100: Waiting
+4490c29092de: Waiting
+93e1801e0569: Waiting
+66b976a1689d: Waiting
+529809bd38af: Waiting
+f856b0583f28: Waiting
+34ce8ba30961: Waiting
+e6178d2c0976: Waiting
+4f4fb700ef54: Waiting
+26be9f471823: Waiting
+abac7797e703: Waiting
+e3737cf3439f: Verifying Checksum
+e3737cf3439f: Download complete
+74ebbb2aa71f: Verifying Checksum
+74ebbb2aa71f: Download complete
+55cad0780b8e: Verifying Checksum
+55cad0780b8e: Download complete
+c2999db210de: Verifying Checksum
+c2999db210de: Download complete
+077138459736: Verifying Checksum
+077138459736: Download complete
+fe0a88c014e5: Verifying Checksum
+fe0a88c014e5: Download complete
+abac7797e703: Verifying Checksum
+abac7797e703: Download complete
+09d88f4e3b55: Verifying Checksum
+09d88f4e3b55: Download complete
+a136af9f6976: Verifying Checksum
+a136af9f6976: Download complete
+74ebbb2aa71f: Pull complete
+8d5311fdb4ef: Verifying Checksum
+8d5311fdb4ef: Download complete
+1a82443b3661: Verifying Checksum
+1a82443b3661: Download complete
+17f148e8e19c: Verifying Checksum
+17f148e8e19c: Download complete
+e3737cf3439f: Pull complete
+db60bd3c00fd: Download complete
+8696b0a9cc57: Verifying Checksum
+8696b0a9cc57: Download complete
+ae95114355a1: Verifying Checksum
+ae95114355a1: Download complete
+c160999a5684: Verifying Checksum
+c160999a5684: Download complete
+8001c03493a8: Verifying Checksum
+8001c03493a8: Download complete
+37fe714395ca: Verifying Checksum
+37fe714395ca: Download complete
+1f02e356c100: Verifying Checksum
+1f02e356c100: Download complete
+529809bd38af: Verifying Checksum
+529809bd38af: Download complete
+4490c29092de: Download complete
+93e1801e0569: Verifying Checksum
+93e1801e0569: Download complete
+66b976a1689d: Verifying Checksum
+66b976a1689d: Download complete
+55cad0780b8e: Pull complete
+f856b0583f28: Verifying Checksum
+f856b0583f28: Download complete
+26be9f471823: Verifying Checksum
+26be9f471823: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+e6178d2c0976: Verifying Checksum
+e6178d2c0976: Download complete
+c2999db210de: Pull complete
+34ce8ba30961: Verifying Checksum
+34ce8ba30961: Download complete
+077138459736: Pull complete
+abac7797e703: Pull complete
+fe0a88c014e5: Pull complete
+1a82443b3661: Pull complete
+8d5311fdb4ef: Pull complete
+09d88f4e3b55: Pull complete
+a136af9f6976: Pull complete
+17f148e8e19c: Pull complete
+db60bd3c00fd: Pull complete
+8696b0a9cc57: Pull complete
+c160999a5684: Pull complete
+37fe714395ca: Pull complete
+ae95114355a1: Pull complete
+8001c03493a8: Pull complete
+a925cbbd0677: Verifying Checksum
+a925cbbd0677: Download complete
+e0faf6107641: Pull complete
+a925cbbd0677: Pull complete
+Digest: sha256:89998197c9dad5643cdf6f161ac0aa6bd423c754aaf56224be4fbad372891b47
+Status: Downloaded newer image for europe-west4-docker.pkg.dev/serverless-runtimes/google-22/run/base:public-image-next
+===> ANALYZING
+Image with name "europe-west4-docker.pkg.dev/paji-duolingo/firebaseapphosting-images/ltus-prod:build-2025-11-09-005" not found
+===> DETECTING
+target distro name/version labels not found, reading /etc/os-release file
+4 of 6 buildpacks participating
+google.nodejs.runtime        1.0.0
+google.nodejs.firebasenextjs 0.0.1
+google.nodejs.pnpm           0.1.0
+google.nodejs.firebasebundle 0.0.1
+===> RESTORING
+===> BUILDING
+target distro name/version labels not found, reading /etc/os-release file
+=== Node.js - Runtime (google.nodejs.runtime@1.0.0) ===
+2025/11/09 04:42:36 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/version.json
+Adding image label google.runtime-version: nodejs22
+2025/11/09 04:42:36 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/version.json
+Installing Node.js v22.21.0.
+2025/11/09 04:42:36 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/nodejs-22.21.0.tar.gz
+Installing the heapsize.sh exec.d script.
+=== Node.js - Firebasenextjs (google.nodejs.firebasenextjs@0.0.1) ===
+WARNING: *** You are using a custom build command (your build command is NOT 'next build'), we will accept it as is but will error if output structure is not as expected ***
+***** CACHE MISS: "npm_modules"
+Installing nextjs adaptor 14.0.18
+=== Node.js - Pnpm (google.nodejs.pnpm@0.1.0) ===
+2025/11/09 04:42:43 [DEBUG] GET https://registry.npmjs.org/pnpm
+***** CACHE MISS: "pnpm_engine"
+Installing pnpm v10.20.0
+2025/11/09 04:42:43 [DEBUG] GET https://github.com/pnpm/pnpm/releases/download/v10.20.0/pnpm-linux-x64
+Packages: +912
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 912, reused 0, downloaded 2, added 0
+Progress: resolved 912, reused 0, downloaded 57, added 57
+Progress: resolved 912, reused 0, downloaded 72, added 66
+Progress: resolved 912, reused 0, downloaded 73, added 66
+Progress: resolved 912, reused 0, downloaded 137, added 86
+Progress: resolved 912, reused 0, downloaded 142, added 90
+Progress: resolved 912, reused 0, downloaded 151, added 90
+Progress: resolved 912, reused 0, downloaded 161, added 94
+Progress: resolved 912, reused 0, downloaded 214, added 126
+Progress: resolved 912, reused 0, downloaded 269, added 150
+Progress: resolved 912, reused 0, downloaded 386, added 192
+Progress: resolved 912, reused 0, downloaded 393, added 192
+Progress: resolved 912, reused 0, downloaded 412, added 200
+Progress: resolved 912, reused 0, downloaded 538, added 246
+Progress: resolved 912, reused 0, downloaded 623, added 280
+Progress: resolved 912, reused 0, downloaded 802, added 376
+Progress: resolved 912, reused 0, downloaded 870, added 401
+Progress: resolved 912, reused 0, downloaded 901, added 412
+Progress: resolved 912, reused 0, downloaded 912, added 598
+Progress: resolved 912, reused 0, downloaded 912, added 912, done
+dependencies:
++ @hookform/resolvers 3.10.0
++ @radix-ui/react-accordion 1.2.2
++ @radix-ui/react-alert-dialog 1.1.4
++ @radix-ui/react-aspect-ratio 1.1.1
++ @radix-ui/react-avatar 1.1.2
++ @radix-ui/react-checkbox 1.1.3
++ @radix-ui/react-collapsible 1.1.2
++ @radix-ui/react-context-menu 2.2.4
++ @radix-ui/react-dialog 1.1.4
++ @radix-ui/react-dropdown-menu 2.1.4
++ @radix-ui/react-hover-card 1.1.4
++ @radix-ui/react-label 2.1.1
++ @radix-ui/react-menubar 1.1.4
++ @radix-ui/react-navigation-menu 1.2.3
++ @radix-ui/react-popover 1.1.4
++ @radix-ui/react-progress 1.1.1
++ @radix-ui/react-radio-group 1.2.2
++ @radix-ui/react-scroll-area 1.2.2
++ @radix-ui/react-select 2.1.4
++ @radix-ui/react-separator 1.1.1
++ @radix-ui/react-slider 1.2.2
++ @radix-ui/react-slot 1.1.1
++ @radix-ui/react-switch 1.1.2
++ @radix-ui/react-tabs 1.1.2
++ @radix-ui/react-toast 1.2.4
++ @radix-ui/react-toggle 1.1.1
++ @radix-ui/react-toggle-group 1.1.1
++ @radix-ui/react-tooltip 1.1.6
++ @vercel/analytics 1.3.1
++ class-variance-authority 0.7.1
++ clsx 2.1.1
++ cmdk 1.0.4
++ date-fns 4.1.0
++ embla-carousel-react 8.5.1
++ firebase 12.5.0
++ firebase-admin 12.7.0
++ gcp-metadata 8.1.2
++ geist 1.5.1
++ googleapis 164.1.0
++ input-otp 1.4.1
++ jsonwebtoken 9.0.2
++ lucide-react 0.454.0
++ next 15.2.4
++ next-themes 0.4.6
++ react 19.2.0
++ react-day-picker 9.8.0
++ react-dom 19.2.0
++ react-hook-form 7.66.0
++ react-resizable-panels 2.1.9
++ recharts 2.15.4
++ sonner 1.7.4
++ tailwind-merge 2.6.0
++ tailwindcss-animate 1.0.7
++ uuid 13.0.0
++ vaul 0.9.9
++ zod 3.25.67
+devDependencies:
++ @types/jest 29.5.14
++ @types/jsonwebtoken 9.0.10
++ @types/node 22.19.0
++ @types/react 19.2.2
++ @types/react-dom 19.2.2
++ @types/uuid 11.0.0
++ autoprefixer 10.4.21
++ eslint 9.39.1
++ eslint-config-next 15.5.5
++ ignore-loader 0.1.2
++ jest 29.7.0
++ jest-environment-node 29.7.0
++ postcss 8.5.6
++ tailwindcss 3.4.18
++ ts-jest 29.4.5
++ tw-animate-css 1.3.3
++ typescript 5.9.3
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: @firebase/util, protobufjs, sharp, unrs-resolver.   │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Done in 22.3s using pnpm v10.20.0
+Done "pnpm install (CI=true NODE_ENV=development)" (22.499755276s)
+--------------------------------------------------------------------------------
+Running "npm exec --prefix /layers/google.nodejs.firebasenextjs/npm_modules apphosting-adapter-nextjs-build"
+Overriding Next Config to add configs optmized for Firebase App Hosting
+Successfully created next.config.js with Firebase App Hosting overrides
+> my-v0-project@0.1.0 build
+> NODE_OPTIONS='--max-old-space-size=4096' next build
+   ▲ Next.js 15.2.4
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+Failed to compile.
+./lib/api/apiUtils.ts:2:67
+Type error: Cannot find module '../middleware/security' or its corresponding type declarations.
+  1 | import { NextRequest, NextResponse } from "next/server"
+> 2 | import { handleApiError, applySecurityHeaders, corsHeaders } from "../middleware/security"
+    |                                                                   ^
+  3 |
+  4 | export interface ApiResponse<T = any> {
+  5 |   success: boolean
+Next.js build worker exited with code: 1 and signal: null
+Restoring original next config in project root
+/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61
+                reject(new Error(`Build process exited with error code ${code}.`));
+                       ^
+Error: Build process exited with error code 1.
+    at ChildProcess.<anonymous> (/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61:24)
+    at ChildProcess.emit (node:events:519:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+Node.js v22.21.0
+Done "npm exec --prefix /layers/google.nodejs.firebasenextjs/npm_m..." (2m49.539898407s)
+--------------------------------------------------------------------------------
+failed to build: (error ID: 5551e7d0):
+{"reason":"Failed Framework Build","code":"fah/failed-framework-build","userFacingMessage":"Your application failed to run the framework build command 'npm exec --prefix /layers/google.nodejs.firebasenextjs/npm_modules apphosting-adapter-nextjs-build' successfully. Please check the raw log to address the error and confirm that your application builds locally before redeploying.","rawLog":"(error ID: d0a693a9):
+Overriding Next Config to add configs optmized for Firebase App Hosting
+Successfully created next.config.js with Firebase App Hosting overrides
+> my-v0-project@0.1.0 build
+> NODE_OPTIONS='--max-old-space-size=4096' next build
+   ▲ Next.js 15.2.4
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+Failed to compile.
+./lib/api/apiUtils.ts:2:67
+Type error: Cannot find module '../middleware/security' or its corresponding type declarations.
+  1 | import { NextRequest, NextResponse } from "next/server"
+> 2 | import { handleApiError, applySecurityHeaders, corsHeaders } from "../middleware/security"
+    |                                                                   ^
+  3 |
+  4 | export interface ApiResponse<T = any> {
+  5 |   success: boolean
+Next.js build worker exited with code: 1 and signal: null
+Restoring original next config in project root
+/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61
+                reject(new Error(`Build process exited with error code ${code}.`));
+                       ^
+Error: Build process exited with error code 1.
+    at ChildProcess.<anonymous> (/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61:24)
+    at ChildProcess.emit (node:events:519:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+Node.js v22.21.0"}
+ERROR: failed to build: exit status 1
+ERROR: failed to build: executing lifecycle: failed with status code: 51
+Finished Step #2 - "pack"
+ERROR
+ERROR: build step 2 "gcr.io/k8s-skaffold/pack" failed: step exited with non-zero status: 1

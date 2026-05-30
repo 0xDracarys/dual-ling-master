@@ -1,0 +1,694 @@
+starting build "dfc0c80c-1459-4f47-9be7-6df7206277a3"
+FETCHSOURCE
+Fetching storage object: gs://firebaseapphosting-sources-189726325845-europe-west4/ltus-acadamy--72459-AfC3X7x5nIPi-.zip#1760680649703500
+Copying gs://firebaseapphosting-sources-189726325845-europe-west4/ltus-acadamy--72459-AfC3X7x5nIPi-.zip#1760680649703500...
+/ [0 files][    0.0 B/  5.1 MiB]                                                / [1 files][  5.1 MiB/  5.1 MiB]                                                
+Operation completed over 1 objects/5.1 MiB.                                      
+Archive:  /tmp/source-archive.zip
+  inflating: /workspace/.DS_Store    
+  inflating: /workspace/.eslintrc.json  
+  inflating: /workspace/.firebaserc  
+  inflating: /workspace/.github/chatmodes/J-LTUS.chatmode.md  
+  inflating: /workspace/.gitignore   
+  inflating: /workspace/README.md    
+  inflating: /workspace/__tests__/api/courses.test.ts  
+  inflating: /workspace/__tests__/api/enrollment.test.ts  
+  inflating: /workspace/__tests__/lib/auth.test.ts  
+  inflating: /workspace/__tests__/lib/progress.test.ts  
+  inflating: /workspace/__tests__/lib/validation.test.ts  
+  inflating: /workspace/app/about/page.tsx  
+  inflating: /workspace/app/admin/courses/loading.tsx  
+  inflating: /workspace/app/admin/courses/page.tsx  
+  inflating: /workspace/app/admin/dashboard/page.tsx  
+  inflating: /workspace/app/admin/users/loading.tsx  
+  inflating: /workspace/app/admin/users/page.tsx  
+  inflating: /workspace/app/api/admin/courses/route.ts  
+  inflating: /workspace/app/api/admin/stats/route.ts  
+  inflating: /workspace/app/api/admin/users/[id]/role/route.ts  
+  inflating: /workspace/app/api/admin/users/[id]/route.ts  
+  inflating: /workspace/app/api/admin/users/route.ts  
+  inflating: /workspace/app/api/auth/login/route.ts  
+  inflating: /workspace/app/api/auth/register/route.ts  
+  inflating: /workspace/app/api/courses/[id]/enroll/route.ts  
+  inflating: /workspace/app/api/courses/[id]/lessons/[lessonId]/route.ts  
+  inflating: /workspace/app/api/courses/[id]/lessons/route.ts  
+  inflating: /workspace/app/api/courses/[id]/publish/route.ts  
+  inflating: /workspace/app/api/courses/[id]/quiz/submit/route.ts  
+  inflating: /workspace/app/api/courses/[id]/route.ts  
+  inflating: /workspace/app/api/courses/route.ts  
+  inflating: /workspace/app/api/profile/route.ts  
+  inflating: /workspace/app/api/progress/route.ts  
+  inflating: /workspace/app/api/settings/route.ts  
+  inflating: /workspace/app/api/students/enrolled-courses/route.ts  
+  inflating: /workspace/app/api/students/progress/route.ts  
+  inflating: /workspace/app/api/teacher/courses/route.ts  
+  inflating: /workspace/app/api/teacher/recent-activity/route.ts  
+  inflating: /workspace/app/api/test/list-users/route.ts  
+  inflating: /workspace/app/api/test/create-accounts/route.ts  
+  inflating: /workspace/app/auth/login/page.tsx  
+  inflating: /workspace/app/contact/page.tsx  
+  inflating: /workspace/app/auth/register/page.tsx  
+  inflating: /workspace/app/course/[id]/lesson/[lessonId]/page.tsx  
+  inflating: /workspace/app/course/[id]/page.tsx  
+  inflating: /workspace/app/courses/page.tsx  
+  inflating: /workspace/app/dashboard/page.tsx  
+  inflating: /workspace/app/globals.css  
+  inflating: /workspace/app/help/page.tsx  
+  inflating: /workspace/app/layout.tsx  
+  inflating: /workspace/app/not-found.tsx  
+  inflating: /workspace/app/page.tsx  
+  inflating: /workspace/app/pricing/page.tsx  
+  inflating: /workspace/app/privacy/page.tsx  
+  inflating: /workspace/app/profile/page.tsx  
+  inflating: /workspace/app/settings/page.tsx  
+  inflating: /workspace/app/teacher/course/create/page.tsx  
+  inflating: /workspace/app/teacher/course/edit/[id]/page.tsx  
+  inflating: /workspace/app/teacher/dashboard/page.tsx  
+  inflating: /workspace/app/terms/page.tsx  
+  inflating: /workspace/app/test/page.tsx  
+  inflating: /workspace/apphosting.yaml  
+  inflating: /workspace/components/auth/protected-route.tsx  
+  inflating: /workspace/components/course-enrollment.tsx  
+  inflating: /workspace/components/debug/DebugPanel.tsx  
+  inflating: /workspace/components/lessons/lesson-viewer.tsx  
+  inflating: /workspace/components/lessons/quiz-component.tsx  
+  inflating: /workspace/components/navigation/navbar.tsx  
+  inflating: /workspace/components/teacher/lesson-modal.tsx  
+  inflating: /workspace/components/theme-provider.tsx  
+  inflating: /workspace/components/ui/accordion.tsx  
+  inflating: /workspace/components/ui/alert-dialog.tsx  
+  inflating: /workspace/components/ui/alert.tsx  
+  inflating: /workspace/components/ui/aspect-ratio.tsx  
+  inflating: /workspace/components/ui/avatar.tsx  
+  inflating: /workspace/components/ui/badge.tsx  
+  inflating: /workspace/components/ui/breadcrumb.tsx  
+  inflating: /workspace/components/ui/button.tsx  
+  inflating: /workspace/components/ui/calendar.tsx  
+  inflating: /workspace/components/ui/card.tsx  
+  inflating: /workspace/components/ui/carousel.tsx  
+  inflating: /workspace/components/ui/chart.tsx  
+  inflating: /workspace/components/ui/checkbox.tsx  
+  inflating: /workspace/components/ui/command.tsx  
+  inflating: /workspace/components/ui/collapsible.tsx  
+  inflating: /workspace/components/ui/context-menu.tsx  
+  inflating: /workspace/components/ui/dialog.tsx  
+  inflating: /workspace/components/ui/drawer.tsx  
+  inflating: /workspace/components/ui/dropdown-menu.tsx  
+  inflating: /workspace/components/ui/form.tsx  
+  inflating: /workspace/components/ui/hover-card.tsx  
+  inflating: /workspace/components/ui/input-otp.tsx  
+  inflating: /workspace/components/ui/input.tsx  
+  inflating: /workspace/components/ui/label.tsx  
+  inflating: /workspace/components/ui/menubar.tsx  
+  inflating: /workspace/components/ui/navigation-menu.tsx  
+  inflating: /workspace/components/ui/pagination.tsx  
+  inflating: /workspace/components/ui/popover.tsx  
+  inflating: /workspace/components/ui/progress.tsx  
+  inflating: /workspace/components/ui/radio-group.tsx  
+  inflating: /workspace/components/ui/resizable.tsx  
+  inflating: /workspace/components/ui/scroll-area.tsx  
+  inflating: /workspace/components/ui/select.tsx  
+  inflating: /workspace/components/ui/sheet.tsx  
+  inflating: /workspace/components/ui/sidebar.tsx  
+  inflating: /workspace/components/ui/separator.tsx  
+  inflating: /workspace/components/ui/skeleton.tsx  
+  inflating: /workspace/components/ui/slider.tsx  
+  inflating: /workspace/components/ui/sonner.tsx  
+  inflating: /workspace/components/ui/switch.tsx  
+  inflating: /workspace/components/ui/table.tsx  
+  inflating: /workspace/components/ui/tabs.tsx  
+  inflating: /workspace/components/ui/textarea.tsx  
+  inflating: /workspace/components/ui/toast.tsx  
+  inflating: /workspace/components/ui/toaster.tsx  
+  inflating: /workspace/components/ui/toggle-group.tsx  
+  inflating: /workspace/components/ui/toggle.tsx  
+  inflating: /workspace/components/ui/tooltip.tsx  
+  inflating: /workspace/components/ui/use-mobile.tsx  
+  inflating: /workspace/components/ui/use-toast.ts  
+  inflating: /workspace/components.json  
+  inflating: /workspace/docs/ACTION_PLAN.md  
+  inflating: /workspace/docs/API_VERIFICATION_REPORT.md  
+  inflating: /workspace/docs/AUTHENTICATION_FIX_SUMMARY.md  
+  inflating: /workspace/docs/AUTHENTICATION_ISSUE.md  
+  inflating: /workspace/docs/CSS_BEST_PRACTICES.md  
+  inflating: /workspace/docs/CURRENT_ARCHITECTURE.md  
+  inflating: /workspace/docs/DASHBOARD_THEME_ISSUE.md  
+  inflating: /workspace/docs/DEBUG_SYSTEM.md  
+  inflating: /workspace/docs/ERRORS_FIXED.md  
+  inflating: /workspace/docs/FIREBASE_AUTH_SYSTEM.md  
+  inflating: /workspace/docs/FIREBASE_MIGRATION_STRATEGY.md  
+  inflating: /workspace/docs/FIRESTORE_INDEX_SETUP.md  
+  inflating: /workspace/docs/FIRESTORE_SECURITY_RULES.md  
+  inflating: /workspace/docs/FRONTEND_COURSE_CREATE_FIX.md  
+  inflating: /workspace/docs/GCP_TRACE_COMPLIANCE_ANALYSIS.md  
+  inflating: /workspace/docs/GCP_SERVICES_ARCHITECTURE.md  
+  inflating: /workspace/docs/GCP_TRACE_PHASE1_COMPLETE.md  
+  inflating: /workspace/docs/GCP_TRACE_QUICK_ACTION_PLAN.md  
+  inflating: /workspace/docs/HYDRATION_FIX.md  
+  inflating: /workspace/docs/LESSON_MANAGEMENT_SYSTEM.md  
+  inflating: /workspace/docs/MAIN.md  
+  inflating: /workspace/docs/MONGODB_REMOVAL_AND_AUTH_FIX.md  
+  inflating: /workspace/docs/MONGODB_TO_FIRESTORE_MAPPING.md  
+  inflating: /workspace/docs/NEXT_SESSION_PROMPT.md  
+  inflating: /workspace/docs/PENDING_TASKS.md  
+  inflating: /workspace/docs/PHASE_2_SUMMARY.md  
+  inflating: /workspace/docs/PHASE_3_STATUS_AND_TESTING.md  
+  inflating: /workspace/docs/PHASE_3_IMPLEMENTATION_PLAN.md  
+  inflating: /workspace/docs/PROJECT_STATUS_OCT_17_2025.md  
+  inflating: /workspace/docs/PRD.md  
+  inflating: /workspace/docs/QUICK_START.md  
+  inflating: /workspace/docs/QUICK_FIX.md  
+  inflating: /workspace/docs/QUICK_SUMMARY.md  
+  inflating: /workspace/docs/README.md  
+  inflating: /workspace/docs/SERVERLESS_ARCHITECTURE.md  
+  inflating: /workspace/docs/SESSION_HANDOFF_OCT_9_2025.md  
+  inflating: /workspace/docs/START_HERE_NEXT_SESSION.md  
+  inflating: /workspace/docs/TRACE_ID_LOGGING_SYSTEM.md  
+  inflating: /workspace/docs/TRACE_IMPLEMENTATION_PROMPT.md  
+  inflating: /workspace/docs/TRACE_SYSTEM_SUMMARY.md  
+  inflating: /workspace/docs/WEEK_1_5_COMPLETION_REPORT.md  
+  inflating: /workspace/firebase installation.txt  
+  inflating: /workspace/firebase.json  
+  inflating: /workspace/firestore-debug.log  
+  inflating: /workspace/firestore.indexes.json  
+  inflating: /workspace/firestore.rules  
+  inflating: /workspace/hooks/use-auth.tsx  
+  inflating: /workspace/hooks/use-mobile.ts  
+  inflating: /workspace/hooks/use-toast.ts  
+  inflating: /workspace/jest.config.js  
+  inflating: /workspace/jest.setup.js  
+  inflating: /workspace/lib/api/apiUtils.ts  
+  inflating: /workspace/lib/auth/firebase-auth.ts  
+  inflating: /workspace/lib/auth.ts  
+  inflating: /workspace/lib/firebase/admin.ts  
+  inflating: /workspace/lib/firebase/client.ts  
+  inflating: /workspace/lib/middleware/auth.ts  
+  inflating: /workspace/lib/middleware/security.ts  
+  inflating: /workspace/lib/models/Course.ts  
+  inflating: /workspace/lib/firebase/config.ts  
+  inflating: /workspace/lib/models/Progress.ts  
+  inflating: /workspace/lib/models/User.ts  
+  inflating: /workspace/lib/mongodb.ts  
+  inflating: /workspace/lib/services/auth/auth.service.ts  
+  inflating: /workspace/lib/services/auth/user.repository.ts  
+  inflating: /workspace/lib/services/course/course.repository.ts  
+  inflating: /workspace/lib/services/course/lesson.repository.ts  
+  inflating: /workspace/lib/services/course/course.service.ts  
+  inflating: /workspace/lib/services/enrollment/enrollment.repository.ts  
+  inflating: /workspace/lib/services/enrollment/enrollment.service.ts  
+  inflating: /workspace/lib/services/progressService.ts  
+  inflating: /workspace/lib/tracing/trace-context.ts  
+  inflating: /workspace/lib/tracing/trace-storage.ts  
+  inflating: /workspace/lib/types/course.types.ts  
+  inflating: /workspace/lib/utils/debug-logger.ts  
+  inflating: /workspace/lib/tracing/trace-logger.ts  
+  inflating: /workspace/lib/utils.ts  
+  inflating: /workspace/lib/validation/schemas.ts  
+  inflating: /workspace/logs/Screenshot 2025-10-09 at 05.54.42.png  
+  inflating: /workspace/logs/.DS_Store  
+  inflating: /workspace/logs/Screenshot 2025-10-09 at 14.54.47.png  
+  inflating: /workspace/logs/buildlog.txt  
+  inflating: /workspace/logs/Screenshot 2025-10-09 at 16.59.56.png  
+  inflating: /workspace/logs/image.png  
+  inflating: /workspace/logs/ltus-acadamy--70706-6umvFIi0Rl9X-.zip  
+  inflating: /workspace/middleware.ts  
+  inflating: /workspace/next.config.mjs  
+  inflating: /workspace/next.config.js  
+  inflating: /workspace/package.json  
+  inflating: /workspace/paji-duolingo-firebase-adminsdk-fbsvc-efc8f93eb1.json  
+  inflating: /workspace/pnpm-lock.yaml  
+  inflating: /workspace/postcss.config.mjs  
+  inflating: /workspace/public/placeholder-logo.png  
+  inflating: /workspace/public/placeholder-logo.svg  
+  inflating: /workspace/public/placeholder-user.jpg  
+  inflating: /workspace/public/placeholder.jpg  
+  inflating: /workspace/public/placeholder.svg  
+  inflating: /workspace/scripts/create-test-account.js  
+  inflating: /workspace/scripts/migrate-users.ts  
+  inflating: /workspace/scripts/seed-courses.js  
+  inflating: /workspace/scripts/validate-css.js  
+  inflating: /workspace/scripts/verify-firebase-setup.ts  
+  inflating: /workspace/storage.rules  
+  inflating: /workspace/styles/globals.css  
+  inflating: /workspace/tailwind.config.js  
+  inflating: /workspace/tsconfig.json  
+BUILD
+Starting Step #0 - "ubuntu"
+Pulling image: ubuntu
+Using default tag: latest
+latest: Pulling from library/ubuntu
+4b3ffd8ccb52: Pulling fs layer
+4b3ffd8ccb52: Verifying Checksum
+4b3ffd8ccb52: Download complete
+4b3ffd8ccb52: Pull complete
+Digest: sha256:66460d557b25769b102175144d538d88219c077c678a49af4afca6fbfc1b5252
+Status: Downloaded newer image for ubuntu:latest
+docker.io/library/ubuntu:latest
+Finished Step #0 - "ubuntu"
+Starting Step #1 - "preparer"
+Pulling image: europe-west4-docker.pkg.dev/serverless-runtimes/utilities/preparer:base_20250922_18_04_RC00
+base_20250922_18_04_RC00: Pulling from serverless-runtimes/utilities/preparer
+217c54944615: Pulling fs layer
+217c54944615: Verifying Checksum
+217c54944615: Download complete
+217c54944615: Pull complete
+Digest: sha256:6618d4776face387eb2631445cac3ee167b7a944ae8eef049a7048c98c81c00d
+Status: Downloaded newer image for europe-west4-docker.pkg.dev/serverless-runtimes/utilities/preparer:base_20250922_18_04_RC00
+europe-west4-docker.pkg.dev/serverless-runtimes/utilities/preparer:base_20250922_18_04_RC00
+2025/10/17 05:57:47 FIREBASE_CONFIG has no availability specified, applying the default of 'BUILD' and 'RUNTIME'
+2025/10/17 05:57:47 Final app hosting schema:
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80
+  maxInstances: 10
+  minInstances: 0
+  vpcAccess: null
+  cpuAlwaysAllocated: null
+env:
+- variable: GOOGLE_CLOUD_PROJECT
+  value: paji-duolingo
+  availability:
+  - BUILD
+  - RUNTIME
+- variable: FIREBASE_CONFIG
+  value: '{"databaseURL":"","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+  - RUNTIME
+- variable: FIREBASE_WEBAPP_CONFIG
+  value: '{"apiKey":"AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY","appId":"1:189726325845:web:e7cf4ceb5d42fd48b068dc","authDomain":"paji-duolingo.firebaseapp.com","databaseURL":"","messagingSenderId":"189726325845","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+2025/10/17 05:57:47 Final app hosting schema:
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80
+  maxInstances: 10
+  minInstances: 0
+  vpcAccess: null
+  cpuAlwaysAllocated: null
+env:
+- variable: GOOGLE_CLOUD_PROJECT
+  value: paji-duolingo
+  availability:
+  - BUILD
+  - RUNTIME
+- variable: FIREBASE_CONFIG
+  value: '{"databaseURL":"","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+  - RUNTIME
+- variable: FIREBASE_WEBAPP_CONFIG
+  value: '{"apiKey":"AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY","appId":"1:189726325845:web:e7cf4ceb5d42fd48b068dc","authDomain":"paji-duolingo.firebaseapp.com","databaseURL":"","messagingSenderId":"189726325845","projectId":"paji-duolingo","storageBucket":"paji-duolingo.firebasestorage.app"}'
+  availability:
+  - BUILD
+Finished Step #1 - "preparer"
+Starting Step #2 - "pack"
+Pulling image: gcr.io/k8s-skaffold/pack
+Using default tag: latest
+latest: Pulling from k8s-skaffold/pack
+396c31837116: Pulling fs layer
+9776b10d5c8c: Pulling fs layer
+52cb9ac3197f: Pulling fs layer
+9776b10d5c8c: Verifying Checksum
+9776b10d5c8c: Download complete
+396c31837116: Verifying Checksum
+396c31837116: Download complete
+396c31837116: Pull complete
+52cb9ac3197f: Verifying Checksum
+52cb9ac3197f: Download complete
+9776b10d5c8c: Pull complete
+52cb9ac3197f: Pull complete
+Digest: sha256:221c0c0d9a90f46f108bb888a1da9e99c82ff631e8b1c63b0223ea951752bd53
+Status: Downloaded newer image for gcr.io/k8s-skaffold/pack:latest
+gcr.io/k8s-skaffold/pack:latest
+nodejs_20251011_RC00: Pulling from serverless-runtimes/google-22-full/builder/nodejs
+e6fdc8487bfe: Already exists
+c7546b3c96d3: Already exists
+0134e0122afd: Already exists
+0ae57f5bd3ca: Pulling fs layer
+d05c2aef9cf0: Pulling fs layer
+5247dd40dd05: Pulling fs layer
+bbf4fccf620e: Pulling fs layer
+96c2b18c2e9e: Pulling fs layer
+002599349767: Pulling fs layer
+fe0a88c014e5: Pulling fs layer
+1a82443b3661: Pulling fs layer
+b633c5b43fe9: Pulling fs layer
+9d1b6df83d92: Pulling fs layer
+71eecb26b553: Pulling fs layer
+fe50fd9cd3cd: Pulling fs layer
+f67f6ddb9463: Pulling fs layer
+f13f3dab3b09: Pulling fs layer
+17bc08e04874: Pulling fs layer
+0d3e06a12d68: Pulling fs layer
+9e6f81b9286c: Pulling fs layer
+c4703a0f0851: Pulling fs layer
+eca9d94bc71b: Pulling fs layer
+ed9bf84434fa: Pulling fs layer
+ad92b389a0d4: Pulling fs layer
+6310524fb1e9: Pulling fs layer
+367e7bdc9fc2: Pulling fs layer
+c3dc89452cb2: Pulling fs layer
+26be9f471823: Pulling fs layer
+34ce8ba30961: Pulling fs layer
+e6178d2c0976: Pulling fs layer
+4f4fb700ef54: Pulling fs layer
+bbf4fccf620e: Waiting
+96c2b18c2e9e: Waiting
+002599349767: Waiting
+fe0a88c014e5: Waiting
+1a82443b3661: Waiting
+b633c5b43fe9: Waiting
+9d1b6df83d92: Waiting
+71eecb26b553: Waiting
+fe50fd9cd3cd: Waiting
+f67f6ddb9463: Waiting
+f13f3dab3b09: Waiting
+17bc08e04874: Waiting
+0d3e06a12d68: Waiting
+9e6f81b9286c: Waiting
+c4703a0f0851: Waiting
+eca9d94bc71b: Waiting
+ed9bf84434fa: Waiting
+ad92b389a0d4: Waiting
+6310524fb1e9: Waiting
+367e7bdc9fc2: Waiting
+c3dc89452cb2: Waiting
+26be9f471823: Waiting
+34ce8ba30961: Waiting
+e6178d2c0976: Waiting
+4f4fb700ef54: Waiting
+d05c2aef9cf0: Verifying Checksum
+d05c2aef9cf0: Download complete
+0ae57f5bd3ca: Verifying Checksum
+0ae57f5bd3ca: Download complete
+5247dd40dd05: Verifying Checksum
+5247dd40dd05: Download complete
+bbf4fccf620e: Verifying Checksum
+bbf4fccf620e: Download complete
+0ae57f5bd3ca: Pull complete
+96c2b18c2e9e: Verifying Checksum
+96c2b18c2e9e: Download complete
+fe0a88c014e5: Verifying Checksum
+fe0a88c014e5: Download complete
+002599349767: Verifying Checksum
+002599349767: Download complete
+d05c2aef9cf0: Pull complete
+9d1b6df83d92: Verifying Checksum
+9d1b6df83d92: Download complete
+b633c5b43fe9: Verifying Checksum
+b633c5b43fe9: Download complete
+1a82443b3661: Verifying Checksum
+1a82443b3661: Download complete
+fe50fd9cd3cd: Verifying Checksum
+fe50fd9cd3cd: Download complete
+71eecb26b553: Verifying Checksum
+71eecb26b553: Download complete
+5247dd40dd05: Pull complete
+f67f6ddb9463: Verifying Checksum
+f67f6ddb9463: Download complete
+17bc08e04874: Verifying Checksum
+17bc08e04874: Download complete
+f13f3dab3b09: Download complete
+bbf4fccf620e: Pull complete
+9e6f81b9286c: Verifying Checksum
+9e6f81b9286c: Download complete
+0d3e06a12d68: Verifying Checksum
+0d3e06a12d68: Download complete
+c4703a0f0851: Verifying Checksum
+c4703a0f0851: Download complete
+eca9d94bc71b: Verifying Checksum
+eca9d94bc71b: Download complete
+ad92b389a0d4: Verifying Checksum
+ad92b389a0d4: Download complete
+ed9bf84434fa: Verifying Checksum
+ed9bf84434fa: Download complete
+96c2b18c2e9e: Pull complete
+6310524fb1e9: Verifying Checksum
+6310524fb1e9: Download complete
+c3dc89452cb2: Verifying Checksum
+c3dc89452cb2: Download complete
+367e7bdc9fc2: Verifying Checksum
+367e7bdc9fc2: Download complete
+e6178d2c0976: Verifying Checksum
+e6178d2c0976: Download complete
+26be9f471823: Verifying Checksum
+26be9f471823: Download complete
+34ce8ba30961: Verifying Checksum
+34ce8ba30961: Download complete
+4f4fb700ef54: Verifying Checksum
+4f4fb700ef54: Download complete
+002599349767: Pull complete
+fe0a88c014e5: Pull complete
+1a82443b3661: Pull complete
+b633c5b43fe9: Pull complete
+9d1b6df83d92: Pull complete
+71eecb26b553: Pull complete
+fe50fd9cd3cd: Pull complete
+f67f6ddb9463: Pull complete
+f13f3dab3b09: Pull complete
+17bc08e04874: Pull complete
+0d3e06a12d68: Pull complete
+9e6f81b9286c: Pull complete
+c4703a0f0851: Pull complete
+eca9d94bc71b: Pull complete
+ed9bf84434fa: Pull complete
+ad92b389a0d4: Pull complete
+6310524fb1e9: Pull complete
+367e7bdc9fc2: Pull complete
+c3dc89452cb2: Pull complete
+26be9f471823: Pull complete
+34ce8ba30961: Pull complete
+e6178d2c0976: Pull complete
+4f4fb700ef54: Pull complete
+Digest: sha256:442d1648500f726a8844790a402dab267dfe8d904e24f5a2a440ad3953acd438
+Status: Downloaded newer image for europe-west4-docker.pkg.dev/serverless-runtimes/google-22-full/builder/nodejs:nodejs_20251011_RC00
+public-image-next: Pulling from serverless-runtimes/google-22/run/base
+828c1365039a: Already exists
+27e02fd3c92a: Pulling fs layer
+03820b570d1e: Pulling fs layer
+27e02fd3c92a: Verifying Checksum
+27e02fd3c92a: Download complete
+27e02fd3c92a: Pull complete
+03820b570d1e: Verifying Checksum
+03820b570d1e: Download complete
+03820b570d1e: Pull complete
+Digest: sha256:c5786434c9d06d2e9540ac23aef477d631dc72138860a0ad6b25b8b16b8b2c51
+Status: Downloaded newer image for europe-west4-docker.pkg.dev/serverless-runtimes/google-22/run/base:public-image-next
+===> ANALYZING
+Image with name "europe-west4-docker.pkg.dev/paji-duolingo/firebaseapphosting-images/ltus-acadamy:build-2025-10-17-003" not found
+===> DETECTING
+target distro name/version labels not found, reading /etc/os-release file
+4 of 6 buildpacks participating
+google.nodejs.runtime        1.0.0
+google.nodejs.firebasenextjs 0.0.1
+google.nodejs.pnpm           0.1.0
+google.nodejs.firebasebundle 0.0.1
+===> RESTORING
+===> BUILDING
+target distro name/version labels not found, reading /etc/os-release file
+=== Node.js - Runtime (google.nodejs.runtime@1.0.0) ===
+2025/10/17 05:58:01 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/version.json
+Adding image label google.runtime-version: nodejs22
+2025/10/17 05:58:02 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/version.json
+Installing Node.js v22.20.0.
+2025/10/17 05:58:02 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/nodejs-22.20.0.tar.gz
+=== Node.js - Firebasenextjs (google.nodejs.firebasenextjs@0.0.1) ===
+***** CACHE MISS: "npm_modules"
+Installing nextjs adaptor 14.0.18
+=== Node.js - Pnpm (google.nodejs.pnpm@0.1.0) ===
+2025/10/17 05:58:11 [DEBUG] GET https://registry.npmjs.org/pnpm
+***** CACHE MISS: "pnpm_engine"
+Installing pnpm v10.18.3
+2025/10/17 05:58:11 [DEBUG] GET https://github.com/pnpm/pnpm/releases/download/v10.18.3/pnpm-linux-x64
+Setting environment variable PATH=/layers/google.nodejs.pnpm/pnpm_engine/bin:/layers/google.nodejs.runtime/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+--------------------------------------------------------------------------------
+Running "pnpm install (CI=true NODE_ENV=development)"
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +1044
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 1044, reused 0, downloaded 11, added 0
+Progress: resolved 1044, reused 0, downloaded 75, added 21
+Progress: resolved 1044, reused 0, downloaded 195, added 79
+Progress: resolved 1044, reused 0, downloaded 200, added 81
+Progress: resolved 1044, reused 0, downloaded 201, added 81
+Progress: resolved 1044, reused 0, downloaded 236, added 93
+Progress: resolved 1044, reused 0, downloaded 237, added 93
+Progress: resolved 1044, reused 0, downloaded 252, added 101
+Progress: resolved 1044, reused 0, downloaded 280, added 109
+Progress: resolved 1044, reused 0, downloaded 347, added 131
+Progress: resolved 1044, reused 0, downloaded 447, added 175
+Progress: resolved 1044, reused 0, downloaded 475, added 183
+Progress: resolved 1044, reused 0, downloaded 529, added 200
+Progress: resolved 1044, reused 0, downloaded 637, added 249
+Progress: resolved 1044, reused 0, downloaded 710, added 279
+Progress: resolved 1044, reused 0, downloaded 819, added 323
+Progress: resolved 1044, reused 0, downloaded 993, added 424
+Progress: resolved 1044, reused 0, downloaded 1013, added 429
+Progress: resolved 1044, reused 0, downloaded 1044, added 534
+Progress: resolved 1044, reused 0, downloaded 1044, added 1044, done
+dependencies:
++ @aws-sdk/credential-providers 3.911.0
++ @hookform/resolvers 3.10.0
++ @mongodb-js/zstd 2.0.1
++ @radix-ui/react-accordion 1.2.2
++ @radix-ui/react-alert-dialog 1.1.4
++ @radix-ui/react-aspect-ratio 1.1.1
++ @radix-ui/react-avatar 1.1.2
++ @radix-ui/react-checkbox 1.1.3
++ @radix-ui/react-collapsible 1.1.2
++ @radix-ui/react-context-menu 2.2.4
++ @radix-ui/react-dialog 1.1.4
++ @radix-ui/react-dropdown-menu 2.1.4
++ @radix-ui/react-hover-card 1.1.4
++ @radix-ui/react-label 2.1.1
++ @radix-ui/react-menubar 1.1.4
++ @radix-ui/react-navigation-menu 1.2.3
++ @radix-ui/react-popover 1.1.4
++ @radix-ui/react-progress 1.1.1
++ @radix-ui/react-radio-group 1.2.2
++ @radix-ui/react-scroll-area 1.2.2
++ @radix-ui/react-select 2.1.4
++ @radix-ui/react-separator 1.1.1
++ @radix-ui/react-slider 1.2.2
++ @radix-ui/react-slot 1.1.1
++ @radix-ui/react-switch 1.1.2
++ @radix-ui/react-tabs 1.1.2
++ @radix-ui/react-toast 1.2.4
++ @radix-ui/react-toggle 1.1.1
++ @radix-ui/react-toggle-group 1.1.1
++ @radix-ui/react-tooltip 1.1.6
++ @vercel/analytics 1.3.1
++ bcryptjs 3.0.2
++ class-variance-authority 0.7.1
++ clsx 2.1.1
++ cmdk 1.0.4
++ date-fns 4.1.0
++ embla-carousel-react 8.5.1
++ firebase 10.14.1
++ firebase-admin 12.7.0
++ gcp-metadata 8.1.1
++ geist 1.5.1
++ input-otp 1.4.1
++ jsonwebtoken 9.0.2
++ kerberos 2.2.2
++ lucide-react 0.454.0
++ mongodb 6.20.0
++ mongodb-client-encryption 6.5.0
++ mongoose 8.19.1
++ next 15.2.4
++ next-themes 0.4.6
++ react 19.2.0
++ react-day-picker 9.8.0
++ react-dom 19.2.0
++ react-hook-form 7.65.0
++ react-resizable-panels 2.1.9
++ recharts 2.15.4
++ snappy 7.3.3
++ socks 2.8.7
++ sonner 1.7.4
++ tailwind-merge 2.6.0
++ tailwindcss-animate 1.0.7
++ vaul 0.9.9
++ zod 3.25.67
+devDependencies:
++ @types/jest 29.5.14
++ @types/jsonwebtoken 9.0.10
++ @types/node 22.18.10
++ @types/react 19.2.2
++ @types/react-dom 19.2.2
++ autoprefixer 10.4.21
++ eslint 9.37.0
++ eslint-config-next 15.5.5
++ jest 29.7.0
++ jest-environment-node 29.7.0
++ mongodb-memory-server 9.5.0
++ postcss 8.5.6
++ tailwindcss 3.4.18
++ ts-jest 29.4.5
++ tw-animate-css 1.3.3
++ typescript 5.9.3
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: @mongodb-js/zstd, kerberos,                         │
+│   mongodb-client-encryption, mongodb-memory-server, protobufjs, sharp,       │
+│   unrs-resolver.                                                             │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Done in 21.4s using pnpm v10.18.3
+Done "pnpm install (CI=true NODE_ENV=development)" (21.61357923s)
+--------------------------------------------------------------------------------
+Running "npm exec --prefix /layers/google.nodejs.firebasenextjs/npm_modules apphosting-adapter-nextjs-build"
+Overriding Next Config to add configs optmized for Firebase App Hosting
+Successfully created next.config.js with Firebase App Hosting overrides
+> my-v0-project@0.1.0 build
+> next build
+   ▲ Next.js 15.2.4
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+Error: Missing Firebase Admin credentials: set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY or GOOGLE_APPLICATION_CREDENTIALS
+    at l (.next/server/chunks/7437.js:1:15328)
+    at d (.next/server/chunks/7437.js:1:15648)
+    at new c (.next/server/chunks/7437.js:1:11436)
+    at new c (.next/server/chunks/7437.js:1:7080)
+    at <unknown> (.next/server/app/api/courses/[id]/lessons/[lessonId]/route.js:1:484)
+> Build error occurred
+[Error: Failed to collect page data for /api/courses/[id]/lessons/[lessonId]] {
+  type: 'Error'
+}
+Restoring original next config in project root
+/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61
+                reject(new Error(`Build process exited with error code ${code}.`));
+                       ^
+Error: Build process exited with error code 1.
+    at ChildProcess.<anonymous> (/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61:24)
+    at ChildProcess.emit (node:events:519:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+Node.js v22.20.0
+Done "npm exec --prefix /layers/google.nodejs.firebasenextjs/npm_m..." (1m13.791348231s)
+--------------------------------------------------------------------------------
+failed to build: (error ID: 344c5d49):
+{"reason":"Failed Framework Build","code":"fah/failed-framework-build","userFacingMessage":"Your application failed to run the framework build command 'npm exec --prefix /layers/google.nodejs.firebasenextjs/npm_modules apphosting-adapter-nextjs-build' successfully. Please check the raw log to address the error and confirm that your application builds locally before redeploying.","rawLog":"(error ID: d0a693a9):
+Overriding Next Config to add configs optmized for Firebase App Hosting
+Successfully created next.config.js with Firebase App Hosting overrides
+> my-v0-project@0.1.0 build
+> next build
+   ▲ Next.js 15.2.4
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+Error: Missing Firebase Admin credentials: set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY or GOOGLE_APPLICATION_CREDENTIALS
+    at l (.next/server/chunks/7437.js:1:15328)
+    at d (.next/server/chunks/7437.js:1:15648)
+    at new c (.next/server/chunks/7437.js:1:11436)
+    at new c (.next/server/chunks/7437.js:1:7080)
+    at <unknown> (.next/server/app/api/courses/[id]/lessons/[lessonId]/route.js:1:484)
+> Build error occurred
+[Error: Failed to collect page data for /api/courses/[id]/lessons/[lessonId]] {
+  type: 'Error'
+}
+Restoring original next config in project root
+/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61
+                reject(new Error(`Build process exited with error code ${code}.`));
+                       ^
+Error: Build process exited with error code 1.
+    at ChildProcess.<anonymous> (/layers/google.nodejs.firebasenextjs/npm_modules/node_modules/@apphosting/common/dist/index.js:61:24)
+    at ChildProcess.emit (node:events:519:28)
+    at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+Node.js v22.20.0"}
+ERROR: failed to build: exit status 1
+ERROR: failed to build: executing lifecycle: failed with status code: 51
+Finished Step #2 - "pack"
+ERROR
+ERROR: build step 2 "gcr.io/k8s-skaffold/pack" failed: step exited with non-zero status: 1

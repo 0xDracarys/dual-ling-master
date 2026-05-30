@@ -1,0 +1,69 @@
+# Firebase App Hosting configuration
+# Environment variables for Cloud Run deployment
+
+runConfig:
+  minInstances: 0
+  maxInstances: 10
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  # Backend environment variables
+  - variable: GOOGLE_CLOUD_PROJECT
+    value: paji-duolingo
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Frontend Firebase SDK configuration (NEXT_PUBLIC_* for client-side access)
+  # Updated to Tier 1 Gemini API key for higher rate limits
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: paji-duolingo.firebaseapp.com
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: paji-duolingo
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: paji-duolingo.firebasestorage.app
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "189726325845"
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: 1:189726325845:web:b6d7ce6ab172c7a7b068dc
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+    value: G-ZSGE0HXSYV
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Gemini AI API Key (Tier 1 - upgraded from rate-limited key)
+  - variable: GEMINI_API_KEY
+    value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+    availability:
+      - BUILD
+      - RUNTIME
+

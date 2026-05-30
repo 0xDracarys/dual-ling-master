@@ -1,0 +1,45 @@
+# Development-only files (excluded from production deployment)
+
+# Documentation (IKB system - local reference only)
+docs/
+
+# Test files
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+jest.config.js
+jest.setup.js
+
+# Scripts (local automation only)
+scripts/
+
+# Build artifacts (generated during deployment)
+.next/
+out/
+build/
+
+# Environment files (sensitive - use deployment secrets instead)
+.env*.local
+
+# Git metadata
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Firebase local data
+firestore-debug.log
+
+# Miscellaneous
+README.md
+*.md
+!app/**/*.md
+!components/**/*.md

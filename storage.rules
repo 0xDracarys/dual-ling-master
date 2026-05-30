@@ -1,0 +1,66 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+  // Helper functions
+  function isAuthenticated() {
+    return request.auth != null;
+  }
+  
+  function isOwner(userId) {
+    return request.auth.uid == userId;
+  }
+  
+  function isAdmin() {
+    return request.auth.token.role == 'admin';
+  }
+  
+  function isTeacher() {
+    return request.auth.token.role == 'teacher' || isAdmin();
+  }
+  
+  // File validation for document uploads
+  function isValidDocumentType() {
+    return request.resource.contentType.matches(
+      'application/pdf|' +
+      'application/msword|' +
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document|' +
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation|' +
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|' +
+      'text/plain'
+    );
+  }
+  
+  function isValidFileSize() {
+    // Max 50MB for documents
+    return request.resource.size <= 50 * 1024 * 1024;
+  }
+  
+  // User profile pictures
+  match /users/{userId}/{allPaths=**} {
+    allow read: if isAuthenticated();
+    allow write: if isOwner(userId) || isAdmin();
+  }
+  
+  // Course lesson resources (PDFs, documents) - specific path with validation
+  match /courses/{courseId}/lessons/{lessonId}/resources/{resource} {
+    // All authenticated users can read (enrolled students)
+    allow read: if isAuthenticated();
+    
+    // Only teachers/admins can upload - with file type and size validation
+    allow write: if isTeacher() && isValidDocumentType() && isValidFileSize();
+  }
+  
+  // Course content (thumbnails, videos, other resources)
+  match /courses/{courseId}/{allPaths=**} {
+    allow read: if isAuthenticated();
+    allow write: if isTeacher() || isAdmin();
+  }
+    
+    // Public assets
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

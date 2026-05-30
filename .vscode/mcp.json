@@ -1,0 +1,26 @@
+{
+  "servers": {
+    "firebase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest",
+        "mcp",
+        "--dir",
+        "${workspaceFolder}",
+        "--only",
+        "auth,firestore,storage,dataconnect,messaging,functions,apphosting"
+      ]
+    },
+    "@21st-dev/magic": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@21st-dev/magic@latest",
+        "API_KEY=\"28f465474d78062493b990146375d5be1505284256480374aa0ff66009c80089\""
+      ]
+    }
+  }
+}

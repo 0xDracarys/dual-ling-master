@@ -1,0 +1,80 @@
+[debug] [2025-11-21T00:32:27.566Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-21T00:32:27.567Z] > authorizing via signed-in user (steckismantas0@gmail.com)
+[debug] [2025-11-21T00:32:27.567Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-21T00:32:27.568Z] > authorizing via signed-in user (steckismantas0@gmail.com)
+[debug] [2025-11-21T00:32:27.571Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.572Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.572Z] > refreshing access token with scopes: []
+[debug] [2025-11-21T00:32:27.573Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-21T00:32:27.573Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.578Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.578Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.578Z] > refreshing access token with scopes: []
+[debug] [2025-11-21T00:32:27.578Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-21T00:32:27.578Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.579Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.579Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.579Z] > refreshing access token with scopes: []
+[debug] [2025-11-21T00:32:27.579Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-21T00:32:27.579Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.580Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.580Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.580Z] > refreshing access token with scopes: []
+[debug] [2025-11-21T00:32:27.581Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-21T00:32:27.581Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.581Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-21T00:32:27.581Z] > authorizing via signed-in user (steckismantas0@gmail.com)
+[debug] [2025-11-21T00:32:27.582Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.582Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.582Z] > refreshing access token with scopes: []
+[debug] [2025-11-21T00:32:27.582Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-21T00:32:27.582Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.583Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.583Z] Checked if tokens are valid: false, expires at: 1763679633854
+[debug] [2025-11-21T00:32:27.583Z] > refreshing access token with scopes: []
+[debug] [2025-11-21T00:32:27.583Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-21T00:32:27.583Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.698Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-21T00:32:27.698Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.709Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-11-21T00:32:27.709Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/paji-duolingo
+[debug] [2025-11-21T00:32:27.711Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-21T00:32:27.711Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.718Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com [none]
+[debug] [2025-11-21T00:32:27.718Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com x-goog-quota-user=projects/paji-duolingo
+[debug] [2025-11-21T00:32:27.720Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-21T00:32:27.720Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.730Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com [none]
+[debug] [2025-11-21T00:32:27.730Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com x-goog-quota-user=projects/paji-duolingo
+[debug] [2025-11-21T00:32:27.731Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-21T00:32:27.731Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.740Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-11-21T00:32:27.740Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/paji-duolingo
+[debug] [2025-11-21T00:32:27.741Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-21T00:32:27.741Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.749Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com [none]
+[debug] [2025-11-21T00:32:27.749Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com x-goog-quota-user=projects/paji-duolingo
+[debug] [2025-11-21T00:32:27.749Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-21T00:32:27.750Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-21T00:32:27.758Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-11-21T00:32:27.758Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/paji-duolingo
+[debug] [2025-11-21T00:32:28.635Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com 403
+[debug] [2025-11-21T00:32:28.635Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com [omitted]
+[debug] [2025-11-21T00:32:28.647Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-11-21T00:32:28.647Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-11-21T00:32:28.681Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-21T00:32:28.681Z] > authorizing via signed-in user (steckismantas0@gmail.com)
+[debug] [2025-11-21T00:32:28.682Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-21T00:32:28.682Z] > authorizing via signed-in user (steckismantas0@gmail.com)
+[debug] [2025-11-21T00:32:29.237Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com 403
+[debug] [2025-11-21T00:32:29.237Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com [omitted]
+[debug] [2025-11-21T00:32:29.240Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com 403
+[debug] [2025-11-21T00:32:29.240Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebaseio.com [omitted]
+[debug] [2025-11-21T00:32:29.497Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-11-21T00:32:29.497Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-11-21T00:32:29.498Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-11-21T00:32:29.498Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/paji-duolingo/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-11-21T00:32:29.531Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-21T00:32:29.531Z] > authorizing via signed-in user (steckismantas0@gmail.com)
+[debug] [2025-11-21T00:32:29.531Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-21T00:32:29.531Z] > authorizing via signed-in user (steckismantas0@gmail.com)
