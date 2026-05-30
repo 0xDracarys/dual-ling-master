@@ -24,15 +24,6 @@ import {
 import Link from "next/link"
 
 export default function AboutPage() {
-  const [activeTab, setActiveTab] = useState("mission")
-
-  const stats = [
-    { number: "50,000+", label: "Active Learners", icon: Users },
-    { number: "25+", label: "Languages", icon: Globe },
-    { number: "500+", label: "Courses", icon: BookOpen },
-    { number: "98%", label: "Success Rate", icon: Award }
-  ]
-
   const values = [
     {
       icon: Heart,
@@ -55,73 +46,6 @@ export default function AboutPage() {
       description: "Pamokos vyksta nuotoliniu būdu — jūsų patogiu laiku, nepriklausomai nuo vietos."
     }
   ]
-
-  const team = [
-    {
-      name: "Sarah Chen",
-      role: "CEO & Co-Founder",
-      bio: "Former language teacher with 10+ years of experience in educational technology.",
-      avatar: "SC",
-      expertise: ["Educational Technology", "Language Learning", "Product Strategy"]
-    },
-    {
-      name: "Marcus Johnson",
-      role: "CTO & Co-Founder",
-      bio: "Full-stack developer passionate about creating scalable learning platforms.",
-      avatar: "MJ",
-      expertise: ["Software Engineering", "AI/ML", "Platform Architecture"]
-    },
-    {
-      name: "Elena Rodriguez",
-      role: "Head of Content",
-      bio: "Linguist and curriculum designer with expertise in multiple languages.",
-      avatar: "ER",
-      expertise: ["Linguistics", "Curriculum Design", "Content Strategy"]
-    },
-    {
-      name: "David Kim",
-      role: "Head of Community",
-      bio: "Community builder focused on creating meaningful learning connections.",
-      avatar: "DK",
-      expertise: ["Community Management", "User Experience", "Social Learning"]
-    }
-  ]
-
-  const timeline = [
-    {
-      year: "2020",
-      title: "The Beginning",
-      description: "Founded with a vision to make language learning accessible to everyone worldwide."
-    },
-    {
-      year: "2021",
-      title: "First 1,000 Users",
-      description: "Launched our beta platform and welcomed our first community of language learners."
-    },
-    {
-      year: "2022",
-      title: "AI Integration",
-      description: "Introduced AI-powered personalized learning paths and adaptive assessments."
-    },
-    {
-      year: "2023",
-      title: "Global Expansion",
-      description: "Expanded to 25+ languages and reached learners in 50+ countries."
-    },
-    {
-      year: "2024",
-      title: "Next Generation",
-      description: "Launched advanced features including 1-on-1 tutoring and team management."
-    }
-  ]
-
-  const tabs = [
-    { id: "mission", label: "Our Mission", icon: Target },
-    { id: "story", label: "Our Story", icon: BookOpen },
-    { id: "team", label: "Our Team", icon: Users },
-    { id: "impact", label: "Our Impact", icon: TrendingUp }
-  ]
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Instructor Hero Section */}
