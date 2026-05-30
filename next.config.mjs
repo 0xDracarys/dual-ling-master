@@ -29,20 +29,14 @@ const nextConfig = {
 
     return config;
   },
-  // Exclude from serverless function bundles
-  experimental: {
-    outputFileTracingExcludes: {
-      '*': [
-        'docs/**/*',
-        'scripts/**/*',
-        '__tests__/**/*',
-        '*.config.js',
-        'jest.setup.js',
-        'README.md',
-        '.git/**/*',
-      ],
-    },
+  outputFileTracingExcludes: {
+    '*': [
+      'node_modules/@swc/core-linux-x64-gnu',
+      'node_modules/@swc/core-linux-x64-musl',
+      'node_modules/@esbuild/linux-x64',
+    ],
   },
+  experimental: {},
 }
 
 export default nextConfig
