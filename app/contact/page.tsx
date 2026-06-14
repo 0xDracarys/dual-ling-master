@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Mail, Clock, MessageCircle, ArrowRight, Sparkles, Star, MapPin } from "lucide-react"
+import { Mail, Clock, MessageCircle, ArrowRight, Sparkles, Star, MapPin, Target, BarChart, ClipboardList } from "lucide-react"
 import { useLanguage } from "@/hooks/use-language"
 
 const methodIcons = [Mail, MessageCircle, Clock, MapPin]
 const methodGradients = ["from-indigo-500 to-blue-500", "from-green-500 to-emerald-500", "from-violet-500 to-purple-500", "from-pink-500 to-rose-500"]
 const methodActions = ["mailto:evelina@englishwithevelina.lt", "https://wa.me/37060000000", null, null]
-const expectEmojis = ["🎯", "📊", "📋"]
+const expectIcons = [Target, BarChart, ClipboardList]
 
 export default function ContactPage() {
   const { t } = useLanguage()
@@ -103,8 +103,11 @@ export default function ContactPage() {
                   <div className="space-y-5">
                     {c.expectItems.map((item, i) => (
                       <div key={i} className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl">
-                          {expectEmojis[i]}
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center flex-shrink-0 text-indigo-600">
+                          {(() => {
+                            const Icon = expectIcons[i];
+                            return <Icon className="h-6 w-6 stroke-[2]" />;
+                          })()}
                         </div>
                         <div>
                           <h4 className="font-semibold text-gray-900 mb-1">{item.title}</h4>

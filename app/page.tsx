@@ -9,6 +9,7 @@ import { BookOpen, Users, Award, Globe, ArrowRight, CheckCircle, Star, Play, Zap
 import { useState, useEffect } from "react"
 import { useLanguage } from "@/hooks/use-language"
 import { motion } from "framer-motion"
+import { PhoneCall, ClipboardList, Rocket } from "lucide-react"
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false)
@@ -32,7 +33,7 @@ export default function HomePage() {
 
   const featureIcons = [Brain, MessageCircle, Award, Globe, Shield, Clock]
 
-  const stepIcons = ["📞", "📋", "🚀"]
+  const stepIcons = [PhoneCall, ClipboardList, Rocket]
   const stepColors = ["from-blue-500 to-cyan-500", "from-violet-500 to-indigo-500", "from-pink-500 to-rose-500"]
 
   return (
@@ -252,7 +253,12 @@ export default function HomePage() {
                   <div className="hidden md:block absolute top-10 left-full w-full h-0.5 bg-white/30 z-0 -translate-y-1/2" style={{width: 'calc(100% - 2.5rem)', left: '80%'}}></div>
                 )}
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center relative z-10">
-                  <div className="text-5xl mb-4">{stepIcons[index]}</div>
+                  <div className="mb-6 flex justify-center text-white">
+                    {(() => {
+                      const Icon = stepIcons[index];
+                      return <Icon className="h-12 w-12 stroke-[1.5]" />;
+                    })()}
+                  </div>
                   <div className={`inline-block text-xs font-bold bg-gradient-to-r ${stepColors[index]} text-white px-3 py-1 rounded-full mb-3`}>
                     0{index + 1}
                   </div>

@@ -29,8 +29,8 @@ export const translations = {
     // Hero section
     hero: {
       badge: 'English learning – simple and effective',
-      greeting: 'Hi, I\'m Evelina ',
-      title: 'English language teacher and online school creator. 👋',
+      greeting: 'Professional ',
+      title: 'English Language Learning',
       description: 'I help adults learn English clearly, practically and without fear of speaking. I believe everyone can learn to speak English when learning becomes understandable, tailored to real life and based on support rather than pressure.\n\nIn my lessons I focus not only on grammar, but also on confidence in speaking. It matters to me that students feel comfortable, are not afraid to make mistakes and see real progress.',
       findHere: 'Here you\'ll find:',
       bullet1: 'Individual English lessons',
@@ -424,8 +424,8 @@ export const translations = {
     },
     hero: {
       badge: 'Anglų kalbos mokymasis – paprastai ir efektyviai',
-      greeting: 'Labas, aš Evelina ',
-      title: 'anglų kalbos mokytoja ir nuotolinės mokyklos kūrėja. 👋',
+      greeting: 'Profesionalus ',
+      title: 'Anglų kalbos mokymasis',
       description: 'Padedu suaugusiems mokytis anglų kalbos aiškiai, praktiškai ir be baimės kalbėti. Tikiu, kad kiekvienas gali išmokti kalbėti angliškai, kai mokymasis tampa suprantamas, pritaikytas realiam gyvenimui ir paremtas palaikymu, o ne spaudimu.\n\nSavo pamokose daug dėmesio skiriu ne tik gramatikai, bet ir pasitikėjimui savimi kalbant. Man svarbu, kad mokiniai jaustųsi jaukiai, nebijotų klysti ir matytų tikrą progresą.',
       findHere: 'Čia rasi:',
       bullet1: 'Individualias anglų kalbos pamokas',
