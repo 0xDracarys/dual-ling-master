@@ -147,6 +147,36 @@ export class CourseRepository {
   }
 
   /**
+   * Get all courses (Admin only)
+   */
+  async getAll(): Promise<Course[]> {
+    const spanId = traceLogger.startSpan('Firestore', 'courses.getAll');
+
+    try {
+      traceLogger.log('info', 'Firestore', 'Querying all courses');
+
+      const snapshot = await this.collection.get();
+      const courses = snapshot.docs.map((doc: any) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Course[];
+
+      traceLogger.log('success', 'Firestore', 'All courses retrieved', {
+        count: courses.length,
+      });
+      traceLogger.endSpan(spanId, 'success');
+
+      return courses;
+    } catch (error: any) {
+      traceLogger.log('error', 'Firestore', 'Query failed', {
+        error: error.message,
+      });
+      traceLogger.endSpan(spanId, 'error', { message: error.message });
+      throw error;
+    }
+  }
+
+  /**
    * Get all courses by teacher (including drafts)
    */
   async getByTeacher(teacherId: string): Promise<Course[]> {

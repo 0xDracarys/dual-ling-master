@@ -7,11 +7,13 @@
 import { traceLogger } from '@/lib/tracing/trace-logger';
 import { ProgressRepository } from './progress.repository';
 import { EnrollmentRepository } from '../enrollment/enrollment.repository';
+import { GamificationService } from '../gamification.service';
 import type { Progress } from '@/lib/types/course.types';
 
 export class ProgressService {
   private progressRepo = new ProgressRepository();
   private enrollmentRepo = new EnrollmentRepository();
+  private gamificationService = new GamificationService();
 
   /**
    * Update video progress (called every 5-10 seconds from video player)
@@ -55,6 +57,10 @@ export class ProgressService {
       if (isCompleted && progress.status !== 'completed') {
         traceLogger.log('info', 'Progress', 'Lesson just completed, updating enrollment');
         await this.updateEnrollmentProgress(userId, courseId);
+        // Award XP for completion
+        await this.gamificationService.addXP(userId, 10).catch(err => {
+          traceLogger.log('error', 'Progress', 'Failed to award XP', { error: err.message });
+        });
       }
 
       traceLogger.log('success', 'Progress', 'Video progress updated', {
@@ -114,6 +120,10 @@ export class ProgressService {
       if (isCompleted && progress.status !== 'completed') {
         traceLogger.log('info', 'Progress', 'Lesson just completed, updating enrollment');
         await this.updateEnrollmentProgress(userId, courseId);
+        // Award XP for completion
+        await this.gamificationService.addXP(userId, 10).catch(err => {
+          traceLogger.log('error', 'Progress', 'Failed to award XP', { error: err.message });
+        });
       }
 
       traceLogger.log('success', 'Progress', 'Reading progress updated');
@@ -163,6 +173,13 @@ export class ProgressService {
 
       // Update enrollment
       await this.updateEnrollmentProgress(userId, courseId);
+      
+      // Award XP for completion if not already completed
+      if (progress.status !== 'completed') {
+        await this.gamificationService.addXP(userId, 10).catch(err => {
+          traceLogger.log('error', 'Progress', 'Failed to award XP', { error: err.message });
+        });
+      }
 
       traceLogger.log('success', 'Progress', 'Lesson marked complete', { lessonId });
       traceLogger.endSpan(spanId, 'success');

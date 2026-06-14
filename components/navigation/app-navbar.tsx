@@ -53,7 +53,7 @@ export function AppNavbar() {
               title: "My Courses",
               description: "Manage your language courses",
               icon: <Book className="size-5 shrink-0" />,
-              url: "/teacher/courses",
+              url: "/teacher/course/create",
             },
             {
               title: "My Students",
@@ -93,7 +93,7 @@ export function AppNavbar() {
               title: "My Courses",
               description: "View enrolled courses",
               icon: <Book className="size-5 shrink-0" />,
-              url: "/courses",
+              url: dashboardUrl,
             },
             {
               title: "Browse Courses",

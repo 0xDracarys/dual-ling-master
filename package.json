@@ -50,6 +50,7 @@
     "embla-carousel-react": "8.5.1",
     "firebase": "^12.6.0",
     "firebase-admin": "^12.7.0",
+    "framer-motion": "^12.40.0",
     "gcp-metadata": "latest",
     "geist": "^1.5.1",
     "googleapis": "^164.1.0",

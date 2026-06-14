@@ -43,13 +43,18 @@ export class AdminUserRepository {
       // Convert Firestore Timestamps to Date objects
       return {
         ...data,
-        subscription: {
+        subscription: data.subscription ? {
           ...data.subscription,
-          startDate: data.subscription.startDate?.toDate ? data.subscription.startDate.toDate() : new Date(data.subscription.startDate._seconds * 1000),
+          startDate: data.subscription.startDate?.toDate ? data.subscription.startDate.toDate() : (data.subscription.startDate?._seconds ? new Date(data.subscription.startDate._seconds * 1000) : new Date()),
           endDate: data.subscription.endDate ? (data.subscription.endDate?.toDate ? data.subscription.endDate.toDate() : new Date(data.subscription.endDate._seconds * 1000)) : null,
+        } : {
+          plan: 'free',
+          status: 'active',
+          startDate: new Date(),
+          endDate: null,
         },
-        createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt._seconds * 1000),
-        updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : new Date(data.updatedAt._seconds * 1000),
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : (data.createdAt?._seconds ? new Date(data.createdAt._seconds * 1000) : new Date()),
+        updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : (data.updatedAt?._seconds ? new Date(data.updatedAt._seconds * 1000) : new Date()),
       } as FirestoreUser;
     } catch (error: any) {
       traceLogger.log('error', 'Firestore', 'Failed to fetch user', error);
@@ -84,13 +89,18 @@ export class AdminUserRepository {
 
       return {
         ...data,
-        subscription: {
+        subscription: data.subscription ? {
           ...data.subscription,
-          startDate: data.subscription.startDate?.toDate ? data.subscription.startDate.toDate() : new Date(data.subscription.startDate._seconds * 1000),
+          startDate: data.subscription.startDate?.toDate ? data.subscription.startDate.toDate() : (data.subscription.startDate?._seconds ? new Date(data.subscription.startDate._seconds * 1000) : new Date()),
           endDate: data.subscription.endDate ? (data.subscription.endDate?.toDate ? data.subscription.endDate.toDate() : new Date(data.subscription.endDate._seconds * 1000)) : null,
+        } : {
+          plan: 'free',
+          status: 'active',
+          startDate: new Date(),
+          endDate: null,
         },
-        createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt._seconds * 1000),
-        updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : new Date(data.updatedAt._seconds * 1000),
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : (data.createdAt?._seconds ? new Date(data.createdAt._seconds * 1000) : new Date()),
+        updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : (data.updatedAt?._seconds ? new Date(data.updatedAt._seconds * 1000) : new Date()),
       } as FirestoreUser;
     } catch (error: any) {
       traceLogger.log('error', 'Firestore', 'Failed to fetch user by email', { error: error.message });

@@ -143,6 +143,31 @@ export class CourseService {
   }
 
   /**
+   * Get all courses (Admin only)
+   */
+  async getAllCourses(): Promise<Course[]> {
+    const spanId = traceLogger.startSpan('Course', 'getAllCourses');
+
+    try {
+      traceLogger.log('info', 'Course', 'Querying all courses');
+      const courses = await this.courseRepo.getAll();
+
+      traceLogger.log('success', 'Course', 'All courses retrieved', {
+        count: courses.length,
+      });
+      traceLogger.endSpan(spanId, 'success');
+
+      return courses;
+    } catch (error: any) {
+      traceLogger.log('error', 'Course', 'Failed to get all courses', {
+        error: error.message,
+      });
+      traceLogger.endSpan(spanId, 'error', { message: error.message });
+      throw error;
+    }
+  }
+
+  /**
    * Update course
    */
   async updateCourse(

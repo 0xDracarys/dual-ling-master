@@ -35,6 +35,8 @@ interface User {
   username: string
   email: string
   role: "student" | "teacher" | "admin"
+  xp?: number
+  streak?: number
 }
 
 interface AuthContextType {

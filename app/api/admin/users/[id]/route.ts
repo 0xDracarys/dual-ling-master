@@ -1,25 +1,64 @@
 export const dynamic = 'force-dynamic';
 /**
- * Admin User Management API Route
- * DELETE - Delete a user by ID
- *
- * TODO: Implement with Firebase UserRepository (Phase 3)
- * Currently disabled to avoid MongoDB dependency
+ * Admin Users API Route
+ * DELETE - Delete user (admin view)
  */
 
 import { type NextRequest, NextResponse } from 'next/server';
+import { UserRepository } from '@/lib/services/auth/user.repository';
+import { verifyIdToken, getAdminAuth } from '@/lib/firebase/admin';
+import { traceLogger } from '@/lib/tracing/trace-logger';
+
+const userRepository = new UserRepository();
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const userId = params.id;
+  const spanId = traceLogger.startSpan('API', `DELETE /api/admin/users/${userId}`);
 
-  return NextResponse.json(
-    {
-      success: false,
-      error: 'User deletion not yet implemented in Firebase migration',
-    },
-    { status: 501 } // Not Implemented
-  );
+  try {
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      traceLogger.endSpan(spanId, 'error', { message: 'Unauthorized' });
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const token = authHeader.split('Bearer ')[1];
+    let decodedToken;
+    try {
+      decodedToken = await verifyIdToken(token);
+    } catch (error: any) {
+      traceLogger.endSpan(spanId, 'error', { message: 'Invalid token' });
+      return NextResponse.json({ success: false, error: 'Invalid authentication token' }, { status: 401 });
+    }
+
+    if (decodedToken.role !== 'admin') {
+      traceLogger.endSpan(spanId, 'error', { message: 'Forbidden' });
+      return NextResponse.json({ success: false, error: 'Forbidden - Admins only' }, { status: 403 });
+    }
+
+    // Delete from Firebase Auth
+    try {
+      await getAdminAuth().deleteUser(userId);
+    } catch (authError: any) {
+      // Ignore if user not found in auth, they might only be in Firestore
+      if (authError.code !== 'auth/user-not-found') {
+        throw authError;
+      }
+    }
+
+    // Delete from Firestore
+    await userRepository.delete(userId);
+
+    traceLogger.endSpan(spanId, 'success');
+    return NextResponse.json({
+      success: true,
+      message: 'User deleted successfully',
+    });
+  } catch (error: any) {
+    traceLogger.endSpan(spanId, 'error', { message: error.message });
+    return NextResponse.json({ success: false, error: error.message || 'Failed to delete user' }, { status: 500 });
+  }
 }

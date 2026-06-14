@@ -6,24 +6,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock, 
-  MessageCircle, 
-  Send,
-  ArrowRight,
-  CheckCircle,
-  Users,
-  Headphones,
-  BookOpen,
-  Zap
-} from "lucide-react"
+import { Mail, Clock, MessageCircle, Send, ArrowRight, CheckCircle, Sparkles, Star, MapPin } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
+import { useLanguage } from "@/hooks/use-language"
+
+const methodIcons = [Mail, MessageCircle, Clock, MapPin]
+const methodGradients = ["from-indigo-500 to-blue-500", "from-green-500 to-emerald-500", "from-violet-500 to-purple-500", "from-pink-500 to-rose-500"]
+const methodActions = ["mailto:evelina@englishwithevelina.lt", "https://wa.me/37060000000", null, null]
+const expectEmojis = ["🎯", "📊", "📋"]
 
 export default function ContactPage() {
+  const { t } = useLanguage()
+  const c = t.contact
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,239 +31,214 @@ export default function ContactPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
     setIsSubmitting(false)
     setIsSubmitted(true)
-    
-    // Reset form after 3 seconds
     setTimeout(() => {
       setIsSubmitted(false)
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-        inquiryType: "general"
-      })
+      setFormData({ name: "", email: "", subject: "", message: "", inquiryType: "general" })
     }, 3000)
   }
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "El. paštas",
-      description: "Parašykite man — atsakysiu per 24 val.",
-      value: "evelina@englishwithevelina.lt",
-      action: "mailto:evelina@englishwithevelina.lt"
-    },
-    {
-      icon: MessageCircle,
-      title: "WhatsApp",
-      description: "Greitam susirašinėjimui ir klausimams",
-      value: "Susisiekti per WhatsApp",
-      action: "https://wa.me/37060000000"
-    },
-    {
-      icon: Clock,
-      title: "Darbo laikas",
-      description: "Kada galima susisiekti",
-      value: "Pir–Pen: 9:00–18:00\nSek: iš anksto",
-      action: null
-    },
-    {
-      icon: MapPin,
-      title: "Vieta",
-      description: "Pamokos vyksta nuotoliniu būdu",
-      value: "Zoom / Google Meet",
-      action: null
-    }
-  ]
-
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      {/* Hero Section */}
-      <section className="py-16 px-4">
-        <div className="container-custom">
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-8">
-            <div>
-              <h1 className="heading-1 mb-6">
-                Susisiekite su <span className="gradient-text">Evelina</span>
-              </h1>
-              <p className="body-large max-w-xl">
-                Turėrite klausimų dėl pamokų, kainos ar norite užsiregistruoti — mielai atsakysiu!
-              </p>
+
+      {/* ─── Hero Section ─── */}
+      <section className="relative py-16 px-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 -right-20 w-80 h-80 bg-white/5 rounded-full"></div>
+          <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/5 rounded-full"></div>
+        </div>
+        <div className="container-custom relative">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Sparkles className="h-4 w-4" />
+              {c.badge}
             </div>
-            <div className="flex justify-center">
-              <div className="relative w-full max-w-sm">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-400 to-purple-600 rounded-3xl blur-2xl opacity-20"></div>
-                <Image
-                  src="/contact-us.jpg"
-                  alt="Contact Evelina"
-                  width={450}
-                  height={350}
-                  className="relative rounded-3xl shadow-2xl object-cover w-full h-auto"
-                />
-              </div>
-            </div>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+              {c.heading}{" "}
+              <span className="text-indigo-200">{c.headingHighlight}</span>
+            </h1>
+            <p className="text-lg text-indigo-100">{c.intro}</p>
           </div>
         </div>
       </section>
 
-      {/* Contact Methods */}
-      <section className="section-padding-sm">
+      {/* ─── Contact Methods ─── */}
+      <section className="section-padding-sm px-4">
         <div className="container-custom">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {contactInfo.map((info, index) => (
-              <Card key={index} className="card-interactive text-center group">
-                <CardHeader className="pb-4">
-                  <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-medium group-hover:scale-110 transition-transform">
-                    <info.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="heading-4 mb-2">{info.title}</CardTitle>
-                  <CardDescription className="body-medium">{info.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  {info.action ? (
-                    <a 
-                      href={info.action} 
-                      className="text-indigo-600 hover:text-indigo-800 font-medium break-all body-medium"
-                    >
-                      {info.value}
-                    </a>
-                  ) : (
-                    <p className="text-gray-600 whitespace-pre-line body-medium">{info.value}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {c.methods.map((info, index) => {
+              const Icon = methodIcons[index]
+              const gradient = methodGradients[index]
+              const action = methodActions[index]
+              return (
+                <Card key={index} className="card-interactive text-center group overflow-hidden">
+                  <div className={`h-1 bg-gradient-to-r ${gradient}`}></div>
+                  <CardHeader className="pb-3 pt-6">
+                    <div className={`w-14 h-14 bg-gradient-to-r ${gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-7 h-7 text-white" />
+                    </div>
+                    <CardTitle className="text-lg font-bold text-gray-900">{info.title}</CardTitle>
+                    <CardDescription className="text-sm">{info.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0 pb-6">
+                    {action ? (
+                      <a href={action} className="text-indigo-600 hover:text-indigo-800 font-semibold text-sm break-all hover:underline">
+                        {info.value}
+                      </a>
+                    ) : (
+                      <p className="text-gray-700 whitespace-pre-line text-sm font-medium">{info.value}</p>
+                    )}
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="section-padding-sm">
+      {/* ─── Main 2-col Content ─── */}
+      <section className="section-padding-sm px-4 pt-0">
         <div className="container-custom max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
+
+            {/* LEFT: Contact Form */}
             <div>
-              <h2 className="heading-2 mb-6">Send us a Message</h2>
-              <p className="body-large mb-8">
-                Fill out the form below and we'll get back to you as soon as possible.
-              </p>
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 mb-3">{c.formTitle}</h2>
+                <p className="text-gray-600">{c.formDesc}</p>
+              </div>
 
               {isSubmitted ? (
-                <Card className="card-elevated p-8 text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-600" />
+                <Card className="card-elevated p-10 text-center overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-emerald-500"></div>
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-xl">
+                    <CheckCircle className="w-10 h-10 text-white" />
                   </div>
-                  <h3 className="heading-3 mb-2">Message Sent!</h3>
-                  <p className="body-medium">Thank you for contacting us. We'll get back to you within 24 hours.</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{c.successTitle}</h3>
+                  <p className="text-gray-600">{c.successDesc}</p>
                 </Card>
               ) : (
-                <Card className="card-elevated p-8">
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="name" className="body-medium font-medium text-gray-700">Name *</Label>
-                        <Input
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          required
-                          className="mt-2 h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white"
-                        />
+                <Card className="card-elevated overflow-hidden">
+                  <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                  <CardContent className="p-8">
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <Label htmlFor="name" className="text-sm font-semibold text-gray-700">{c.labelName}</Label>
+                          <Input id="name" name="name" value={formData.name} onChange={handleInputChange} required placeholder={c.placeholderName} className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <Label htmlFor="email" className="text-sm font-semibold text-gray-700">{c.labelEmail}</Label>
+                          <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required placeholder={c.placeholderEmail} className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white" />
+                        </div>
                       </div>
-                      <div>
-                        <Label htmlFor="email" className="body-medium font-medium text-gray-700">Email *</Label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                          className="mt-2 h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white"
-                        />
+
+                      <div className="space-y-1.5">
+                        <Label htmlFor="inquiryType" className="text-sm font-semibold text-gray-700">{c.labelType}</Label>
+                        <select id="inquiryType" name="inquiryType" value={formData.inquiryType} onChange={handleInputChange} className="w-full h-12 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 bg-white">
+                          {c.typeOptions.map((opt, i) => (
+                            <option key={i} value={["general","lesson","pricing","trial","feedback"][i]}>{opt}</option>
+                          ))}
+                        </select>
                       </div>
-                    </div>
 
-                    <div>
-                      <Label htmlFor="inquiryType" className="body-medium font-medium text-gray-700">Inquiry Type</Label>
-                      <select
-                        id="inquiryType"
-                        name="inquiryType"
-                        value={formData.inquiryType}
-                        onChange={handleInputChange}
-                        className="mt-2 w-full h-12 px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                      >
-                        <option value="general">General Inquiry</option>
-                        <option value="support">Technical Support</option>
-                        <option value="billing">Billing Question</option>
-                        <option value="partnership">Partnership</option>
-                        <option value="feedback">Feedback</option>
-                      </select>
-                    </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="subject" className="text-sm font-semibold text-gray-700">{c.labelSubject}</Label>
+                        <Input id="subject" name="subject" value={formData.subject} onChange={handleInputChange} required placeholder={c.placeholderSubject} className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white" />
+                      </div>
 
-                    <div>
-                      <Label htmlFor="subject" className="body-medium font-medium text-gray-700">Subject *</Label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-2 h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white"
-                      />
-                    </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="message" className="text-sm font-semibold text-gray-700">{c.labelMessage}</Label>
+                        <Textarea id="message" name="message" value={formData.message} onChange={handleInputChange} required rows={5} className="border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white resize-none" placeholder={c.placeholderMessage} />
+                      </div>
 
-                    <div>
-                      <Label htmlFor="message" className="body-medium font-medium text-gray-700">Message *</Label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        required
-                        rows={6}
-                        className="mt-2 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white"
-                        placeholder="Tell us how we can help you..."
-                      />
-                    </div>
-
-                    <Button 
-                      type="submit" 
-                      className="w-full h-12 btn-primary"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          Send Message
-                          <Send className="ml-2 h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
-                  </form>
+                      <Button type="submit" className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]" disabled={isSubmitting}>
+                        {isSubmitting ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            {c.btnSending}
+                          </>
+                        ) : (
+                          <>
+                            {c.btnSend}
+                            <Send className="ml-2 h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                    </form>
+                  </CardContent>
                 </Card>
               )}
+            </div>
+
+            {/* RIGHT: What to expect + Quote */}
+            <div className="flex flex-col gap-8">
+              {/* What to expect */}
+              <Card className="card-elevated overflow-hidden">
+                <div className="h-1 bg-gradient-to-r from-violet-500 to-pink-500"></div>
+                <CardContent className="p-8">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{c.expectTitle}</h3>
+                  <p className="text-gray-500 mb-6 text-sm">{c.expectDesc}</p>
+                  <div className="space-y-5">
+                    {c.expectItems.map((item, i) => (
+                      <div key={i} className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl">
+                          {expectEmojis[i]}
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-1">{item.title}</h4>
+                          <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 pt-6 border-t border-gray-100">
+                    <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]" asChild>
+                      <a href="https://wa.me/37060000000" target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="mr-2 h-5 w-5" />
+                        {c.btnWhatsApp}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Teacher quote card */}
+              <Card className="card-elevated overflow-hidden bg-gradient-to-br from-indigo-600 to-purple-700 text-white border-0">
+                <CardContent className="p-8">
+                  <div className="flex mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 text-yellow-300 fill-current" />
+                    ))}
+                  </div>
+                  <blockquote className="text-lg font-medium leading-relaxed mb-6 opacity-95">
+                    {c.quote}
+                  </blockquote>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center font-bold text-lg">E</div>
+                    <div>
+                      <p className="font-bold">Evelina</p>
+                      <p className="text-sm text-indigo-200">{c.quoteAuthor}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Response time badge */}
+              <div className="flex items-center gap-3 bg-white rounded-2xl shadow-md border border-gray-100 px-5 py-4">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse flex-shrink-0"></div>
+                <p className="text-sm text-gray-600">{c.responseTime}</p>
+              </div>
             </div>
 
           </div>

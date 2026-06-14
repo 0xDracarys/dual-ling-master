@@ -404,7 +404,7 @@ export default function TeacherDashboard() {
             </Card>
 
             <Card className="card-interactive group">
-              <Link href="/teacher/analytics">
+              <Link href="/teacher/dashboard">
                 <CardContent className="p-6 text-center">
                   <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                     <BarChart3 className="h-8 w-8 text-white" />

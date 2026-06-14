@@ -88,13 +88,18 @@ export class UserRepository {
       // Convert Firestore Timestamps to Date objects
       return {
         ...data,
-        subscription: {
+        subscription: data.subscription ? {
           ...data.subscription,
-          startDate: data.subscription.startDate?.toDate(),
-          endDate: data.subscription.endDate?.toDate() || null,
+          startDate: data.subscription.startDate?.toDate?.() ?? new Date(),
+          endDate: data.subscription.endDate?.toDate?.() ?? null,
+        } : {
+          plan: 'free',
+          status: 'active',
+          startDate: new Date(),
+          endDate: null,
         },
-        createdAt: data.createdAt?.toDate(),
-        updatedAt: data.updatedAt?.toDate(),
+        createdAt: data.createdAt?.toDate?.() ?? new Date(),
+        updatedAt: data.updatedAt?.toDate?.() ?? new Date(),
       } as FirestoreUser;
     } catch (error: any) {
       traceLogger.log('error', 'Firestore', 'Failed to fetch user', error);
@@ -129,13 +134,18 @@ export class UserRepository {
 
       return {
         ...data,
-        subscription: {
+        subscription: data.subscription ? {
           ...data.subscription,
-          startDate: data.subscription.startDate?.toDate(),
-          endDate: data.subscription.endDate?.toDate() || null,
+          startDate: data.subscription.startDate?.toDate?.() ?? new Date(),
+          endDate: data.subscription.endDate?.toDate?.() ?? null,
+        } : {
+          plan: 'free',
+          status: 'active',
+          startDate: new Date(),
+          endDate: null,
         },
-        createdAt: data.createdAt?.toDate(),
-        updatedAt: data.updatedAt?.toDate(),
+        createdAt: data.createdAt?.toDate?.() ?? new Date(),
+        updatedAt: data.updatedAt?.toDate?.() ?? new Date(),
       } as FirestoreUser;
     } catch (error: any) {
       traceLogger.log('error', 'Firestore', 'Failed to fetch user by email', { error: error.message });
@@ -245,13 +255,18 @@ export class UserRepository {
         const data = doc.data() as any;
         return {
           ...data,
-          subscription: {
+          subscription: data.subscription ? {
             ...data.subscription,
-            startDate: data.subscription.startDate?.toDate(),
-            endDate: data.subscription.endDate?.toDate() || null,
+            startDate: data.subscription.startDate?.toDate?.() ?? new Date(),
+            endDate: data.subscription.endDate?.toDate?.() ?? null,
+          } : {
+            plan: 'free',
+            status: 'active',
+            startDate: new Date(),
+            endDate: null,
           },
-          createdAt: data.createdAt?.toDate(),
-          updatedAt: data.updatedAt?.toDate(),
+          createdAt: data.createdAt?.toDate?.() ?? new Date(),
+          updatedAt: data.updatedAt?.toDate?.() ?? new Date(),
         } as FirestoreUser;
       });
 
@@ -260,6 +275,44 @@ export class UserRepository {
       return users;
     } catch (error: any) {
       traceLogger.log('error', 'Firestore', 'Failed to fetch users by role', { error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Get all users (Admin only)
+   */
+  async getAll(): Promise<FirestoreUser[]> {
+    traceLogger.log('info', 'Firestore', 'Fetching all users');
+
+    try {
+      const q = query(collection(db, this.collectionName));
+      const snapshot = await getDocs(q);
+      
+      const users = snapshot.docs.map(doc => {
+        const data = doc.data() as any;
+        return {
+          id: doc.id,
+          ...data,
+          subscription: data.subscription ? {
+            ...data.subscription,
+            startDate: data.subscription?.startDate?.toDate?.() ?? new Date(),
+            endDate: data.subscription?.endDate?.toDate?.() ?? null,
+          } : {
+            plan: 'free',
+            status: 'active',
+            startDate: new Date(),
+            endDate: null,
+          },
+          createdAt: data.createdAt?.toDate?.() ?? new Date(),
+          updatedAt: data.updatedAt?.toDate?.() ?? new Date(),
+        };
+      });
+
+      traceLogger.log('info', 'Firestore', 'All users fetched', { count: users.length });
+      return users;
+    } catch (error: any) {
+      traceLogger.log('error', 'Firestore', 'Failed to fetch all users', { error: error.message });
       throw error;
     }
   }
