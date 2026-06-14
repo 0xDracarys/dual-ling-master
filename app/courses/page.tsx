@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useLanguage } from "@/hooks/use-language"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -44,6 +45,7 @@ const coursePlaceholderGradients = [
 ]
 
 export default function CoursesPage() {
+  const { t } = useLanguage()
   const [courses, setCourses] = useState<Course[]>([])
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -158,21 +160,21 @@ export default function CoursesPage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-6">
               <Sparkles className="h-4 w-4" />
-              Pasirinkite savo mokymosi kelią
+              {t.coursesPage.badge}
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-              Lietuvių ↔ Anglų
-              <span className="block text-indigo-200 mt-1">Kalbų kursai</span>
+              {t.coursesPage.titleMain}
+              <span className="block text-indigo-200 mt-1">{t.coursesPage.titleSub}</span>
             </h1>
             <p className="text-lg text-indigo-100 mb-8 max-w-2xl">
-              Specializuoti kursai, sukurti lietuviams mokytis anglų kalbos ir anglakalbiai lietuvių. Su ekspertų dėstytojais ir kultūriškai pritaikyta programa.
+              {t.coursesPage.description}
             </p>
             {/* Mini stats */}
             <div className="flex flex-wrap gap-6">
               {[
-                { icon: BookOpen, value: `${courses.length}`, label: "kursai" },
-                { icon: Layers, value: "3", label: "lygiai" },
-                { icon: Globe, value: "2", label: "kalbos" },
+                { icon: BookOpen, value: `${courses.length}`, label: t.coursesPage.stats.courses },
+                { icon: Layers, value: "3", label: t.coursesPage.stats.levels },
+                { icon: Globe, value: "2", label: t.coursesPage.stats.languages },
               ].map((stat, i) => (
                 <div key={i} className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2">
                   <stat.icon className="h-5 w-5 text-indigo-200" />
@@ -192,7 +194,7 @@ export default function CoursesPage() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
-                placeholder="Ieškoti kursų..."
+                placeholder={t.coursesPage.searchPlaceholder}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 h-11 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white"
@@ -202,39 +204,39 @@ export default function CoursesPage() {
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="h-11 border-gray-200 focus:border-indigo-500 text-gray-900 bg-white">
                 <Globe className="h-4 w-4 mr-2 text-gray-400" />
-                <SelectValue placeholder="Tikslinė kalba" />
+                <SelectValue placeholder={t.coursesPage.filterLang} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Visos kalbos</SelectItem>
-                <SelectItem value="lt">🇱🇹 Lietuvių</SelectItem>
-                <SelectItem value="en">🇬🇧 Anglų</SelectItem>
+                <SelectItem value="all">{t.coursesPage.filterLangAll}</SelectItem>
+                <SelectItem value="lt">{t.coursesPage.filterLangLt}</SelectItem>
+                <SelectItem value="en">{t.coursesPage.filterLangEn}</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
               <SelectTrigger className="h-11 border-gray-200 focus:border-indigo-500 text-gray-900 bg-white">
                 <Layers className="h-4 w-4 mr-2 text-gray-400" />
-                <SelectValue placeholder="Lygis" />
+                <SelectValue placeholder={t.coursesPage.filterLevel} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Visi lygiai</SelectItem>
-                <SelectItem value="beginner">🟢 Pradedantysis</SelectItem>
-                <SelectItem value="intermediate">🟡 Vidutinis</SelectItem>
-                <SelectItem value="advanced">🔴 Pažengęs</SelectItem>
+                <SelectItem value="all">{t.coursesPage.filterLevelAll}</SelectItem>
+                <SelectItem value="beginner">🟢 {t.coursesPage.filterLevelBeginner}</SelectItem>
+                <SelectItem value="intermediate">🟡 {t.coursesPage.filterLevelIntermediate}</SelectItem>
+                <SelectItem value="advanced">🔴 {t.coursesPage.filterLevelAdvanced}</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="h-11 border-gray-200 focus:border-indigo-500 text-gray-900 bg-white">
                 <TrendingUp className="h-4 w-4 mr-2 text-gray-400" />
-                <SelectValue placeholder="Rikiuoti pagal" />
+                <SelectValue placeholder={t.coursesPage.sortLabel} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="newest">Naujausi</SelectItem>
-                <SelectItem value="oldest">Seniausi</SelectItem>
-                <SelectItem value="rating">Geriausiai įvertinti</SelectItem>
-                <SelectItem value="students">Populiariausi</SelectItem>
-                <SelectItem value="duration">Trumpiausi</SelectItem>
+                <SelectItem value="newest">{t.coursesPage.sortNewest}</SelectItem>
+                <SelectItem value="oldest">{t.coursesPage.sortOldest}</SelectItem>
+                <SelectItem value="rating">{t.coursesPage.sortRating}</SelectItem>
+                <SelectItem value="students">{t.coursesPage.sortPopular}</SelectItem>
+                <SelectItem value="duration">{t.coursesPage.sortDuration}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -245,8 +247,8 @@ export default function CoursesPage() {
       <div className="container-custom section-padding-sm">
         <div className="flex items-center justify-between mb-6">
           <p className="text-gray-600 font-medium">
-            Rodoma <span className="text-indigo-600 font-bold">{filteredCourses.length}</span> iš{" "}
-            <span className="font-bold">{courses.length}</span> kursų
+            {t.coursesPage.showingText1} <span className="text-indigo-600 font-bold">{filteredCourses.length}</span> {t.coursesPage.showingText2}{" "}
+            <span className="font-bold">{courses.length}</span> {t.coursesPage.showingText3}
           </p>
           {(searchTerm || selectedCategory !== "all" || selectedDifficulty !== "all") && (
             <Button
@@ -255,7 +257,7 @@ export default function CoursesPage() {
               onClick={() => { setSearchTerm(""); setSelectedCategory("all"); setSelectedDifficulty("all") }}
               className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
             >
-              Išvalyti filtrus ✕
+              {t.coursesPage.clearFilters}
             </Button>
           )}
         </div>
@@ -265,15 +267,15 @@ export default function CoursesPage() {
             <div className="w-24 h-24 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <BookOpen className="h-12 w-12 text-indigo-400" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Kursų nerasta</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">{t.coursesPage.notFoundTitle}</h3>
             <p className="text-gray-500 mb-6 max-w-md mx-auto">
-              Pabandykite pakeisti paieškos kriterijus arba peržiūrėkite visus kursus
+              {t.coursesPage.notFoundDesc}
             </p>
             <Button
               onClick={() => { setSearchTerm(""); setSelectedCategory("all"); setSelectedDifficulty("all") }}
               className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700"
             >
-              Rodyti visus kursus
+              {t.coursesPage.showAllBtn}
             </Button>
           </div>
         ) : (
@@ -305,7 +307,9 @@ export default function CoursesPage() {
                     <div className="absolute top-3 left-3">
                       <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${level.color}`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${level.dot}`}></span>
-                        {level.label}
+                        {course.level === 'beginner' && t.coursesPage.filterLevelBeginner}
+                        {course.level === 'intermediate' && t.coursesPage.filterLevelIntermediate}
+                        {course.level === 'advanced' && t.coursesPage.filterLevelAdvanced}
                       </span>
                     </div>
                     {/* Language flag overlay */}
@@ -318,7 +322,7 @@ export default function CoursesPage() {
                     <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition-colors leading-snug">
                       {course.title}
                     </CardTitle>
-                    <p className="text-sm text-gray-500">su {course.teacherName}</p>
+                    <p className="text-sm text-gray-500">{t.coursesPage.teacherPrefix} {course.teacherName}</p>
                   </CardHeader>
 
                   <CardContent className="flex-1 flex flex-col gap-4">
@@ -350,7 +354,7 @@ export default function CoursesPage() {
                     {/* CTA */}
                     <Link href={`/course/${course.id}`} className="mt-auto">
                       <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] group/btn">
-                        Peržiūrėti kursą
+                        {t.coursesPage.viewCourseBtn}
                         <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
                     </Link>
