@@ -219,10 +219,10 @@ export default function PrivacyPage() {
                 </p>
                 <div className="space-y-2">
                   <p className="body-medium">
-                    <strong>Email:</strong> privacy@langexchange.com
+                    <strong>Email:</strong> evelina@englishwithevelina.lt
                   </p>
                   <p className="body-medium">
-                    <strong>Address:</strong> 123 Learning Street, Education City, EC 12345
+                    <strong>Address:</strong> Lithuania
                   </p>
                 </div>
               </CardContent>

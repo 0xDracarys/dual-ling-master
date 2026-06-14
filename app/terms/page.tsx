@@ -15,7 +15,7 @@ export default function TermsPage() {
               Terms of <span className="gradient-text">Service</span>
             </h1>
             <p className="body-large max-w-3xl mx-auto">
-              These terms govern your use of LangExchange. Please read them carefully before using our platform.
+              These terms govern your use of English With Evelina. Please read them carefully before using our platform.
             </p>
             <p className="body-medium text-gray-600 mt-4">
               Last updated: {new Date().toLocaleDateString()}
@@ -86,7 +86,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="body-medium text-gray-600">
-                  By accessing or using LangExchange, you agree to be bound by these Terms of Service. 
+                  By accessing or using English With Evelina, you agree to be bound by these Terms of Service. 
                   If you do not agree to these terms, please do not use our platform.
                 </p>
                 <p className="body-medium text-gray-600">
@@ -169,7 +169,7 @@ export default function TermsPage() {
                   <h4 className="heading-4 mb-2">Our Content</h4>
                   <p className="body-medium text-gray-600">
                     All content on our platform, including courses, videos, text, and software, 
-                    is owned by LangExchange or our licensors and protected by copyright laws.
+                    is owned by English With Evelina or our licensors and protected by copyright laws.
                   </p>
                 </div>
                 <div>
@@ -262,7 +262,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent>
                 <p className="body-medium text-gray-600 mb-4">
-                  These terms are governed by the laws of the jurisdiction where LangExchange is incorporated. 
+                  These terms are governed by the laws of the jurisdiction where English With Evelina is incorporated. 
                   Any disputes will be resolved through binding arbitration.
                 </p>
                 <p className="body-medium text-gray-600">
