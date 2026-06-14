@@ -1,13 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Mail, Clock, MessageCircle, Send, ArrowRight, CheckCircle, Sparkles, Star, MapPin } from "lucide-react"
-import Link from "next/link"
+import { Mail, Clock, MessageCircle, ArrowRight, Sparkles, Star, MapPin } from "lucide-react"
 import { useLanguage } from "@/hooks/use-language"
 
 const methodIcons = [Mail, MessageCircle, Clock, MapPin]
@@ -18,33 +13,6 @@ const expectEmojis = ["🎯", "📊", "📋"]
 export default function ContactPage() {
   const { t } = useLanguage()
   const c = t.contact
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-    inquiryType: "general"
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: "", email: "", subject: "", message: "", inquiryType: "general" })
-    }, 3000)
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -116,67 +84,12 @@ export default function ContactPage() {
                 <p className="text-gray-600">{c.formDesc}</p>
               </div>
 
-              {isSubmitted ? (
-                <Card className="card-elevated p-10 text-center overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-emerald-500"></div>
-                  <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-xl">
-                    <CheckCircle className="w-10 h-10 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{c.successTitle}</h3>
-                  <p className="text-gray-600">{c.successDesc}</p>
-                </Card>
-              ) : (
-                <Card className="card-elevated overflow-hidden">
-                  <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                  <CardContent className="p-8">
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                          <Label htmlFor="name" className="text-sm font-semibold text-gray-700">{c.labelName}</Label>
-                          <Input id="name" name="name" value={formData.name} onChange={handleInputChange} required placeholder={c.placeholderName} className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label htmlFor="email" className="text-sm font-semibold text-gray-700">{c.labelEmail}</Label>
-                          <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required placeholder={c.placeholderEmail} className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white" />
-                        </div>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label htmlFor="inquiryType" className="text-sm font-semibold text-gray-700">{c.labelType}</Label>
-                        <select id="inquiryType" name="inquiryType" value={formData.inquiryType} onChange={handleInputChange} className="w-full h-12 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 bg-white">
-                          {c.typeOptions.map((opt, i) => (
-                            <option key={i} value={["general","lesson","pricing","trial","feedback"][i]}>{opt}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label htmlFor="subject" className="text-sm font-semibold text-gray-700">{c.labelSubject}</Label>
-                        <Input id="subject" name="subject" value={formData.subject} onChange={handleInputChange} required placeholder={c.placeholderSubject} className="h-12 border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white" />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label htmlFor="message" className="text-sm font-semibold text-gray-700">{c.labelMessage}</Label>
-                        <Textarea id="message" name="message" value={formData.message} onChange={handleInputChange} required rows={5} className="border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900 bg-white resize-none" placeholder={c.placeholderMessage} />
-                      </div>
-
-                      <Button type="submit" className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]" disabled={isSubmitting}>
-                        {isSubmitting ? (
-                          <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                            {c.btnSending}
-                          </>
-                        ) : (
-                          <>
-                            {c.btnSend}
-                            <Send className="ml-2 h-4 w-4" />
-                          </>
-                        )}
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              )}
+              <Card className="card-elevated overflow-hidden">
+                <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+                <CardContent className="p-0">
+                  <iframe src="https://whatsform.com/2lk-GU" width="100%" height="600" frameBorder="0" className="w-full"></iframe>
+                </CardContent>
+              </Card>
             </div>
 
             {/* RIGHT: What to expect + Quote */}
