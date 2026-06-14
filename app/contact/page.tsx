@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, Clock, MessageCircle, ArrowRight, Sparkles, Star, MapPin, Target, BarChart, ClipboardList } from "lucide-react"
 import { useLanguage } from "@/hooks/use-language"
+import { useForm, ValidationError } from '@formspree/react'
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
 
 const methodIcons = [Mail, MessageCircle, Clock, MapPin]
 const methodGradients = ["from-indigo-500 to-blue-500", "from-green-500 to-emerald-500", "from-violet-500 to-purple-500", "from-pink-500 to-rose-500"]
@@ -13,6 +17,7 @@ const expectIcons = [Target, BarChart, ClipboardList]
 export default function ContactPage() {
   const { t } = useLanguage()
   const c = t.contact
+  const [state, handleSubmit] = useForm('mjgdjoge')
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -86,8 +91,38 @@ export default function ContactPage() {
 
               <Card className="card-elevated overflow-hidden">
                 <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                <CardContent className="p-0">
-                  <iframe src="https://whatsform.com/2lk-GU" width="100%" height="600" frameBorder="0" className="w-full"></iframe>
+                <CardContent className="p-6 md:p-8">
+                  {state.succeeded ? (
+                    <div className="text-center py-8">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Sparkles className="h-8 w-8 text-green-600" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
+                      <p className="text-gray-600">Thanks for reaching out. I'll get back to you soon.</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Full Name</Label>
+                        <Input id="name" type="text" name="name" placeholder="John Doe" required />
+                        <ValidationError prefix="Name" field="name" errors={state.errors} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input id="email" type="email" name="email" placeholder="john@example.com" required />
+                        <ValidationError prefix="Email" field="email" errors={state.errors} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="message">Your Message</Label>
+                        <Textarea id="message" name="message" placeholder="How can I help you improve your English?" rows={5} required />
+                        <ValidationError prefix="Message" field="message" errors={state.errors} />
+                      </div>
+                      <Button type="submit" disabled={state.submitting} className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold shadow-md">
+                        {state.submitting ? 'Sending...' : 'Send Message'}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </form>
+                  )}
                 </CardContent>
               </Card>
             </div>
