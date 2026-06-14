@@ -7,7 +7,7 @@ import { useLanguage } from "@/hooks/use-language"
 
 const methodIcons = [Mail, MessageCircle, Clock, MapPin]
 const methodGradients = ["from-indigo-500 to-blue-500", "from-green-500 to-emerald-500", "from-violet-500 to-purple-500", "from-pink-500 to-rose-500"]
-const methodActions = ["mailto:evelina@englishwithevelina.lt", "https://wa.me/37060000000", null, null]
+const methodActions = ["mailto:evelina@englishwithevelina.lt", "https://wa.me/37067510789", null, null]
 const expectIcons = [Target, BarChart, ClipboardList]
 
 export default function ContactPage() {
@@ -119,7 +119,7 @@ export default function ContactPage() {
 
                   <div className="mt-8 pt-6 border-t border-gray-100">
                     <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]" asChild>
-                      <a href="https://wa.me/37060000000" target="_blank" rel="noopener noreferrer">
+                      <a href="https://wa.me/37067510789" target="_blank" rel="noopener noreferrer">
                         <MessageCircle className="mr-2 h-5 w-5" />
                         {c.btnWhatsApp}
                         <ArrowRight className="ml-2 h-4 w-4" />
