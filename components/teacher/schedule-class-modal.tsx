@@ -473,31 +473,15 @@ export function ScheduleClassModal({
             {/* Date Picker */}
             <div className="space-y-2">
               <Label>Date *</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      'w-full justify-start text-left font-normal',
-                      !selectedDate && 'text-muted-foreground'
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {selectedDate ? format(selectedDate, 'PPP') : 'Pick a date'}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-white" align="start">
-                  <CalendarNew
-                    mode="single"
-                    selectedDate={selectedDate}
-                    onSelectSingle={setSelectedDate}
-                    disabled={(date: Date) => date < new Date()}
-                    value={null}
-                    onChange={() => {}}
-                    allowClear
-                  />
-                </PopoverContent>
-              </Popover>
+              <CalendarNew
+                mode="single"
+                selectedDate={selectedDate}
+                onSelectSingle={setSelectedDate}
+                disabled={(date: Date) => date < new Date()}
+                value={null}
+                onChange={() => {}}
+                allowClear
+              />
             </div>
 
             {/* Time Picker */}
@@ -563,31 +547,15 @@ export function ScheduleClassModal({
 
                 <div className="space-y-2">
                   <Label>End Date *</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          'w-full justify-start text-left font-normal',
-                          !recurrenceEndDate && 'text-muted-foreground'
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {recurrenceEndDate ? format(recurrenceEndDate, 'PPP') : 'Pick end date'}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 bg-white" align="start">
-                      <CalendarNew
-                        mode="single"
-                        selectedDate={recurrenceEndDate}
-                        onSelectSingle={setRecurrenceEndDate}
-                        disabled={(date: Date) => !selectedDate || date <= selectedDate}
-                        value={null}
-                        onChange={() => {}}
-                        allowClear
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <CalendarNew
+                    mode="single"
+                    selectedDate={recurrenceEndDate}
+                    onSelectSingle={setRecurrenceEndDate}
+                    disabled={(date: Date) => !selectedDate || date <= selectedDate}
+                    value={null}
+                    onChange={() => {}}
+                    allowClear
+                  />
                 </div>
               </div>
             )}

@@ -400,6 +400,7 @@ export class GoogleCalendarService {
    * Validate timezone string
    */
   private validateTimezone(timezone: string): void {
+    if (timezone === 'UTC') return;
     if (!VALID_TIMEZONES.includes(timezone)) {
       throw new Error(`Invalid timezone: ${timezone}`);
     }
