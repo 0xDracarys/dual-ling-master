@@ -171,8 +171,7 @@ Ensure all descriptions, titles, questions, options, and instruction texts are w
                     }
                   }
                 }
-              },
-              required: ["title", "type", "content"]
+              }
             },
             required: ["title", "type", "content"]
           }
