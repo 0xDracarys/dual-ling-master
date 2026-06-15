@@ -11,7 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { useAuth } from "@/hooks/use-auth"
-import { ArrowLeft, Plus, X, BookOpen, Play, CheckCircle, AlertCircle } from "lucide-react"
+import { ArrowLeft, Plus, X, BookOpen, Play, CheckCircle, AlertCircle, Sparkles, Loader2 } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 interface Lesson {
   title: string
@@ -50,6 +51,106 @@ export default function CreateCourse() {
   const [backendError, setBackendError] = useState("")
   const { token } = useAuth()
   const router = useRouter()
+
+  // AI Outline Generation State
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false)
+  const [aiPrompt, setAiPrompt] = useState("")
+  const [aiLearningLanguage, setAiLearningLanguage] = useState("")
+  const [aiNativeLanguage, setAiNativeLanguage] = useState("")
+  const [aiDifficulty, setAiDifficulty] = useState<"beginner" | "intermediate" | "advanced">("beginner")
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [aiError, setAiError] = useState<string | null>(null)
+  const [isTeacherAiEnabled, setIsTeacherAiEnabled] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    async function checkAiAccess() {
+      if (!token) return
+      try {
+        const res = await fetch("/api/profile", {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        })
+        const result = await res.json()
+        if (result.success) {
+          setIsTeacherAiEnabled(!!result.profile?.aiEnabled)
+        }
+      } catch (err) {
+        console.error("Error checking teacher AI access status:", err)
+      }
+    }
+    checkAiAccess()
+  }, [token])
+
+  // Sync AI modal languages with course form selections when opened
+  const handleOpenAiModal = () => {
+    setAiLearningLanguage(courseData.learningLanguage)
+    setAiNativeLanguage(courseData.nativeLanguage)
+    setAiDifficulty(courseData.difficulty)
+    
+    if (isTeacherAiEnabled === false) {
+      setAiError("AI Course creation features are not enabled on your account. Please connect with the administrator to enable AI features.")
+    } else {
+      setAiError(null)
+    }
+    setIsAiModalOpen(true)
+  }
+
+  const handleAiGenerate = async () => {
+    try {
+      setIsGenerating(true)
+      setAiError(null)
+      const res = await fetch("/api/teacher/courses/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          prompt: aiPrompt,
+          learningLanguage: aiLearningLanguage,
+          nativeLanguage: aiNativeLanguage,
+          difficulty: aiDifficulty
+        })
+      })
+      const result = await res.json()
+      if (result.success) {
+        const generated = result.data
+        setCourseData({
+          title: generated.title || "",
+          description: generated.description || "",
+          shortDescription: generated.shortDescription || "",
+          learningLanguage: aiLearningLanguage,
+          nativeLanguage: aiNativeLanguage,
+          difficulty: generated.difficulty || aiDifficulty,
+          estimatedDuration: generated.estimatedDuration || 0,
+          thumbnail: courseData.thumbnail || "",
+          tags: generated.tags || []
+        })
+        if (generated.lessons && Array.isArray(generated.lessons)) {
+          setLessons(generated.lessons.map((l: any, idx: number) => ({
+            ...l,
+            content: {
+              ...l.content,
+              questions: l.content?.questions?.map((q: any) => ({
+                ...q,
+                id: crypto.randomUUID()
+              }))
+            },
+            order: idx
+          })))
+        }
+        setIsAiModalOpen(false)
+        setAiPrompt("")
+      } else {
+        setAiError(result.error || "Failed to generate outline")
+      }
+    } catch (err: any) {
+      setAiError(err.message || "An error occurred during generation")
+    } finally {
+      setIsGenerating(false)
+    }
+  }
 
   const addLesson = () => {
     const newLesson: Lesson = {
@@ -219,17 +320,151 @@ export default function CreateCourse() {
   return (
     <ProtectedRoute allowedRoles={["teacher"]}>
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => router.back()} 
-            className="mb-4"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create New Course</h1>
-          <p className="text-gray-600">Build an engaging language learning course for your students</p>
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <Button 
+              variant="ghost" 
+              onClick={() => router.back()} 
+              className="mb-4"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Create New Course</h1>
+            <p className="text-gray-600">Build an engaging language learning course for your students</p>
+          </div>
+          <div className="flex items-end">
+            <Dialog open={isAiModalOpen} onOpenChange={setIsAiModalOpen}>
+              <DialogTrigger asChild>
+                <Button 
+                  type="button"
+                  onClick={handleOpenAiModal}
+                  className={isTeacherAiEnabled === false 
+                    ? "bg-gray-100 hover:bg-gray-200 text-gray-500 border border-gray-200 font-semibold shadow-sm gap-2"
+                    : "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold shadow-md gap-2"
+                  }
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {isTeacherAiEnabled === false ? "Connect to Admin for AI" : "Auto-Generate with AI"}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-purple-600" />
+                    AI Course Outline Generator
+                  </DialogTitle>
+                  <DialogDescription>
+                    {isTeacherAiEnabled === false 
+                      ? "AI course outline generation is currently disabled. Please contact your system administrator to enable access."
+                      : "Describe what topic or skills you want this course to teach. The AI will design a course title, description, tags, and several matching lessons."
+                    }
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="aiPrompt">What should this course teach?</Label>
+                    <Textarea 
+                      id="aiPrompt"
+                      value={aiPrompt}
+                      onChange={(e) => setAiPrompt(e.target.value)}
+                      placeholder={isTeacherAiEnabled === false 
+                        ? "AI features disabled. Connect with the administrator."
+                        : "e.g. A travel guide for beginners focusing on ordering food, asking for directions, and greeting locals."
+                      }
+                      rows={4}
+                      disabled={isTeacherAiEnabled === false}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="aiLearningLanguage">Target Language</Label>
+                      <Select 
+                        value={aiLearningLanguage} 
+                        onValueChange={setAiLearningLanguage}
+                        disabled={isTeacherAiEnabled === false}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select target language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="en">🇺🇸 English</SelectItem>
+                          <SelectItem value="lt">🇱🇹 Lithuanian</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="aiNativeLanguage">Native Language</Label>
+                      <Select 
+                        value={aiNativeLanguage} 
+                        onValueChange={setAiNativeLanguage}
+                        disabled={isTeacherAiEnabled === false}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select native language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="en">🇺🇸 English</SelectItem>
+                          <SelectItem value="lt">🇱🇹 Lithuanian</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="aiDifficulty">Difficulty</Label>
+                    <Select 
+                      value={aiDifficulty} 
+                      onValueChange={(value: any) => setAiDifficulty(value)}
+                      disabled={isTeacherAiEnabled === false}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="beginner">Beginner</SelectItem>
+                        <SelectItem value="intermediate">Intermediate</SelectItem>
+                        <SelectItem value="advanced">Advanced</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {aiError && (
+                    <p className="text-sm text-red-600 flex items-center gap-1 font-medium bg-red-50 p-2.5 rounded-lg">
+                      <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                      {aiError}
+                    </p>
+                  )}
+                </div>
+                <div className="flex justify-end gap-3 border-t pt-4">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setIsAiModalOpen(false)}
+                    disabled={isGenerating}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    type="button" 
+                    onClick={handleAiGenerate}
+                    disabled={isGenerating || !aiPrompt.trim() || !aiLearningLanguage || !aiNativeLanguage || isTeacherAiEnabled === false}
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin animate-infinite duration-1000" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="mr-2 h-4 w-4" />
+                        Generate Outline
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">

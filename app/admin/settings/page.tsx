@@ -1,35 +1,87 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ProtectedRoute } from "@/components/auth/protected-route"
+import { useAuth } from "@/hooks/use-auth"
 import { 
   Settings, Globe, Shield, Bell, Palette, 
-  Save, CheckCircle, AlertTriangle
+  Save, CheckCircle, AlertTriangle, Loader2
 } from "lucide-react"
 
 export default function AdminSettings() {
+  const { token } = useAuth()
   const [saved, setSaved] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  
   const [settings, setSettings] = useState({
     siteName: "English With Evelina",
     contactEmail: "evelina@englishwithevelina.lt",
     supportedLanguages: "en, lt",
-    aiModel: "gemini-2.5-flash",
+    aiModel: "gemini-1.5-flash",
     maxFileSize: "10",
     maintenanceMode: false,
     aiEnabled: true,
     registrationOpen: true,
     emailNotifications: true,
+    geminiApiKey: ""
   })
 
-  const handleSave = () => {
-    // In a real app, POST to /api/admin/settings
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+  useEffect(() => {
+    async function loadSettings() {
+      if (!token) return
+      try {
+        setLoading(true)
+        const res = await fetch("/api/admin/settings", {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        })
+        const result = await res.json()
+        if (result.success) {
+          setSettings(result.data)
+        } else {
+          setError(result.error || "Failed to load settings")
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred while loading settings")
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadSettings()
+  }, [token])
+
+  const handleSave = async () => {
+    if (!token) return
+    try {
+      setSaving(true)
+      setError(null)
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(settings)
+      })
+      const result = await res.json()
+      if (result.success) {
+        setSaved(true)
+        setTimeout(() => setSaved(false), 3000)
+      } else {
+        setError(result.error || "Failed to save settings")
+      }
+    } catch (err: any) {
+      setError(err.message || "An error occurred while saving settings")
+    } finally {
+      setSaving(false)
+    }
   }
 
   const settingSections = [
@@ -49,6 +101,7 @@ export default function AdminSettings() {
       color: "from-purple-500 to-pink-500",
       fields: [
         { key: "aiModel", label: "AI Model Name", type: "text" },
+        { key: "geminiApiKey", label: "Gemini API Key (Optional override, leave empty for default)", type: "password" },
         { key: "maxFileSize", label: "Max Upload Size (MB)", type: "number" },
       ],
     },
@@ -56,10 +109,23 @@ export default function AdminSettings() {
 
   const toggleSettings = [
     { key: "maintenanceMode", label: "Maintenance Mode", description: "Disable public access to the site", danger: true },
-    { key: "aiEnabled", label: "AI TeacherBot", description: "Enable the AI assistant for teachers", danger: false },
+    { key: "aiEnabled", label: "AI TeacherBot & Course Creator", description: "Enable AI outline creation features globally", danger: false },
     { key: "registrationOpen", label: "Open Registration", description: "Allow new users to create accounts", danger: false },
     { key: "emailNotifications", label: "Email Notifications", description: "Send system emails to users", danger: false },
   ]
+
+  if (loading) {
+    return (
+      <ProtectedRoute allowedRoles={["admin"]}>
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin text-indigo-600 mx-auto mb-4" />
+            <p className="text-gray-600">Loading settings...</p>
+          </div>
+        </div>
+      </ProtectedRoute>
+    )
+  }
 
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
@@ -71,22 +137,36 @@ export default function AdminSettings() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Platform Settings</h1>
               <p className="text-gray-600">Configure your platform preferences and feature flags</p>
             </div>
-            <Button
-              onClick={handleSave}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
-            >
-              {saved ? (
-                <>
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Saved!
-                </>
-              ) : (
-                <>
-                  <Save className="mr-2 h-4 w-4" />
-                  Save Changes
-                </>
+            <div className="flex items-center gap-3">
+              {error && (
+                <span className="text-sm font-medium text-red-600 flex items-center gap-1">
+                  <AlertTriangle className="h-4 w-4" />
+                  {error}
+                </span>
               )}
-            </Button>
+              <Button
+                onClick={handleSave}
+                disabled={saving}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+              >
+                {saved ? (
+                  <>
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    Saved!
+                  </>
+                ) : saving ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Changes
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
 
           {/* Text Settings */}
@@ -110,7 +190,7 @@ export default function AdminSettings() {
                       <Input
                         id={field.key}
                         type={field.type}
-                        value={(settings as any)[field.key]}
+                        value={(settings as any)[field.key] || ""}
                         onChange={(e) =>
                           setSettings((prev) => ({ ...prev, [field.key]: e.target.value }))
                         }

@@ -119,6 +119,7 @@ export async function GET(request: NextRequest) {
         },
         teacherStats,
         subscription: user.subscription,
+        aiEnabled: !!user.aiEnabled,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
@@ -229,6 +230,7 @@ export async function PUT(request: NextRequest) {
         profilePicture: updatedUser.profilePicture,
         language: updatedUser.language,
         preferences: updatedUser.preferences,
+        aiEnabled: !!updatedUser.aiEnabled,
         updatedAt: updatedUser.updatedAt,
       },
     });
