@@ -96,7 +96,7 @@ const Navbar1 = ({
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
             <a href={logo.url} className="flex items-center gap-2 group">
-              <img src={logo.src} className="w-10 h-10 object-cover rounded-full border border-gray-100 shadow-sm group-hover:scale-110 transition-transform duration-300" alt={logo.alt} />
+              <img src={logo.src} className="h-12 w-auto object-contain shadow-sm group-hover:scale-110 transition-transform duration-300" alt={logo.alt} />
               <span className="text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{logo.title}</span>
             </a>
             <div className="flex items-center">
@@ -194,7 +194,7 @@ const Navbar1 = ({
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="w-10 h-10 object-cover rounded-full border border-gray-100 shadow-sm" alt={logo.alt} />
+              <img src={logo.src} className="h-10 w-auto object-contain shadow-sm" alt={logo.alt} />
               <span className="text-lg font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">{logo.title}</span>
             </a>
             <div className="flex items-center gap-2">
@@ -209,7 +209,7 @@ const Navbar1 = ({
                 <SheetHeader>
                   <SheetTitle>
                     <a href={logo.url} className="flex items-center gap-2">
-                      <img src={logo.src} className="w-10 h-10 object-cover rounded-full border border-gray-100 shadow-sm" alt={logo.alt} />
+                      <img src={logo.src} className="h-10 w-auto object-contain shadow-sm" alt={logo.alt} />
                       <span className="text-lg font-semibold">
                         {logo.title}
                       </span>

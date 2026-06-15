@@ -44,7 +44,7 @@ export function Navbar() {
     <nav className="border-b bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 group">
-          <Image src="/main-logo.jpeg" alt="English With Evelina" width={40} height={40} className="rounded-full object-cover" />
+          <Image src="/main-logo.jpeg" alt="English With Evelina" width={48} height={48} className="object-contain" />
           <span className="font-bold text-xl bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hidden sm:inline-block">
             English With Evelina
           </span>

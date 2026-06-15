@@ -30,10 +30,10 @@ const ai = getAI(app, {
   backend: new GoogleAIBackend()
 });
 
-// Get model (default to gemini-1.5-flash)
-function getModelName(customModel?: string): string {
-  return customModel || process.env.AI_TEACHER_MODEL || 'gemini-1.5-flash';
-}
+// Get model (default to gemini-2.0-flash)
+const getModel = (customModel?: string) => {
+  return customModel || process.env.AI_TEACHER_MODEL || 'gemini-2.0-flash';
+};
 
 /**
  * Get generation config with structured output for JSON mode
@@ -1311,12 +1311,16 @@ export async function POST(req: NextRequest) {
     // 3. Initialize model with language-specific instruction
     const db = getAdminDb();
     const settingsDoc = await db.collection('system_settings').doc('global').get();
-    let dynamicModel = 'gemini-1.5-flash';
+    let dynamicModel = 'gemini-2.0-flash';
     let dynamicApiKey = '';
 
     if (settingsDoc.exists) {
       const data = settingsDoc.data();
-      dynamicModel = data?.aiModel || 'gemini-1.5-flash';
+      dynamicModel = data?.aiModel || 'gemini-2.0-flash';
+      // MIGRATION: Auto-upgrade old models
+      if (dynamicModel === 'gemini-1.5-flash' || dynamicModel === 'gemini-1.5-pro') {
+        dynamicModel = 'gemini-2.0-flash';
+      }
       dynamicApiKey = data?.geminiApiKey || '';
     }
 

@@ -6,7 +6,7 @@ import { traceLogger } from '@/lib/tracing/trace-logger';
 
 const DEFAULT_SETTINGS = {
   aiEnabled: true,
-  aiModel: "gemini-1.5-flash",
+  aiModel: "gemini-2.0-flash",
   geminiApiKey: process.env.GEMINI_API_KEY || ""
 };
 
@@ -54,6 +54,11 @@ export async function POST(request: NextRequest) {
       settings.aiEnabled = data?.aiEnabled ?? DEFAULT_SETTINGS.aiEnabled;
       settings.aiModel = data?.aiModel ?? DEFAULT_SETTINGS.aiModel;
       settings.geminiApiKey = data?.geminiApiKey || DEFAULT_SETTINGS.geminiApiKey;
+    }
+
+    // MIGRATION FALLBACK: if db stored gemini-1.5-flash or gemini-1.5-pro, upgrade to gemini-2.0-flash
+    if (settings.aiModel === 'gemini-1.5-flash' || settings.aiModel === 'gemini-1.5-pro') {
+      settings.aiModel = 'gemini-2.0-flash';
     }
 
     if (!settings.aiEnabled) {
