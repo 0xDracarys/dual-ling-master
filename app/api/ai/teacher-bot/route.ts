@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyIdToken } from '@/lib/firebase/admin';
+import { verifyIdToken, getAdminDb } from '@/lib/firebase/admin';
 import { traceLogger } from '@/lib/tracing/trace-logger';
 import { getAI, getGenerativeModel, GoogleAIBackend, SchemaType, type FunctionDeclaration } from 'firebase/ai';
 import app from '@/lib/firebase/config';
@@ -30,14 +30,9 @@ const ai = getAI(app, {
   backend: new GoogleAIBackend()
 });
 
-// Get model with Remote Config (default to gemini-2.5-flash for better function calling)
-// Using Firebase-recommended model for optimal performance and accuracy
-function getModelName(): string {
-  // gemini-2.5-flash is the current recommended model (as per firebase://docs/ai-logic/get-started)
-  // - Better function calling accuracy than 2.0-flash-lite
-  // - Minimal cost increase (offset by GoogleAIBackend savings)
-  // - Improved instruction following
-  return process.env.AI_TEACHER_MODEL || 'gemini-2.5-flash';
+// Get model (default to gemini-1.5-flash)
+function getModelName(customModel?: string): string {
+  return customModel || process.env.AI_TEACHER_MODEL || 'gemini-1.5-flash';
 }
 
 /**
@@ -1314,7 +1309,23 @@ export async function POST(req: NextRequest) {
     });
 
     // 3. Initialize model with language-specific instruction
-    const modelName = getModelName();
+    const db = getAdminDb();
+    const settingsDoc = await db.collection('system_settings').doc('global').get();
+    let dynamicModel = 'gemini-1.5-flash';
+    let dynamicApiKey = '';
+
+    if (settingsDoc.exists) {
+      const data = settingsDoc.data();
+      dynamicModel = data?.aiModel || 'gemini-1.5-flash';
+      dynamicApiKey = data?.geminiApiKey || '';
+    }
+
+    // Initialize requestAI with dynamic API key if configured
+    const requestAI = dynamicApiKey 
+      ? getAI(app, { backend: new GoogleAIBackend({ apiKey: dynamicApiKey }) })
+      : ai;
+
+    const modelName = getModelName(dynamicModel);
     const captureResponseDebug = (label: string, resp: any) => {
       if (!resp) return;
       const textValue = resp.text?.() || '';
@@ -1370,7 +1381,7 @@ print([l['title'] for l in sorted_lessons])
 - ❌ Simple arithmetic (2+2)
 - ❌ String manipulation`;
     
-    const model = getGenerativeModel(ai, {
+    const model = getGenerativeModel(requestAI, {
       model: modelName,
       // CRITICAL FIX: Completely separate configs for planning vs building
       // Planning mode: Structured JSON output (no functions)
