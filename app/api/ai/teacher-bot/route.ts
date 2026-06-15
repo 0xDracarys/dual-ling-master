@@ -1318,7 +1318,7 @@ export async function POST(req: NextRequest) {
       const data = settingsDoc.data();
       dynamicModel = data?.aiModel || 'gemini-2.0-flash';
       // MIGRATION: Auto-upgrade old models
-      if (dynamicModel === 'gemini-1.5-flash' || dynamicModel === 'gemini-1.5-pro') {
+      if (dynamicModel?.includes('gemini-1.5')) {
         dynamicModel = 'gemini-2.0-flash';
       }
       dynamicApiKey = data?.geminiApiKey || '';

@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     }
 
     // MIGRATION FALLBACK: if db stored gemini-1.5-flash or gemini-1.5-pro, upgrade to gemini-2.0-flash
-    if (settings.aiModel === 'gemini-1.5-flash' || settings.aiModel === 'gemini-1.5-pro') {
+    if (settings.aiModel?.includes('gemini-1.5')) {
       settings.aiModel = 'gemini-2.0-flash';
     }
 
