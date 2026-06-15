@@ -20,7 +20,7 @@ This document outlines the planning for AI Chatbot v2 improvements, including:
 
 ### New API Key Details
 
-**API Key:** `AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4`  
+**API Key:** `AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX`  
 **Name:** Gemini Developer API key  
 **Project:** projects/189726325845  
 **Project Number:** 189726325845  
@@ -39,13 +39,13 @@ This document outlines the planning for AI Chatbot v2 improvements, including:
 
 **Before (Old API Key):**
 ```bash
-NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 ```
 
 **After (New Tier 1 API Key):**
 ```bash
-NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
-GEMINI_API_KEY=AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
+GEMINI_API_KEY=AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 AI_TEACHER_MODEL=gemini-2.5-flash
 ```
 
@@ -325,7 +325,7 @@ Please specify requirements for:
 
 4. **Verify API Key Usage**
    - Check browser console for Firebase initialization
-   - Should see: `AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4`
+   - Should see: `AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX`
 
 ### Expected Behavior
 

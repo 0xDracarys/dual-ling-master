@@ -178,7 +178,7 @@ env:
 
   # Frontend Firebase SDK configuration
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+    value: AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
     availability:
       - BUILD
       - RUNTIME

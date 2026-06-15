@@ -169,7 +169,7 @@ role: roles/serviceusage.serviceUsageConsumer
 env:
   # Frontend Firebase SDK configuration (NEXT_PUBLIC_* for client-side access)
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+    value: AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
     availability:
       - BUILD
       - RUNTIME

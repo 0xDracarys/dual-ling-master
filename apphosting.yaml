@@ -19,7 +19,7 @@ env:
   # Frontend Firebase SDK configuration (NEXT_PUBLIC_* for client-side access)
   # Updated to Tier 1 Gemini API key for higher rate limits
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+    value: ""
     availability:
       - BUILD
       - RUNTIME
@@ -49,7 +49,7 @@ env:
       - RUNTIME
 
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    value: 1:189726325845:web:b6d7ce6ab172c7a7b068dc
+    value: "1:189726325845:web:b6d7ce6ab172c7a7b068dc"
     availability:
       - BUILD
       - RUNTIME
@@ -62,7 +62,7 @@ env:
 
   # Gemini AI API Key (Tier 1 - upgraded from rate-limited key)
   - variable: GEMINI_API_KEY
-    value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+    value: ""
     availability:
       - BUILD
       - RUNTIME

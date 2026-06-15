@@ -7,7 +7,7 @@ import { getAnalytics } from "firebase/analytics";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY",
+  apiKey: "AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX",
   authDomain: "paji-duolingo.firebaseapp.com",
   projectId: "paji-duolingo",
   storageBucket: "paji-duolingo.firebasestorage.app",

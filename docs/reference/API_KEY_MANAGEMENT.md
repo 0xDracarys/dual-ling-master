@@ -27,7 +27,7 @@ This document defines our **dual API key system** for managing Firebase and Gemi
 
 **Original Working Key:**
 ```
-AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 ```
 - ✅ Firebase Authentication
 - ✅ Firestore Database
@@ -37,7 +37,7 @@ AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
 
 **New Gemini Developer Key:**
 ```
-AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 ```
 - ❌ Firebase Authentication (BLOCKED - needs API restrictions configured)
 - ❓ Firestore Database (not tested)
@@ -121,13 +121,13 @@ apphosting.yaml > .env.production > .env
 
 **Frontend (Browser):**
 ```bash
-NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 # Using ORIGINAL key for Firebase Auth/Firestore/Storage
 ```
 
 **Backend (Server):**
 ```bash
-GEMINI_API_KEY=AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+GEMINI_API_KEY=AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 # Using NEW Tier 1 key for Gemini AI only
 ```
 
@@ -138,12 +138,12 @@ GEMINI_API_KEY=AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
 env:
   # Frontend Firebase SDK
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+    value: AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
     # ⚠️ THIS IS BLOCKING AUTH IN PRODUCTION!
   
   # Backend Gemini AI
   - variable: GEMINI_API_KEY
-    value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+    value: AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 ```
 
 **Recommended Fix:**
@@ -151,11 +151,11 @@ env:
 env:
   # Frontend Firebase SDK (use original working key)
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+    value: AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
   
   # Backend Gemini AI (use new Tier 1 key)
   - variable: GEMINI_API_KEY
-    value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+    value: AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 ```
 
 ---
@@ -171,7 +171,7 @@ env:
 
 2. **Find the new API key:**
    - Name: "Gemini Developer API key"
-   - Key ID: `AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4`
+   - Key ID: `AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX`
 
 3. **Edit API Key:**
    - Click on the key name

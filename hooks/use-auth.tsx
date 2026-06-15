@@ -61,8 +61,7 @@ const noopLogout: AuthContextType["logout"] = () => {
 
 const noopRefresh: AuthContextType["refreshAuthToken"] = async () => null
 
-// Updated to use Tier 1 Gemini API key for higher rate limits
-const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4"
+const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)

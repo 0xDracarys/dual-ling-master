@@ -32,7 +32,7 @@ https://console.cloud.google.com/apis/credentials?project=paji-duolingo
 ### Step 2: Find and Edit the New API Key
 
 1. Look for: **"Gemini Developer API key"**
-2. Key ID: `AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4`
+2. Key ID: `AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX`
 3. Click on the key name (or the pencil icon to edit)
 
 ### Step 3: Configure API Restrictions
@@ -86,10 +86,10 @@ Once the API restrictions are configured:
 Edit `.env.development.local`:
 ```bash
 # Change this line:
-NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyApOEBwq7VK0QzEg37YnylaMZwadsTYYuY
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 
 # To this:
-NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 ```
 
 ### For Production:
@@ -97,7 +97,7 @@ NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
 Edit `apphosting.yaml` (already done, but verify):
 ```yaml
 - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-  value: AIzaSyDPWvzDl4Y3otA-yZwnflsRuwzhzgVZGW4
+  value: AIzaSy_REDACTED_API_KEY_XXXXXXXXXXXXX
 ```
 
 Then commit and push to deploy:
