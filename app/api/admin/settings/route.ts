@@ -8,7 +8,7 @@ const DEFAULT_SETTINGS = {
   siteName: "English With Evelina",
   contactEmail: "evelina@englishwithevelina.lt",
   supportedLanguages: "en, lt",
-  aiModel: "gemini-2.0-flash",
+  aiModel: "gemini-2.5-flash",
   maxFileSize: "10",
   maintenanceMode: false,
   aiEnabled: true,

@@ -6,7 +6,7 @@ import { traceLogger } from '@/lib/tracing/trace-logger';
 
 const DEFAULT_SETTINGS = {
   aiEnabled: true,
-  aiModel: "gemini-2.0-flash",
+  aiModel: "gemini-2.5-flash",
   geminiApiKey: process.env.GEMINI_API_KEY || ""
 };
 
@@ -56,9 +56,9 @@ export async function POST(request: NextRequest) {
       settings.geminiApiKey = data?.geminiApiKey || DEFAULT_SETTINGS.geminiApiKey;
     }
 
-    // MIGRATION FALLBACK: if db stored gemini-1.5-flash or gemini-1.5-pro, upgrade to gemini-2.0-flash
-    if (settings.aiModel?.includes('gemini-1.5')) {
-      settings.aiModel = 'gemini-2.0-flash';
+    // MIGRATION FALLBACK: if db stored gemini-1.5-flash or gemini-1.5-pro, upgrade to gemini-2.5-flash
+    if (settings.aiModel?.includes('gemini-1.5') || settings.aiModel?.includes('gemini-2.0')) {
+      settings.aiModel = 'gemini-2.5-flash';
     }
 
     if (!settings.aiEnabled) {
@@ -211,6 +211,19 @@ Ensure all descriptions, titles, questions, options, and instruction texts are w
 
     if (!geminiRes.ok) {
       console.error("Gemini API Error:", geminiData);
+      try {
+        await db.collection('ai_logs').add({
+          timestamp: new Date().toISOString(),
+          type: 'course_generation_error',
+          user: decodedToken.uid,
+          model: settings.aiModel,
+          url: url,
+          error: geminiData,
+          prompt: prompt
+        });
+      } catch (logErr) {
+        console.error("Failed to write AI log to Firestore:", logErr);
+      }
       traceLogger.endSpan(spanId, 'error', { message: 'Gemini API call failed' });
       return NextResponse.json({ success: false, error: geminiData.error?.message || 'Failed to communicate with AI generation service.' }, { status: geminiRes.status });
     }
