@@ -267,3 +267,13 @@ Private project - All rights reserved.
 ---
 
 Built with ❤️ for language learners worldwide 🇱🇹 🇺🇸
+
+---
+
+## Notes for handover (2026-11-16)
+
+- Package: `step-by-step-english` v1.0.0. Install with `npm install --legacy-peer-deps` (a peer-dependency conflict in the legacy eslint config requires the flag), then `npm run dev` / `npm run build`.
+- Copy `.env.example` to `.env.local` and fill in real values. Never commit `.env.local` or any Firebase Admin service-account JSON file.
+- Developer test endpoints (`/api/test/*`, `/test` pages) were removed for client delivery - they created test accounts and listed all users with no auth.
+- Repository hygiene: the `.netlify/` build folder, `functions/node_modules/`, `logs/` and `.DS_Store` files were untracked (34k+ generated files). They are now covered by `.gitignore`; the actual source is a few hundred files. The Firebase Functions subproject source remains in `functions/src/`.
+- This branch keeps all product features of main: Gemini AI course generation and teacher bot, live classes with recordings, Google sign-in/calendar integration, and the admin portal.

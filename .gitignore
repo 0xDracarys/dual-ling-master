@@ -40,3 +40,14 @@ paji-duolingo-*.json
 *.json.bak
 backup_config/
 comparison_repo/
+
+# Client-submission hygiene (added 2026-11-16)
+.netlify/
+**/node_modules/
+.DS_Store
+logs/
+*.log
+scratch/
+type-errors.txt
+*-firebase-adminsdk-*.json
+!.env.example
