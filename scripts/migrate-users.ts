@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto';
 /**
  * User Migration Script: MongoDB → Firebase Auth + Firestore
  * 
@@ -140,7 +141,7 @@ function generateTemporaryPassword(): string {
   const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
   let password = '';
   for (let i = 0; i < length; i++) {
-    password += charset.charAt(Math.floor(Math.random() * charset.length));
+    password += charset.charAt(randomInt(charset.length)); // crypto RNG (pentest F-16): was Math.random
   }
   return password;
 }

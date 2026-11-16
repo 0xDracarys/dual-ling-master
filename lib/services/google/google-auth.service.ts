@@ -9,6 +9,7 @@
 
 import { google } from 'googleapis';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+import { randomBytes } from 'crypto';
 import { traceLogger } from '@/lib/tracing/trace-logger';
 
 // OAuth 2.0 configuration
@@ -48,19 +49,67 @@ export class GoogleAuthService {
   }
 
   /**
+   * Server-side document holding a user's Google OAuth tokens.
+   * SECURITY (pentest F-11): tokens live in the `userSecrets` collection,
+   * which Firestore rules deny to all clients. Only server code using the
+   * Admin SDK can read or write it. Tokens must never be stored on the
+   * client-readable user document again.
+   */
+  private secretsDoc(userId: string) {
+    return getFirestore().collection('userSecrets').doc(userId);
+  }
+
+  /**
+   * Read the stored Google tokens for a user, migrating legacy tokens out of
+   * the user document on first read (they were stored there before F-11).
+   */
+  async getStoredTokens(userId: string): Promise<GoogleTokens | null> {
+    const db = getFirestore();
+    const secretsSnap = await this.secretsDoc(userId).get();
+    const secretsTokens = secretsSnap.exists
+      ? (secretsSnap.data() as { googleTokens?: GoogleTokens } | undefined)?.googleTokens
+      : undefined;
+    if (secretsTokens?.accessToken) {
+      return secretsTokens;
+    }
+
+    const userSnap = await db.collection('users').doc(userId).get();
+    const legacy = userSnap.exists
+      ? (userSnap.data() as { googleTokens?: GoogleTokens } | undefined)?.googleTokens
+      : undefined;
+    if (legacy?.accessToken) {
+      await this.secretsDoc(userId).set({ googleTokens: legacy }, { merge: true });
+      await db.collection('users').doc(userId).update({ googleTokens: null });
+      return legacy;
+    }
+
+    return null;
+  }
+
+  /**
    * Generate OAuth 2.0 authorization URL
-   * 
-   * @param userId - Teacher's Firebase UID (used as state parameter)
+   *
+   * @param userId - Teacher's Firebase UID (bound to the state nonce server-side)
    * @returns Authorization URL for user to visit
    */
-  getAuthorizationUrl(userId: string): string {
+  async getAuthorizationUrl(userId: string): Promise<string> {
     const spanId = traceLogger.startSpan('GoogleAuth', 'getAuthorizationUrl');
 
     try {
+      // SECURITY (pentest F-06): `state` is a random, single-use nonce stored
+      // server-side and bound to this user — never the raw userId. Previously
+      // state WAS the userId and the callback trusted it, so anyone could
+      // bind their Google account to any teacher's profile.
+      const state = randomBytes(32).toString('hex');
+      await getFirestore().collection('oauthStates').doc(state).set({
+        userId,
+        createdAt: Timestamp.now(),
+      });
+
       const url = this.oauth2Client.generateAuthUrl({
         access_type: 'offline',           // Request refresh token
         scope: SCOPES,
-        state: userId,                    // Include userId for validation in callback
+        state,                            // Single-use nonce, resolved in callback
         prompt: 'consent',                // Force consent screen to get refresh token
       });
 
@@ -82,8 +131,33 @@ export class GoogleAuthService {
   }
 
   /**
+   * Resolve and consume an OAuth state nonce.
+   * Returns the userId the flow was started for, or null when the nonce is
+   * unknown, already used, or older than 10 minutes. The nonce is deleted on
+   * first use, so a callback URL cannot be replayed (pentest F-06).
+   */
+  async consumeOAuthState(state: string): Promise<string | null> {
+    const db = getFirestore();
+    const ref = db.collection('oauthStates').doc(state);
+    const doc = await ref.get();
+    if (!doc.exists) {
+      return null;
+    }
+    const data = doc.data() as { userId?: string; createdAt?: Timestamp } | undefined;
+    await ref.delete();
+    if (!data?.userId || !data.createdAt) {
+      return null;
+    }
+    const ageMs = Date.now() - data.createdAt.toMillis();
+    if (ageMs > 10 * 60 * 1000) {
+      return null;
+    }
+    return data.userId;
+  }
+
+  /**
    * Exchange authorization code for access/refresh tokens
-   * 
+   *
    * @param code - Authorization code from OAuth callback
    * @returns Token data from Google
    */
@@ -167,8 +241,11 @@ export class GoogleAuthService {
         lastUsedAt: now,
       };
 
+      // SECURITY (pentest F-11): Tokens are stored in the server-only
+      // userSecrets collection. The user document keeps only a
+      // non-sensitive "connected at" marker.
+      await this.secretsDoc(userId).set({ googleTokens }, { merge: true });
       await db.collection('users').doc(userId).update({
-        googleTokens,
         googleConnectedAt: Timestamp.now(),
       });
 
@@ -201,25 +278,23 @@ export class GoogleAuthService {
     currentRequestInfo?: { userAgent: string; ip: string }
   ): Promise<string> {
     const spanId = traceLogger.startSpan('GoogleAuth', 'getValidAccessToken');
-    const db = getFirestore();
 
     try {
-      const userDoc = await db.collection('users').doc(userId).get();
-      const userData = userDoc.data();
+      const storedTokens = await this.getStoredTokens(userId);
 
-      if (!userData?.googleTokens) {
+      if (!storedTokens) {
         throw new Error('User has not connected Google account');
       }
 
-      const { 
-        accessToken, 
-        refreshToken, 
+      const {
+        accessToken,
+        refreshToken,
         expiresAt,
         deviceFingerprint: storedFingerprint,
         lastUsedIp,
         userAgent: storedUserAgent,
         connectedAt
-      } = userData.googleTokens;
+      } = storedTokens;
 
       // Device mismatch detection (if current request info provided)
       if (currentRequestInfo) {
@@ -252,7 +327,7 @@ export class GoogleAuthService {
         }
 
         // Update last used timestamp and IP (device hasn't changed)
-        await db.collection('users').doc(userId).update({
+        await this.secretsDoc(userId).update({
           'googleTokens.lastUsedAt': Timestamp.now(),
           'googleTokens.lastUsedIp': currentRequestInfo.ip,
         });
@@ -298,7 +373,6 @@ export class GoogleAuthService {
    */
   async refreshAccessToken(userId: string, refreshToken: string): Promise<string> {
     const spanId = traceLogger.startSpan('GoogleAuth', 'refreshAccessToken');
-    const db = getFirestore();
 
     try {
       this.oauth2Client.setCredentials({
@@ -316,10 +390,15 @@ export class GoogleAuthService {
         ? Timestamp.fromMillis(credentials.expiry_date)
         : Timestamp.fromMillis(Date.now() + 3600 * 1000);
 
-      await db.collection('users').doc(userId).update({
-        'googleTokens.accessToken': credentials.access_token,
-        'googleTokens.expiresAt': expiresAt,
-      });
+      await this.secretsDoc(userId).set(
+        {
+          googleTokens: {
+            accessToken: credentials.access_token,
+            expiresAt,
+          },
+        },
+        { merge: true }
+      );
 
       traceLogger.log('info', 'GoogleAuth', 'Access token refreshed', {
         userId,
@@ -348,16 +427,15 @@ export class GoogleAuthService {
     const db = getFirestore();
 
     try {
-      const userDoc = await db.collection('users').doc(userId).get();
-      const userData = userDoc.data();
+      const storedTokens = await this.getStoredTokens(userId);
 
-      if (!userData?.googleTokens) {
+      if (!storedTokens) {
         traceLogger.log('warn', 'GoogleAuth', 'No tokens to revoke', { userId });
         traceLogger.endSpan(spanId, 'success');
         return;
       }
 
-      const { accessToken } = userData.googleTokens;
+      const { accessToken } = storedTokens;
 
       // Revoke token with Google
       this.oauth2Client.setCredentials({
@@ -365,9 +443,10 @@ export class GoogleAuthService {
       });
       await this.oauth2Client.revokeCredentials();
 
-      // Remove tokens from Firestore
+      // Remove tokens from the server-only secrets document and clear the
+      // connection markers on the user document
+      await this.secretsDoc(userId).delete();
       await db.collection('users').doc(userId).update({
-        googleTokens: null,
         googleConnectedAt: null,
         googleDisconnectedAt: Timestamp.now(),
       });
@@ -392,13 +471,11 @@ export class GoogleAuthService {
    */
   async isConnected(userId: string): Promise<boolean> {
     const spanId = traceLogger.startSpan('GoogleAuth', 'isConnected');
-    const db = getFirestore();
 
     try {
-      const userDoc = await db.collection('users').doc(userId).get();
-      const userData = userDoc.data();
+      const storedTokens = await this.getStoredTokens(userId);
 
-      const connected = !!userData?.googleTokens?.accessToken;
+      const connected = !!storedTokens?.accessToken;
 
       traceLogger.log('info', 'GoogleAuth', 'Connection status checked', {
         userId,

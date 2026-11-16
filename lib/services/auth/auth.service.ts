@@ -153,7 +153,10 @@ export class AuthService {
 
       // Handle specific Firebase errors
       if (error.code === 'auth/email-already-in-use') {
-        throw new Error('This email is already registered');
+        // SECURITY: Do not confirm that the email is registered (account
+        // enumeration oracle, F-16). The wording stays helpful for real
+        // users without confirming account existence to strangers.
+        throw new Error('Registration could not be completed. If you already have an account, please log in instead.');
       } else if (error.code === 'auth/invalid-email') {
         throw new Error('Invalid email address');
       } else if (error.code === 'auth/weak-password') {
@@ -219,7 +222,15 @@ export class AuthService {
         const userRecord = await adminAuth.getUser(firebaseUser.uid);
         const existingClaims = userRecord.customClaims || {};
 
-        if (existingClaims.role !== userRole) {
+        // SECURITY: The Firestore document must never be the source of an
+        // admin grant. Admin claims are set only by the admin role-management
+        // route (or a server-side seed) via the Admin SDK. Document sync here
+        // may only heal missing student/teacher claims (F-01).
+        if (userRole === 'admin' && existingClaims.role !== 'admin') {
+          traceLogger.log('warn', 'Auth', 'Refusing to grant admin claim from Firestore document sync', {
+            uid: firebaseUser.uid,
+          });
+        } else if (existingClaims.role !== userRole) {
           await adminAuth.setCustomUserClaims(firebaseUser.uid, {
             ...existingClaims,
             role: userRole,
@@ -291,12 +302,14 @@ export class AuthService {
         stack: error.code ? `Error code: ${error.code}` : undefined,
       });
 
-      if (error.code === 'auth/invalid-credential') {
+      // SECURITY: One generic message for every credential failure so the
+      // login endpoint cannot be used to enumerate registered emails (F-16).
+      if (
+        error.code === 'auth/invalid-credential' ||
+        error.code === 'auth/user-not-found' ||
+        error.code === 'auth/wrong-password'
+      ) {
         throw new Error('Invalid email or password');
-      } else if (error.code === 'auth/user-not-found') {
-        throw new Error('No account found with this email');
-      } else if (error.code === 'auth/wrong-password') {
-        throw new Error('Incorrect password');
       }
 
       throw error;
@@ -354,6 +367,19 @@ export class AuthService {
         });
 
         traceLogger.log('info', 'Auth', 'User document created for Google user', { uid: firebaseUser.uid });
+
+        // Set the role custom claim server-side at account creation. Claims
+        // are the only role source API routes trust (F-01), and Google users
+        // never pass through the email registration path that sets them.
+        try {
+          const { getAdminAuth } = await import('@/lib/firebase/admin');
+          await getAdminAuth().setCustomUserClaims(firebaseUser.uid, { role: 'student' });
+        } catch (claimsError: any) {
+          traceLogger.log('error', 'Auth', 'Failed to set claims for Google user', {
+            uid: firebaseUser.uid,
+            error: claimsError.message,
+          });
+        }
       }
 
       return {

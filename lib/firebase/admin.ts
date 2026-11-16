@@ -67,34 +67,12 @@ export function getAdminStorage() {
  */
 export async function verifyIdToken(token: string) {
   const auth = getAdminAuth()
-  const decodedToken = await auth.verifyIdToken(token)
-
-  if (!(decodedToken as { role?: string }).role) {
-    try {
-      const userDoc = await getAdminDb().collection('users').doc(decodedToken.uid).get()
-      const userRole = userDoc.exists ? (userDoc.data() as { role?: string } | undefined)?.role : undefined
-
-      if (userRole) {
-        ;(decodedToken as { role?: string }).role = userRole
-
-        try {
-          const userRecord = await auth.getUser(decodedToken.uid)
-          const currentClaims = userRecord.customClaims || {}
-
-          if (currentClaims.role !== userRole) {
-            await auth.setCustomUserClaims(decodedToken.uid, {
-              ...currentClaims,
-              role: userRole,
-            })
-          }
-        } catch (claimsError) {
-          console.error('[Auth] Failed to sync custom claims during verifyIdToken', claimsError)
-        }
-      }
-    } catch (error) {
-      console.error('[Auth] Failed to backfill role from Firestore', error)
-    }
-  }
-
-  return decodedToken
+  // SECURITY: The caller's role is taken ONLY from the verified custom claim
+  // on the token. It must never be backfilled from the Firestore user
+  // document: that document is writable by its owner through the client SDK,
+  // so trusting it here would let any user promote themselves to admin by
+  // editing their own document (see pentest breakdown F-01).
+  // checkRevoked=true so tokens of disabled or revoked users stop working
+  // immediately instead of living out their full lifetime (F-14).
+  return auth.verifyIdToken(token, true)
 }

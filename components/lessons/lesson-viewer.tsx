@@ -10,6 +10,7 @@ import { BookOpen, Play, CheckCircle, ArrowLeft, ArrowRight, Clock } from "lucid
 import { QuizComponent } from "./quiz-component"
 import { ResourceList } from "./resource-list"
 import { useAuth } from "@/hooks/use-auth"
+import DOMPurify from "isomorphic-dompurify"
 
 /**
  * Convert YouTube URLs to embed format
@@ -21,34 +22,49 @@ import { useAuth } from "@/hooks/use-auth"
  */
 function convertToYouTubeEmbed(url: string): string | null {
   if (!url) return null
-  
-  // Already an embed URL
-  if (url.includes('/embed/')) {
-    return url
-  }
-  
-  // Homepage or invalid URL
-  if (url === 'https://www.youtube.com/' || url === 'https://www.youtube.com') {
+
+  // SECURITY (pentest F-16): Parse the URL and allowlist the host. The old
+  // substring checks (`url.includes('/embed/')`, `url.includes('vimeo.com')`)
+  // let attacker-controlled hosts such as `https://evil.example/embed/x` or
+  // `https://vimeo.com.evil.example/...` into an unsandboxed iframe.
+  let parsed: URL
+  try {
+    parsed = new URL(url)
+  } catch {
     return null
   }
-  
-  // Watch URL: https://www.youtube.com/watch?v=VIDEO_ID
-  const watchMatch = url.match(/(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/)
-  if (watchMatch) {
-    return `https://www.youtube.com/embed/${watchMatch[1]}`
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+    return null
   }
-  
-  // Short URL: https://youtu.be/VIDEO_ID
-  const shortMatch = url.match(/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/)
-  if (shortMatch) {
-    return `https://www.youtube.com/embed/${shortMatch[1]}`
+  const host = parsed.hostname.toLowerCase()
+  const videoIdPattern = /^[a-zA-Z0-9_-]{11}$/
+
+  if (host === 'youtu.be') {
+    const id = parsed.pathname.slice(1)
+    return videoIdPattern.test(id) ? `https://www.youtube.com/embed/${id}` : null
   }
-  
-  // Vimeo URL (pass through)
-  if (url.includes('vimeo.com')) {
-    return url
+
+  if (host === 'www.youtube.com' || host === 'youtube.com' || host === 'm.youtube.com') {
+    if (parsed.pathname === '/watch') {
+      const v = parsed.searchParams.get('v')
+      return v && videoIdPattern.test(v) ? `https://www.youtube.com/embed/${v}` : null
+    }
+    const embedMatch = parsed.pathname.match(/^\/embed\/([a-zA-Z0-9_-]{11})$/)
+    if (embedMatch) {
+      return `https://www.youtube.com/embed/${embedMatch[1]}`
+    }
+    return null
   }
-  
+
+  if (host === 'vimeo.com' || host === 'www.vimeo.com') {
+    const vimeoMatch = parsed.pathname.match(/^\/(\d+)$/)
+    return vimeoMatch ? `https://player.vimeo.com/video/${vimeoMatch[1]}` : null
+  }
+
+  if (host === 'player.vimeo.com' && parsed.pathname.startsWith('/video/')) {
+    return parsed.toString()
+  }
+
   return null
 }
 
@@ -361,10 +377,14 @@ export function LessonViewer({
         <CardContent>
           {(currentLesson.type === "text" || currentLesson.type === "reading") && (
             <div className="prose prose-lg max-w-none">
-              <div 
+              <div
                 className="lesson-content space-y-4"
-                dangerouslySetInnerHTML={{ 
-                  __html: formatMarkdownContent(currentLesson.content?.text || (currentLesson as any).contentMarkdown || "No content available")
+                dangerouslySetInnerHTML={{
+                  // SECURITY (pentest F-04): Lesson content is teacher/AI
+                  // authored HTML rendered in other users' browsers, and auth
+                  // tokens live in localStorage — unsanitized HTML here was a
+                  // stored-XSS account-takeover vector. Always sanitize.
+                  __html: DOMPurify.sanitize(formatMarkdownContent(currentLesson.content?.text || (currentLesson as any).contentMarkdown || "No content available"))
                 }}
               />
             </div>
@@ -385,6 +405,8 @@ export function LessonViewer({
                       <iframe
                         src={embedUrl}
                         className="w-full h-full"
+                        sandbox="allow-scripts allow-same-origin allow-presentation"
+                        referrerPolicy="no-referrer"
                         allowFullScreen
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         title={videoTitle || currentLesson.title}
@@ -409,9 +431,9 @@ export function LessonViewer({
                               by <span className="font-medium">{videoCreator}</span>
                             </p>
                           )}
-                          {sourceUrl && (
-                            <a 
-                              href={sourceUrl} 
+                          {sourceUrl && /^https?:\/\//i.test(sourceUrl) && (
+                            <a
+                              href={sourceUrl}
                               target="_blank" 
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 mt-2 font-medium"

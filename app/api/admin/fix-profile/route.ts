@@ -25,6 +25,15 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const targetUserId = searchParams.get('userId') || currentUserId;
 
+    // SECURITY (pentest F-08): This route previously let ANY authenticated
+    // user read and modify ANY user's full profile document. Fixing another
+    // user's profile is an admin-only operation; non-admins may only fix
+    // their own.
+    const callerRole = (decodedToken as { role?: string }).role;
+    if (targetUserId !== currentUserId && callerRole !== 'admin') {
+      return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
+    }
+
     console.log('[FIX-PROFILE] Fixing profile for user:', targetUserId);
 
     const db = getAdminDb();
@@ -37,7 +46,9 @@ export async function GET(request: NextRequest) {
     }
 
     const currentData = userDoc.data();
-    console.log('[FIX-PROFILE] Current data:', JSON.stringify(currentData, null, 2));
+    // SECURITY: Never log the full user document — it can contain sensitive
+    // fields. Log only that the fix ran and for whom.
+    console.log('[FIX-PROFILE] Fixing profile fields for user:', targetUserId);
 
     // Update document with required fields
     const updates: any = {
@@ -94,10 +105,15 @@ export async function GET(request: NextRequest) {
     const updatedDoc = await userRef.get();
     const updatedData = updatedDoc.data();
 
+    // SECURITY (pentest F-08/F-11): Never return credential material. Strip
+    // Google OAuth tokens (and any future secret fields) from the response.
+    const safeProfile = { ...(updatedData || {}) } as Record<string, unknown>;
+    delete safeProfile.googleTokens;
+
     return NextResponse.json({
       success: true,
       message: 'Profile fixed successfully',
-      profile: updatedData,
+      profile: safeProfile,
     });
   } catch (error: any) {
     console.error('[FIX-PROFILE] Error:', error);

@@ -18,6 +18,13 @@ service firebase.storage {
   function isTeacher() {
     return request.auth.token.role == 'teacher' || isAdmin();
   }
+
+  // SECURITY (pentest F-16): A teacher may only write files under courses
+  // they own — previously any teacher could overwrite any course's files.
+  function isCourseOwner(courseId) {
+    return isAuthenticated() &&
+      firestore.get(/databases/(default)/documents/courses/$(courseId)).data.teacherId == request.auth.uid;
+  }
   
   // File validation for document uploads
   function isValidDocumentType() {
@@ -47,14 +54,14 @@ service firebase.storage {
     // All authenticated users can read (enrolled students)
     allow read: if isAuthenticated();
     
-    // Only teachers/admins can upload - with file type and size validation
-    allow write: if isTeacher() && isValidDocumentType() && isValidFileSize();
+    // Only the owning teacher (or an admin) can upload - with file type and size validation
+    allow write: if (isAdmin() || isCourseOwner(courseId)) && isValidDocumentType() && isValidFileSize();
   }
   
   // Course content (thumbnails, videos, other resources)
   match /courses/{courseId}/{allPaths=**} {
     allow read: if isAuthenticated();
-    allow write: if isTeacher() || isAdmin();
+    allow write: if isAdmin() || isCourseOwner(courseId);
   }
     
     // Public assets

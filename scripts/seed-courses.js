@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 
+// SECURITY (pentest F-16): seed passwords must come from the environment,
+// never from a shared literal committed to the repo.
+const SEED_PASSWORD = process.env.SEED_PASSWORD;
+if (!SEED_PASSWORD) { console.error('Set the SEED_PASSWORD environment variable before running this seed script.'); process.exit(1); }
+
+
 // Connect to MongoDB
 const connectDB = async () => {
   try {
@@ -58,7 +64,7 @@ const sampleUsers = [
   {
     username: 'sarah_chen',
     email: 'sarah@example.com',
-    password: 'password123',
+    password: SEED_PASSWORD,
     role: 'teacher',
     firstName: 'Sarah',
     lastName: 'Chen'
@@ -66,7 +72,7 @@ const sampleUsers = [
   {
     username: 'marcus_johnson',
     email: 'marcus@example.com',
-    password: 'password123',
+    password: SEED_PASSWORD,
     role: 'teacher',
     firstName: 'Marcus',
     lastName: 'Johnson'
@@ -74,7 +80,7 @@ const sampleUsers = [
   {
     username: 'elena_rodriguez',
     email: 'elena@example.com',
-    password: 'password123',
+    password: SEED_PASSWORD,
     role: 'teacher',
     firstName: 'Elena',
     lastName: 'Rodriguez'
@@ -82,7 +88,7 @@ const sampleUsers = [
   {
     username: 'david_kim',
     email: 'david@example.com',
-    password: 'password123',
+    password: SEED_PASSWORD,
     role: 'teacher',
     firstName: 'David',
     lastName: 'Kim'

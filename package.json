@@ -55,6 +55,7 @@
     "gcp-metadata": "latest",
     "geist": "^1.5.1",
     "googleapis": "^164.1.0",
+    "isomorphic-dompurify": "^2.26.0",
     "input-otp": "1.4.1",
     "jsonwebtoken": "latest",
     "lucide-react": "^0.454.0",

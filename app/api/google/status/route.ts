@@ -55,12 +55,14 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Get connection details from Firestore
+    // Get connection details. Tokens live in the server-only userSecrets
+    // collection (pentest F-11) and are read through the auth service; the
+    // user document keeps only the non-sensitive connectedAt marker.
     const db = getFirestore();
     const userDoc = await db.collection('users').doc(userId).get();
     const userData = userDoc.data();
 
-    const googleTokens = userData?.googleTokens;
+    const googleTokens = await googleAuthService.getStoredTokens(userId);
     const connectedAt = userData?.googleConnectedAt;
 
     traceLogger.log('info', 'GoogleStatus', 'User connected', { userId });

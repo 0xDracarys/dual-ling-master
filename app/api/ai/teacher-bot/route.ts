@@ -1311,6 +1311,26 @@ export async function POST(req: NextRequest) {
     // 3. Initialize model with language-specific instruction
     const db = getAdminDb();
     const settingsDoc = await db.collection('system_settings').doc('global').get();
+
+    // SECURITY (pentest F-12): Enforce the same AI gates as
+    // POST /api/teacher/courses/generate. This route previously checked only
+    // the teacher role, so a teacher whose AI access had been revoked by an
+    // admin — or everyone, while AI was globally disabled — kept full use of
+    // the bot (and the platform's Gemini key) through this endpoint.
+    if (settingsDoc.exists && settingsDoc.data()?.aiEnabled === false) {
+      return NextResponse.json(
+        { error: 'AI features are currently disabled by the administrator', operationId },
+        { status: 403 }
+      );
+    }
+    const teacherDoc = await db.collection('users').doc(decodedToken.uid).get();
+    const isTeacherAiEnabled = teacherDoc.exists ? !!teacherDoc.data()?.aiEnabled : false;
+    if (!isTeacherAiEnabled) {
+      return NextResponse.json(
+        { error: 'AI features are not enabled on your account. Please contact the administrator to enable AI features.', operationId },
+        { status: 403 }
+      );
+    }
     
     // Setup model and API key (with defaults)
     let dynamicModel = 'gemini-2.5-flash';
@@ -2172,6 +2192,12 @@ async function executeFunctionCalls(
           const course = await courseService.getCourseById(fc.args.courseId);
           if (!course) {
             throw new Error('Course not found');
+          }
+          // SECURITY (pentest F-16): ownership check, mirroring getLesson —
+          // a teacher must not pull another teacher's course details
+          // (including unpublished drafts) through the bot.
+          if (course.teacherId !== teacherId) {
+            throw new Error('Unauthorized: You can only view details of your own courses');
           }
           data = course;
           break;

@@ -49,6 +49,29 @@ export async function GET(
 
     const course = await courseService.getCourseById(courseId, includeLessons);
 
+    // SECURITY (pentest F-05): Unpublished courses must not be readable by
+    // the public. Only the owning teacher or an admin may view them; everyone
+    // else gets the same 404 as a non-existent course.
+    if (!course.isPublished) {
+      let privileged = false;
+      const authHeader = request.headers.get('Authorization');
+      if (authHeader?.startsWith('Bearer ')) {
+        try {
+          const decodedToken = await verifyIdToken(authHeader.split('Bearer ')[1]);
+          privileged = decodedToken.role === 'admin' || decodedToken.uid === course.teacherId;
+        } catch {
+          privileged = false;
+        }
+      }
+      if (!privileged) {
+        traceLogger.endSpan(spanId, 'error', { message: 'Course not found' });
+        return NextResponse.json(
+          { success: false, error: 'Course not found' },
+          { status: 404 }
+        );
+      }
+    }
+
     traceLogger.log('success', 'API', 'Course retrieved successfully', {
       courseId,
       title: course.title,

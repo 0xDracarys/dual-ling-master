@@ -180,11 +180,12 @@ export async function POST(
     
     console.log('✅ [API] File uploaded to Storage');
     
-    // 9. Get signed URL (1 year expiry for long-term access)
+    // 9. Get signed URL. SECURITY (pentest F-13): expiry cut from 1 year to
+    // 24 hours — a year-long bearer URL is effectively a public link.
     console.log('🔗 [API] Generating signed URL...');
     const [signedUrl] = await storageFile.getSignedUrl({
       action: 'read',
-      expires: Date.now() + 365 * 24 * 60 * 60 * 1000 // 1 year
+      expires: Date.now() + 24 * 60 * 60 * 1000 // 24 hours
     });
     
     console.log('✅ [API] Signed URL generated');
@@ -254,10 +255,41 @@ export async function GET(
       );
     }
     
-    await verifyIdToken(token);
-    
-    // 2. Get lesson document
+    const decodedToken = await verifyIdToken(token);
+
+    // 2. Authorize: SECURITY (pentest F-13) — this route previously verified
+    // that SOME valid token existed and then handed out download URLs for any
+    // lesson in any course. Now the caller must be an admin, the teacher who
+    // owns the course, or a student enrolled in the course.
     const db = getAdminDb();
+    const courseDoc = await db.collection('courses').doc(courseId).get();
+    if (!courseDoc.exists) {
+      return NextResponse.json(
+        { error: 'Course not found' },
+        { status: 404 }
+      );
+    }
+    const courseData = courseDoc.data();
+    let authorized =
+      decodedToken.role === 'admin' || courseData?.teacherId === decodedToken.uid;
+    if (!authorized) {
+      const enrollmentSnap = await db
+        .collection('enrollments')
+        .where('userId', '==', decodedToken.uid)
+        .where('courseId', '==', courseId)
+        .where('status', '==', 'active')
+        .limit(1)
+        .get();
+      authorized = !enrollmentSnap.empty;
+    }
+    if (!authorized) {
+      return NextResponse.json(
+        { error: 'Forbidden - You do not have access to this lesson' },
+        { status: 403 }
+      );
+    }
+
+    // 3. Get lesson document
     const lessonDoc = await db
       .collection('courses')
       .doc(courseId)

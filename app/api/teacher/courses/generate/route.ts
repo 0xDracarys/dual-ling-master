@@ -217,7 +217,9 @@ Ensure all descriptions, titles, questions, options, and instruction texts are w
           type: 'course_generation_error',
           user: decodedToken.uid,
           model: settings.aiModel,
-          url: url,
+          // SECURITY (pentest F-16): Never persist the full request URL —
+          // it contains the Gemini API key as a ?key= query parameter.
+          url: url.split('?')[0],
           error: geminiData,
           prompt: prompt
         });

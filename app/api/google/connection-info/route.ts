@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic';
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getFirestore } from 'firebase-admin/firestore';
 import { getAdminAuth } from '@/lib/firebase/admin';
+import { googleAuthService } from '@/lib/services/google/google-auth.service';
 import { traceLogger } from '@/lib/tracing/trace-logger';
 
 export async function GET(request: NextRequest) {
@@ -27,12 +27,11 @@ export async function GET(request: NextRequest) {
     const decodedToken = await getAdminAuth().verifyIdToken(token);
     const userId = decodedToken.uid;
 
-    // Fetch user document
-    const db = getFirestore();
-    const userDoc = await db.collection('users').doc(userId).get();
-    const userData = userDoc.data();
+    // Tokens live in the server-only userSecrets collection (pentest F-11)
+    // and are read through the auth service (with legacy migration).
+    const storedTokens = await googleAuthService.getStoredTokens(userId);
 
-    if (!userData?.googleTokens) {
+    if (!storedTokens) {
       traceLogger.log('info', 'GoogleConnectionInfo', 'User not connected', { userId });
       traceLogger.endSpan(spanId, 'success');
       return NextResponse.json({
@@ -41,12 +40,12 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const { 
-      userAgent, 
-      lastUsedIp, 
-      connectedAt, 
-      lastUsedAt 
-    } = userData.googleTokens;
+    const {
+      userAgent,
+      lastUsedIp,
+      connectedAt,
+      lastUsedAt
+    } = storedTokens;
 
     // Backward compatibility: Check if device fields exist (new schema)
     if (!userAgent || !lastUsedIp || !connectedAt) {

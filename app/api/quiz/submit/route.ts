@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyIdToken } from '@/lib/firebase/admin';
 import { QuizService } from '@/lib/services/quiz/quiz.service';
+import { LessonRepository } from '@/lib/services/course/lesson.repository';
 import { traceLogger } from '@/lib/tracing/trace-logger';
 import { z } from 'zod';
 
@@ -15,7 +16,11 @@ const submitQuizSchema = z.object({
   lessonId: z.string().min(1, 'Lesson ID is required'),
   courseId: z.string().min(1, 'Course ID is required'),
   answers: z.array(quizAnswerSchema).min(1, 'At least one answer is required'),
-  correctAnswers: z.array(quizAnswerSchema).min(1, 'Correct answers are required'),
+  // SECURITY (pentest F-07): correctAnswers is deliberately NOT accepted
+  // from the client. It used to be a required body field and grading trusted
+  // it, so any student could submit their own answers as the answer key and
+  // forge a perfect score. Correct answers are now derived server-side from
+  // the lesson document, exactly like POST /api/courses/[id]/quiz/submit.
   timeSpent: z.number().min(0, 'Time spent must be non-negative'),
 });
 
@@ -59,9 +64,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { lessonId, courseId, answers, correctAnswers, timeSpent } = validation.data;
+    const { lessonId, courseId, answers, timeSpent } = validation.data;
 
-    // 3. Submit quiz
+    // 3. Derive the correct answers server-side from the lesson document
+    const lessonRepo = new LessonRepository();
+    const lesson = await lessonRepo.getById(courseId, lessonId);
+
+    if (!lesson || lesson.type !== 'quiz' || !lesson.quizQuestions) {
+      traceLogger.endSpan(spanId, 'error', { message: 'Lesson is not a quiz' });
+      return NextResponse.json(
+        { success: false, error: 'Lesson is not a quiz or has no questions' },
+        { status: 400 }
+      );
+    }
+
+    const correctAnswers = lesson.quizQuestions.map((q: any) => ({
+      questionId: q.id,
+      answer: q.correctAnswer,
+      explanation: q.explanation,
+    }));
+
+    // 4. Submit quiz
     const quizService = new QuizService();
     const result = await quizService.submitQuiz(
       userId,

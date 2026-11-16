@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// SECURITY (pentest F-16): seed passwords must come from the environment,
+// never from a shared literal committed to the repo.
+const SEED_PASSWORD = process.env.SEED_PASSWORD;
+if (!SEED_PASSWORD) { console.error('Set the SEED_PASSWORD environment variable before running this seed script.'); process.exit(1); }
+
+
 // User model (simplified for this script)
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -47,7 +53,7 @@ async function createTestAccounts() {
       {
         username: 'teststudent',
         email: 'teststudent@example.com',
-        password: 'password123',
+        password: SEED_PASSWORD,
         role: 'student',
         firstName: 'Test',
         lastName: 'Student',
@@ -56,7 +62,7 @@ async function createTestAccounts() {
       {
         username: 'testteacher',
         email: 'testteacher@example.com',
-        password: 'password123',
+        password: SEED_PASSWORD,
         role: 'teacher',
         firstName: 'Test',
         lastName: 'Teacher',
@@ -65,7 +71,7 @@ async function createTestAccounts() {
       {
         username: 'testadmin',
         email: 'testadmin@example.com',
-        password: 'password123',
+        password: SEED_PASSWORD,
         role: 'admin',
         firstName: 'Test',
         lastName: 'Admin',
@@ -90,17 +96,17 @@ async function createTestAccounts() {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('👨‍🎓 Student Account:');
     console.log('   Email: teststudent@example.com');
-    console.log('   Password: password123');
+    console.log('   Password: <the SEED_PASSWORD env value>');
     console.log('   Dashboard: http://localhost:3000/dashboard');
     console.log('');
     console.log('👨‍🏫 Teacher Account:');
     console.log('   Email: testteacher@example.com');
-    console.log('   Password: password123');
+    console.log('   Password: <the SEED_PASSWORD env value>');
     console.log('   Dashboard: http://localhost:3000/teacher/dashboard');
     console.log('');
     console.log('👨‍💼 Admin Account:');
     console.log('   Email: testadmin@example.com');
-    console.log('   Password: password123');
+    console.log('   Password: <the SEED_PASSWORD env value>');
     console.log('   Dashboard: http://localhost:3000/admin/dashboard');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 

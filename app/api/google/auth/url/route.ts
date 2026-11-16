@@ -41,12 +41,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get userId from request body (optional, fallback to token)
-    const body = await request.json();
-    const userId = body.userId || decodedToken.uid;
+    // SECURITY (pentest F-06): The userId is taken ONLY from the verified
+    // token. This route previously accepted a body-supplied userId, letting
+    // any teacher mint a Google consent URL bound to another user's account.
+    const userId = decodedToken.uid;
 
-    // Generate authorization URL
-    const authUrl = googleAuthService.getAuthorizationUrl(userId);
+    // Generate authorization URL (state is a server-side single-use nonce)
+    const authUrl = await googleAuthService.getAuthorizationUrl(userId);
 
     traceLogger.log('info', 'GoogleAuthUrl', 'Authorization URL generated', {
       userId,

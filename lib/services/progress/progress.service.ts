@@ -33,6 +33,14 @@ export class ProgressService {
     });
 
     try {
+      // SECURITY (pentest F-15): Enrollment check, mirroring
+      // markLessonComplete. Without it, progress (and completion) could be
+      // written for courses the user never enrolled in.
+      const enrollment = await this.enrollmentRepo.getByUserAndCourse(userId, courseId);
+      if (!enrollment) {
+        throw new Error('Not enrolled in this course');
+      }
+
       // Get or create progress document
       const progress = await this.progressRepo.getOrCreate(userId, lessonId, courseId);
 
@@ -96,10 +104,17 @@ export class ProgressService {
     });
 
     try {
+      // SECURITY (pentest F-15): Enrollment check, mirroring
+      // markLessonComplete (see updateVideoProgress).
+      const enrollment = await this.enrollmentRepo.getByUserAndCourse(userId, courseId);
+      if (!enrollment) {
+        throw new Error('Not enrolled in this course');
+      }
+
       // Get or create progress document
       const progress = await this.progressRepo.getOrCreate(userId, lessonId, courseId);
 
-      // Mark as completed if scrolled to bottom (scrollPosition is near max) 
+      // Mark as completed if scrolled to bottom (scrollPosition is near max)
       // AND spent minimum time (e.g., 30 seconds)
       const isCompleted = scrollPosition >= 90 && timeSpent >= 30;
 

@@ -120,7 +120,23 @@ export class LessonRepository {
         query = query.where('isPublished', '==', true);
       }
 
-      const snapshot = await query.get();
+      let snapshot;
+      try {
+        snapshot = await query.get();
+      } catch (queryError: any) {
+        // The publishedOnly filter needs a composite index (isPublished +
+        // order). Until that index is deployed (it is declared in
+        // firestore.indexes.json), fall back to fetching all lessons and
+        // filtering in memory so the published-only guarantee still holds.
+        if (publishedOnly && queryError?.code === 9) {
+          const all = await this.getLessonsCollection(courseId).orderBy('order', 'asc').get();
+          snapshot = {
+            docs: all.docs.filter((doc: any) => doc.data().isPublished === true),
+          };
+        } else {
+          throw queryError;
+        }
+      }
       const lessons = snapshot.docs.map((doc: any) => ({
         id: doc.id,
         ...doc.data(),

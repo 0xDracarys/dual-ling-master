@@ -1,5 +1,11 @@
 import { getAdminApp, getAdminAuth, getAdminDb } from '../lib/firebase/admin';
 
+// SECURITY (pentest F-16): seed passwords must come from the environment,
+// never from a shared literal committed to the repo.
+const SEED_PASSWORD = process.env.SEED_PASSWORD as string;
+if (!SEED_PASSWORD) { console.error('Set the SEED_PASSWORD environment variable before running this seed script.'); process.exit(1); }
+
+
 async function seedFirebase() {
   console.log('🌱 Starting Firebase Seeding...\n');
   
@@ -15,13 +21,13 @@ async function seedFirebase() {
     const teachers = [
       {
         email: 'teacher1@example.com',
-        password: 'password123',
+        password: SEED_PASSWORD,
         displayName: 'Sarah Teacher',
         role: 'teacher'
       },
       {
         email: 'teacher2@example.com',
-        password: 'password123',
+        password: SEED_PASSWORD,
         displayName: 'John Instructor',
         role: 'teacher'
       }
@@ -69,13 +75,13 @@ async function seedFirebase() {
     const students = [
       {
         email: 'student1@example.com',
-        password: 'password123',
+        password: SEED_PASSWORD,
         displayName: 'Alex Student',
         role: 'student'
       },
       {
         email: 'student2@example.com',
-        password: 'password123',
+        password: SEED_PASSWORD,
         displayName: 'Maria Learner',
         role: 'student'
       }
@@ -202,8 +208,8 @@ async function seedFirebase() {
 
     console.log('\n🎉 Seeding complete!\n');
     console.log('You can now log in with the following accounts:');
-    console.log('Teachers: teacher1@example.com, teacher2@example.com (Password: password123)');
-    console.log('Students: student1@example.com, student2@example.com (Password: password123)\n');
+    console.log('Teachers: teacher1@example.com, teacher2@example.com (Password: <the SEED_PASSWORD env value>)');
+    console.log('Students: student1@example.com, student2@example.com (Password: <the SEED_PASSWORD env value>)\n');
     
     process.exit(0);
   } catch (error) {

@@ -62,6 +62,24 @@ export async function GET(
       throw new Error('Lesson not found');
     }
 
+    // SECURITY (pentest F-05): A lesson of an unpublished course must not be
+    // publicly readable. Only the owning teacher or an admin may view it.
+    if (!course.isPublished) {
+      let privileged = false;
+      const authHeader = request.headers.get('Authorization');
+      if (authHeader?.startsWith('Bearer ')) {
+        try {
+          const decodedToken = await verifyIdToken(authHeader.split('Bearer ')[1]);
+          privileged = decodedToken.role === 'admin' || decodedToken.uid === course.teacherId;
+        } catch {
+          privileged = false;
+        }
+      }
+      if (!privileged) {
+        throw new Error('Lesson not found');
+      }
+    }
+
     traceLogger.log('success', 'API', 'Lesson retrieved successfully', {
       lessonId,
       title: lesson.title,

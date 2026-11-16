@@ -11,6 +11,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest } from 'next/server';
 import { CourseService } from '@/lib/services/course/course.service';
 import { traceLogger } from '@/lib/tracing/trace-logger';
+import { verifyIdToken, getAdminDb } from '@/lib/firebase/admin';
 import { z } from 'zod';
 
 // Force dynamic rendering - prevents build-time prerendering with Firebase Admin
@@ -26,8 +27,11 @@ const createCourseSchema = z.object({
   }),
   estimatedHours: z.number().positive('Estimated hours must be positive'),
   thumbnailUrl: z.string().url().optional(),
-  teacherId: z.string().min(1, 'Teacher ID is required'),
-  teacherName: z.string().min(1, 'Teacher name is required'),
+  // SECURITY (pentest F-03): teacherId/teacherName are taken from the
+  // verified token, never from the request body. They stay in the schema as
+  // optional so older clients do not break, but their values are ignored.
+  teacherId: z.string().optional(),
+  teacherName: z.string().optional(),
 });
 
 /**
@@ -117,11 +121,30 @@ export async function POST(request: NextRequest) {
   try {
     traceLogger.log('info', 'API', 'Course creation request received');
 
+    // SECURITY (pentest F-03): This route previously had NO authentication —
+    // anyone could publish a course under any teacher's identity. Require a
+    // verified teacher/admin token and take the teacher identity from it.
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      traceLogger.endSpan(spanId, 'error', { message: 'Unauthorized' });
+      return Response.json(
+        { success: false, error: 'Unauthorized: Missing or invalid token' },
+        { status: 401 }
+      );
+    }
+    const decodedToken = await verifyIdToken(authHeader.split('Bearer ')[1]);
+    if (decodedToken.role !== 'teacher' && decodedToken.role !== 'admin') {
+      traceLogger.endSpan(spanId, 'error', { message: 'Forbidden' });
+      return Response.json(
+        { success: false, error: 'Forbidden: Teacher role required' },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
     traceLogger.log('debug', 'API', 'Request body parsed', {
       hasTitle: !!body.title,
       hasDescription: !!body.description,
-      teacherId: body.teacherId,
     });
 
     // Validate input
@@ -129,9 +152,20 @@ export async function POST(request: NextRequest) {
     const validatedData = createCourseSchema.parse(body);
     traceLogger.log('success', 'API', 'Validation passed');
 
+    // Teacher identity comes from the token, never the body
+    const teacherDoc = await getAdminDb().collection('users').doc(decodedToken.uid).get();
+    const teacherName =
+      (teacherDoc.exists ? (teacherDoc.data() as { name?: string })?.name : undefined) ||
+      decodedToken.name ||
+      'Teacher';
+
     // Create course
     const courseService = new CourseService();
-    const course = await courseService.createCourse(validatedData);
+    const course = await courseService.createCourse({
+      ...validatedData,
+      teacherId: decodedToken.uid,
+      teacherName,
+    });
 
     traceLogger.log('success', 'API', 'Course created successfully', {
       courseId: course.id,

@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     // Extract query parameters
     const searchParams = request.nextUrl.searchParams;
     const code = searchParams.get('code');
-    const state = searchParams.get('state');    // userId
+    const state = searchParams.get('state');    // single-use nonce (see below)
     const error = searchParams.get('error');
 
     // Check for OAuth errors
@@ -63,7 +63,20 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const userId = state;
+    // SECURITY (pentest F-06): `state` is a single-use nonce issued by
+    // getAuthorizationUrl and stored server-side. The userId comes from that
+    // stored record — never from the callback parameters themselves. An
+    // unknown, replayed, or expired state is rejected, so an attacker can no
+    // longer bind their Google account to a victim teacher's profile.
+    const userId = await googleAuthService.consumeOAuthState(state);
+
+    if (!userId) {
+      traceLogger.log('error', 'GoogleAuthCallback', 'Invalid or expired OAuth state');
+      traceLogger.endSpan(spanId, 'error', { message: 'Invalid state' });
+      return NextResponse.redirect(
+        new URL('/teacher/settings/google?error=invalid_state', request.url)
+      );
+    }
 
     // Extract device/IP info from request headers
     const userAgent = request.headers.get('user-agent') || 'Unknown';

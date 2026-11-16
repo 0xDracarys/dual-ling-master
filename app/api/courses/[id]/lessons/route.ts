@@ -51,9 +51,34 @@ export async function GET(
   try {
     traceLogger.log('info', 'API', 'Fetching course lessons', { courseId });
 
-    // Check if only published lessons should be returned
+    // SECURITY (pentest F-05): Previously anyone could read ALL lessons of
+    // any course, including unpublished courses, because `publishedOnly` was
+    // caller-controlled and defaulted to false. Now: only the owning teacher
+    // or an admin may see unpublished content; everyone else is limited to
+    // published lessons of published courses.
+    const course = await courseService.getCourseById(courseId);
+    let privileged = false;
+    const authHeader = request.headers.get('Authorization');
+    if (authHeader?.startsWith('Bearer ')) {
+      try {
+        const decodedToken = await verifyIdToken(authHeader.split('Bearer ')[1]);
+        privileged = decodedToken.role === 'admin' || decodedToken.uid === course.teacherId;
+      } catch {
+        privileged = false;
+      }
+    }
+    if (!course.isPublished && !privileged) {
+      traceLogger.endSpan(spanId, 'error', { message: 'Course not found' });
+      return NextResponse.json(
+        { success: false, error: 'Course not found' },
+        { status: 404 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
-    const publishedOnly = searchParams.get('publishedOnly') === 'true';
+    const publishedOnly = privileged
+      ? searchParams.get('publishedOnly') === 'true'
+      : true;
 
     const lessons = await courseService.getCourseLessons(courseId, publishedOnly);
 
