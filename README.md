@@ -1,279 +1,126 @@
-# LangExchange - Lithuanian-English Learning Platform
+# Step by Step English â€” E-Learning Platform
 
-A comprehensive e-learning platform built with Next.js 15, featuring role-based access control for Students, Teachers, and Admins. Supports interactive courses with lessons, quizzes, and progress tracking.
-
----
-
-## 🔥 **CONTINUING DEVELOPMENT IN NEW AI SESSION?**
-
-**📋 READ THIS FIRST:** [`START_HERE_NEXT_SESSION.txt`](./START_HERE_NEXT_SESSION.txt)
-
-**Full Context:** [`NEXT_SESSION_PROMPT.md`](./NEXT_SESSION_PROMPT.md)
-
-**Current Status:** Phase 3 Week 1 Complete (Course Service implemented)
-**Branch:** `firebase-migration`
-**Documentation:** [`docs/SESSION_HANDOFF_OCT_9_2025.md`](./docs/SESSION_HANDOFF_OCT_9_2025.md)
+A full-featured e-learning platform for English language teaching, built with Next.js and Firebase. It supports three roles â€” **Student**, **Teacher**, and **Admin** â€” with courses, lessons, quizzes, progress tracking, live online classes with recordings, and AI-assisted course creation.
 
 ---
 
-## 🚀 Quick Start
+## Features
+
+- **Courses & lessons** â€” teachers build courses from video, reading, and quiz lessons; students enroll and learn at their own pace
+- **Quizzes** â€” auto-graded on the server, with attempt history and pass-based lesson completion
+- **Progress tracking** â€” per-lesson video/reading progress, course completion, XP and streaks
+- **Live classes** â€” schedule one-off or recurring classes with Google Meet, automatic calendar events, and class recordings via Google Drive
+- **AI for teachers** â€” Gemini-powered course generation and an AI teacher assistant (chat) that can draft and build course content; AI access is controlled per teacher by the admin
+- **Google integration** â€” teachers connect their Google account (Calendar, Drive, Meet) with OAuth 2.0
+- **Admin panel** â€” user and role management, AI access control, platform settings, statistics
+- **Authentication** â€” email/password and Google sign-in, Firebase role-based access control (custom claims)
+
+## Tech Stack
+
+| Layer | Technology |
+| --- | --- |
+| Framework | Next.js 14.2 (App Router), React 18, TypeScript 5 |
+| UI | Tailwind CSS, shadcn/ui, Lucide icons |
+| Backend | Next.js API routes, Firebase Admin SDK |
+| Database / Auth / Files | Cloud Firestore, Firebase Authentication, Firebase Storage |
+| AI | Google Gemini (course generation + teacher assistant) |
+| Integrations | Google Calendar / Drive / Meet (googleapis) |
+| Testing | Jest |
+
+## Quick Start
 
 ### Prerequisites
-- Node.js 18+ (recommended: 20+)
-- pnpm (or npm/yarn)
-- MongoDB instance (local or Atlas)
-- Firebase project (optional, for authentication)
 
-### Installation
+- Node.js 18+ (20+ recommended)
+- npm
+- A Firebase project with Authentication (Email/Password + Google), Firestore, and Storage enabled
 
-```powershell
-# Clone and navigate to project
-cd dual-ling
+### Install and run
 
-# Install dependencies
-pnpm install
-
-# Set up environment variables
-Copy-Item .env.local.example .env.local
-# Edit .env.local with your credentials
-
-# Run development server
-pnpm dev
+```bash
+npm install --legacy-peer-deps   # the flag is required (legacy eslint peer conflict)
+cp .env.example .env.local       # then fill in real values â€” see below
+npm run dev                      # http://localhost:3000
 ```
 
-The app will be available at `http://localhost:3000` (or next available port).
+### Production
 
-## 📋 Environment Setup
-
-Create `.env.local` in the project root:
-
-```env
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/langexchange
-
-# JWT (current auth system)
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
-
-# Firebase (optional - for new auth)
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-NEXT_PUBLIC_FIREBASE_APP_ID=
-
-# Firebase Admin SDK
-GOOGLE_APPLICATION_CREDENTIALS=C:\\path\\to\\service-account.json
-# OR inline (for hosting)
-FIREBASE_PROJECT_ID=
-FIREBASE_CLIENT_EMAIL=
-FIREBASE_PRIVATE_KEY=
+```bash
+npm run build
+npm start
 ```
 
-## 🏗️ Project Structure
+## Environment Variables
 
-```
-dual-ling/
-├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes (backend)
-│   │   ├── auth/         # Login, register endpoints
-│   │   ├── courses/      # Course CRUD
-│   │   ├── progress/     # Progress tracking
-│   │   └── ...
-│   ├── dashboard/        # Student dashboard
-│   ├── teacher/          # Teacher interface
-│   ├── admin/            # Admin panel
-│   └── ...
-├── components/            # React components
-│   ├── ui/               # shadcn/ui components
-│   ├── navigation/       # Navbar
-│   └── lessons/          # Lesson viewer, quiz
-├── lib/                   # Backend utilities
-│   ├── auth/             # Auth helpers (JWT + Firebase)
-│   ├── firebase/         # Firebase init (client/admin)
-│   ├── models/           # Mongoose schemas
-│   ├── services/         # Business logic
-│   └── validation/       # Zod schemas
-├── hooks/                 # Custom React hooks
-│   └── use-auth.tsx      # Auth context
-├── __tests__/            # Jest tests
-└── public/               # Static assets
+Copy `.env.example` to `.env.local` and fill in real values. Never commit `.env.local` or any service-account key file.
+
+| Group | Variables | Purpose |
+| --- | --- | --- |
+| Firebase (client) | `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`, `NEXT_PUBLIC_FIREBASE_APP_ID`, `NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID` | Public web configuration from the Firebase console |
+| Firebase Admin | `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` | Server-side Admin SDK credentials (on GCP/Cloud Run, Application Default Credentials are used instead) |
+| Google OAuth | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` | "Connect Google account" flow for teachers; the redirect URI must point at `/api/google/auth/callback` |
+| AI | `GEMINI_API_KEY`, `AI_TEACHER_MODEL` | Fallback/defaults â€” the live Gemini key and model are managed in the admin settings (`system_settings/global`) |
+
+## Firebase Setup
+
+Deploy the security rules and indexes from this repository to your Firebase project:
+
+```bash
+firebase deploy --only firestore:rules,firestore:indexes,storage
 ```
 
-## 🔑 Authentication
+- `firestore.rules` â€” role- and ownership-based access. Privileged fields (`role`, `aiEnabled`) can only be changed by admins or server-side code.
+- `storage.rules` â€” course files are writable only by the owning teacher or an admin; lesson resources are validated by type and size (50 MB max).
+- `firestore.indexes.json` â€” composite indexes used by course, enrollment, and lesson queries.
 
-### Current System: JWT + MongoDB
-- Email/password registration and login
-- JWT tokens stored in localStorage
-- Role-based access control (student/teacher/admin)
+## User Roles
 
-### Migration to Firebase (In Progress)
-Firebase SDK has been scaffolded but not yet integrated:
-- Client SDK: `lib/firebase/client.ts`
-- Admin SDK: `lib/firebase/admin.ts`
-- Auth helpers: `lib/auth/firebase-auth.ts`
+- **Student** â€” enroll in published courses, view lessons, take quizzes, track progress, join live classes
+- **Teacher** â€” create and publish courses and lessons, manage enrollments, schedule classes, connect Google, use AI tools (when enabled by an admin)
+- **Admin** â€” manage users and roles, enable/disable AI per teacher, configure platform settings (including the Gemini key/model), view statistics
 
-**To complete Firebase migration**, see `docs/FIREBASE_MIGRATION.md` (TODO).
+Roles are enforced server-side on every API route using Firebase custom claims â€” the client UI is never the security boundary.
 
-## 👥 User Roles
+## Project Structure
 
-### Student
-- Enroll in courses
-- View lessons and take quizzes
-- Track learning progress
-- View personal dashboard
-
-### Teacher
-- Create and manage courses
-- Add lessons (text, video, quiz)
-- View student progress
-- Manage enrollments
-
-### Admin
-- Manage all users and roles
-- View all courses and content
-- Access system analytics
-- Configure platform settings
-
-## 🧪 Testing
-
-```powershell
-# Run all tests
-pnpm test
-
-# Watch mode
-pnpm test:watch
-
-# Coverage report
-pnpm test:coverage
+```
+app/                  # Next.js App Router: pages + API routes
+  api/                # REST endpoints (auth, courses, classes, google, ai, admin, ...)
+  admin/  teacher/    # Role dashboards
+components/           # React components (lessons, quiz, UI kit)
+lib/
+  firebase/           # Firebase client + Admin SDK initialization
+  services/           # Business logic (auth, courses, classes, quiz, progress, google, ai)
+  repositories/       # Data access
+hooks/                # React hooks (use-auth, ...)
+functions/src/        # Firebase Functions subproject source
+scripts/              # One-off maintenance/seed scripts (see notes below)
+docs/                 # Extended documentation
+__tests__/            # Jest tests
 ```
 
-### Test Structure
-- `__tests__/api/` - API endpoint tests (with mongodb-memory-server)
-- `__tests__/lib/` - Unit tests for utilities and business logic
+## Scripts
 
-## 🛠️ Development Scripts
-
-```powershell
-# Development server
-pnpm dev
-
-# Type checking
-pnpm exec tsc --noEmit
-
-# Linting
-pnpm lint
-
-# Production build
-pnpm build
-
-# Start production server
-pnpm start
+```bash
+npm run dev            # Development server
+npm run build          # Production build
+npm start              # Start production server
+npm run lint           # Lint
+npm test               # Run Jest tests
+npm run test:coverage  # Coverage report
 ```
 
-## 🐛 Known Issues & Fixes
+## Security Notes (handover, November 2026)
 
-### Hydration Errors (FIXED ✅)
-**Problem:** Errors on page load/click due to localStorage access during SSR.
+This codebase went through a pre-handover security audit; all code-level findings were fixed. Points the project owner should know:
 
-**Solution:** Added mount guard in `AuthProvider` to prevent hydration mismatch.
+1. **Delete any demo/test accounts** in the Firebase project before launch. The public demo page that displayed sample credentials has been removed from the code, but accounts created earlier may still exist in Firebase Authentication.
+2. **Deploy the rules and indexes** (see *Firebase Setup*) â€” code and rules only protect the platform together.
+3. **AI access is opt-in per teacher.** An admin enables it per user in the admin panel (`aiEnabled`); both the course generator and the teacher assistant enforce it.
+4. **Google tokens are stored server-side only**, in a `userSecrets` collection that no client can read. Teachers connected before this change are migrated automatically on first use.
+5. **Seed scripts require a password from the environment** (`SEED_PASSWORD`) â€” there are no shared default passwords in the repository anymore. Only run seed scripts against development projects.
+6. Teacher accounts can currently be created through the public registration form. If sign-up should be restricted, add an admin-approval step or disable teacher self-registration in `app/api/auth/register`.
 
-See `HYDRATION_FIX.md` for detailed explanation.
+## License
 
-### TypeScript Errors (TODO)
-- 35 compile errors in tests and API routes
-- Missing type definitions for @jest/globals
-- Some API routes have type mismatches
-- **Priority:** Fix before production deployment
-
-## 📦 Tech Stack
-
-### Frontend
-- **Framework:** Next.js 15.2 (App Router)
-- **UI Library:** React 19
-- **Styling:** TailwindCSS + shadcn/ui
-- **Forms:** React Hook Form + Zod validation
-- **Icons:** Lucide React
-
-### Backend
-- **Runtime:** Node.js (Next.js API routes)
-- **Database:** MongoDB + Mongoose
-- **Auth:** JWT (current) + Firebase (planned)
-- **Validation:** Zod schemas
-
-### Development
-- **Language:** TypeScript 5
-- **Testing:** Jest + ts-jest
-- **Package Manager:** pnpm
-- **Linting:** ESLint (Next.js config)
-
-## 🗺️ Product Roadmap
-
-Based on `PRD.md`, the platform is being built in phases:
-
-- [x] **Phase 0:** Project setup and architecture
-- [x] **Phase 1:** Backend foundation (API, auth, DB schemas)
-- [x] **Phase 2:** Student interface (dashboard, course viewer)
-- [ ] **Phase 3:** Teacher interface (course builder, student tracking)
-- [ ] **Phase 4:** Admin interface (user/course management)
-- [ ] **Phase 5:** Polish & testing (responsive design, performance)
-
-## 🚧 Immediate Next Steps
-
-1. **Fix TypeScript Errors**
-   - Add @jest/globals types
-   - Fix API route type issues
-   - Resolve model interface mismatches
-
-2. **Complete Firebase Integration**
-   - Wire Firebase auth into API middleware
-   - Migrate login/register to Firebase
-   - Set custom claims for roles
-
-3. **Improve Test Coverage**
-   - Add tests for lesson viewer and quiz components
-   - Test teacher course creation flow
-   - Add E2E tests with Playwright
-
-4. **Documentation**
-   - API endpoint documentation
-   - Component storybook
-   - Deployment guide
-
-## 🤝 Contributing
-
-1. Create a feature branch from `main`
-2. Make changes and add tests
-3. Ensure `pnpm test` and `pnpm lint` pass
-4. Run `pnpm exec tsc --noEmit` to check types
-5. Submit a pull request
-
-## 📄 License
-
-Private project - All rights reserved.
-
-## 🔗 Related Documentation
-
-- [Product Requirements Document](PRD.md)
-- [Hydration Fix Details](HYDRATION_FIX.md)
-- [CSS Best Practices](docs/CSS_BEST_PRACTICES.md)
-
-## 🆘 Getting Help
-
-- Check existing issues in the repository
-- Review the PRD for feature specifications
-- Consult Next.js docs for framework questions
-
----
-
-Built with ❤️ for language learners worldwide 🇱🇹 🇺🇸
-
----
-
-## Notes for handover (2026-11-16)
-
-- Package: `step-by-step-english` v1.0.0. Install with `npm install --legacy-peer-deps` (a peer-dependency conflict in the legacy eslint config requires the flag), then `npm run dev` / `npm run build`.
-- Copy `.env.example` to `.env.local` and fill in real values. Never commit `.env.local` or any Firebase Admin service-account JSON file.
-- Developer test endpoints (`/api/test/*`, `/test` pages) were removed for client delivery - they created test accounts and listed all users with no auth.
-- Repository hygiene: the `.netlify/` build folder, `functions/node_modules/`, `logs/` and `.DS_Store` files were untracked (34k+ generated files). They are now covered by `.gitignore`; the actual source is a few hundred files. The Firebase Functions subproject source remains in `functions/src/`.
-- This branch keeps all product features of main: Gemini AI course generation and teacher bot, live classes with recordings, Google sign-in/calendar integration, and the admin portal.
+Private project â€” all rights reserved.
