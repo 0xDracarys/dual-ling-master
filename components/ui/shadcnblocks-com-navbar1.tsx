@@ -36,8 +36,7 @@ interface MenuItem {
   items?: MenuItem[];
 }
 
-interface Navbar1Props {
-  logo?: {
+interface Navbar1Props {  logo?: {
     url: string;
     src: string;
     alt: string;
@@ -66,6 +65,15 @@ interface Navbar1Props {
     onLogout?: () => void;
   };
 }
+
+// Mask an email for display in menus (e.g. ad•••@example.com) so account
+// addresses are not exposed on screen or in screenshots.
+const maskEmail = (email?: string): string => {
+  if (!email) return "";
+  const at = email.indexOf("@");
+  if (at < 1) return email;
+  return `${email.slice(0, 2)}•••${email.slice(at)}`;
+};
 
 const Navbar1 = ({
   logo = {
@@ -122,7 +130,7 @@ const Navbar1 = ({
                         <ul className="w-64 p-3">
                           <li className="mb-3 p-2 border-b">
                             <div className="text-sm font-semibold">{userMenu.username}</div>
-                            <div className="text-xs text-muted-foreground truncate">{userMenu.email}</div>
+                            <div className="text-xs text-muted-foreground truncate">{maskEmail(userMenu.email)}</div>
                             <div className="text-xs text-muted-foreground capitalize mt-1 inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">
                               {userMenu.role}
                             </div>
@@ -244,7 +252,7 @@ const Navbar1 = ({
                       <>
                         <div className="p-4 bg-gray-50 rounded-md mb-2">
                           <div className="font-medium text-gray-900">{userMenu.username}</div>
-                          <div className="text-sm text-gray-600 truncate">{userMenu.email}</div>
+                          <div className="text-sm text-gray-600 truncate">{maskEmail(userMenu.email)}</div>
                           <div className="text-xs text-gray-600 capitalize mt-1 inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded">
                             {userMenu.role}
                           </div>

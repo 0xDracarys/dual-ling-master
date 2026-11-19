@@ -250,7 +250,7 @@ export default function HomePage() {
             {t.howItWorks.steps.map((step, index) => (
               <div key={index} className="relative group">
                 {index < t.howItWorks.steps.length - 1 && (
-                  <div className="hidden md:block absolute top-10 left-full w-full h-0.5 bg-white/30 z-0 -translate-y-1/2" style={{width: 'calc(100% - 2.5rem)', left: '80%'}}></div>
+                  <div className="hidden md:block absolute top-10 left-full w-8 h-0.5 bg-white/30 z-0"></div>
                 )}
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center relative z-10">
                   <div className="mb-6 flex justify-center text-white">
